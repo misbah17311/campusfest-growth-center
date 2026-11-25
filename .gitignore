@@ -53,7 +53,7 @@ __pycache__/
 /research/sources/
 /NEXTJS_SCAFFOLD_README.md
 
-# Claude Code local settings
+# Local editor and assistant settings
 .claude/settings.local.json
 # Not used by the attendee track
 /data/original/Sponsor Dataset.xlsx

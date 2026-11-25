@@ -1,6 +1,8 @@
 // End-to-end test in a real (headless) browser against a running app that uses
 // the LOCAL database. It edits data through the UI and resets it at the end.
 //   BASE_URL=http://127.0.0.1:3100 DATABASE_URL=postgresql://postgres:devpass@127.0.0.1:5433/campusfest node tests/e2e_ui.mjs
+import os from "node:os";
+import path from "node:path";
 import { chromium } from "playwright";
 import pg from "pg";
 
@@ -106,7 +108,7 @@ try {
 } catch (e) {
   fails.push(String(e));
   console.error("ERROR", e);
-  await page.screenshot({ path: "/tmp/claude-1000/-home-misbah-ubuntu-intern/92fc02dc-8ac8-4156-8f3b-a3afbee54312/scratchpad/e2e_fail.png", fullPage: true });
+  await page.screenshot({ path: path.join(os.tmpdir(), "e2e_fail.png"), fullPage: true });
 } finally {
   await browser.close();
   await db.query("update decision_rules set scale_cost_ratio = 0.8 where id = 1");

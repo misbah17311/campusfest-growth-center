@@ -2,9 +2,10 @@
 
 RISA Labs · Growth APM assignment · **Challenge A: attendee growth** · festival city: **Pune**
 
-- **Live product:** https://campusfest-growth-center-theta.vercel.app (no login; open the copilot from the button at the bottom right)
+- **Live product:** [https://campusfest-growth-center-theta.vercel.app](https://campusfest-growth-center-theta.vercel.app) (no login; open the copilot from the button at the bottom right)
+- **Source code:** [github.com/misbah17311/campusfest-growth-center](https://github.com/misbah17311/campusfest-growth-center)
 - **Three-slide strategy (PDF):** [`slides/CampusFest_Growth_Strategy_Misbah_Ur_Rahman.pdf`](slides/CampusFest_Growth_Strategy_Misbah_Ur_Rahman.pdf)
-- **Author:** Md Misbah Ur Rahman
+- **Author:** Md Misbah Ur Rahman (23CH10042), Department of Chemical Engineering, IIT Kharagpur
 
 > **Status:** complete. The live site reads a Neon copy of the original workbook, verified against the pandas reference (2,050 values, 0 mismatches).
 
@@ -337,7 +338,7 @@ Schema or function changes on a live database: `db/load_workbook.py migrate` re-
 
 ## 10. Tools used, and what was reused, modified and verified
 
-- **Claude Code** (Anthropic, Claude Opus 5.5 / Fable 5.2) as a pair programmer and research assistant: it wrote most of the code and drafts under my direction. I set the direction, made the decisions recorded here, reviewed the work, and checked the load-bearing numbers against their sources. Research sub-agents gathered Pune and benchmark sources; every figure used in the strategy was re-checked against its primary source, and figures that could not be are labelled.
+- **Claude Code** (Anthropic's AI coding assistant): the AI tool I used to write most of the code, draft the documents and gather sources, under my direction. The decisions are mine: Challenge A and Pune, the target and how it is modelled, the five bets and their thresholds, the stack, and what to cut. I reviewed the work and checked every load-bearing number against the data or its primary source; figures that could not be checked are labelled.
 - **Fireworks AI** serverless models for the copilot (OpenAI-compatible API).
 - **Next.js 16** (create-next-app scaffold), **React 19**, **Tailwind CSS 4**, **Recharts 3**, **react-markdown**, **zod**, **node-postgres**, the **openai** SDK (pointed at Fireworks).
 - **Python**: pandas, openpyxl, psycopg 3. **Postgres 17** (local Docker) / **Neon** (production). **Playwright** for the browser test.
