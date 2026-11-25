@@ -15,6 +15,12 @@ Structure (per acquisition channel c):
   visitors_c      = confirmed_c * (1 - no_show_c)
   total           = sum(visitors_c) + walk_ins
 
+Win-back (a channel with no 2025 history, "C08"): 2025's verified visitors and
+confirmed no-shows who did not opt out are messaged again. Registrations =
+pool * share still reachable and eligible * incremental registration rate
+(net of people who would have registered through another channel anyway);
+confirmation and show-up as in the 2025 peer and group channels (ASSUMED).
+
 Check built in: with 2025 spend and every lever at zero, the model must reproduce
 the 2025 result (2,050) exactly.
 
@@ -40,6 +46,7 @@ FINAL = "2025-04-20"
 # cheaper; Organic rose slightly (48->57). Monthly ratios are rough (spend and
 # registrations are not aligned in time).
 PAID = {"C02", "C03"}
+PEER = ["C04", "C05", "C06", "C07"]  # group and peer channels; their averages stand in for win-back
 
 
 # --------------------------------------------------------------------------
@@ -66,6 +73,8 @@ def channel_baseline(d: ref.Data) -> pd.DataFrame:
         "waitlisted": cm.waitlisted.astype(float),
         "came": cm.confirmed_who_attended.astype(float),
         "gate_lost": cm.gate_lost.astype(float),
+        "identified": cm.identified.astype(float),
+        "impressions": cm.impressions.astype(float),
     })
     out["confirm_rate"] = out.confirmed / out.registered
     out["waitlist_ratio"] = out.waitlisted / out.registered
@@ -90,14 +99,34 @@ class Scenario:
     programme_cost: float = 0.0  # show-up programme and other non-channel spend
     showup_regress: float = 0.0  # stress test: in channels whose spend grows, true no-show moves this share of
                                  # the way towards the 2025 all-channel rate (marginal people are less committed)
+    winback_pool: float = 0.0    # DERIVED: 2025 verified visitors + confirmed no-shows, minus opt-outs
+    winback_reach: float = 0.0   # ASSUMED: share still reachable and eligible two years on (students, in Pune)
+    winback_rate: float = 0.0    # ASSUMED: incremental registration rate among those reached (net of overlap)
+
+
+def winback_row(base: pd.DataFrame) -> pd.DataFrame:
+    """ASSUMED profile of a returning 2025 person: the confirmed-weighted average of the
+    peer and group channels; no form abandonment (they register from a direct link) and
+    no gate loss (bet 1 fixes the gate check)."""
+    p = base.loc[PEER]
+    w = p.confirmed / p.confirmed.sum()
+    return pd.DataFrame({"channel": ["Win-back (2025 people)"], "spend_2025": [0.0], "registered": [0.0],
+                         "form_starters": [0.0], "confirmed": [0.0], "waitlisted": [0.0], "came": [0.0], "gate_lost": [0.0],
+                         "identified": [0.0], "impressions": [0.0],
+                         "confirm_rate": [(p.confirm_rate * w).sum()], "waitlist_ratio": [(p.waitlist_ratio * w).sum()],
+                         "abandon_ratio": [0.0], "no_show": [(p.true_no_show * w).sum()], "gate_loss": [0.0],
+                         "true_no_show": [(p.true_no_show * w).sum()]}, index=["C08"])
 
 
 def run(base: pd.DataFrame, s: Scenario) -> pd.DataFrame:
-    r = base.copy()
+    r = pd.concat([base, winback_row(base)])
     r["spend"] = pd.Series(s.spend, dtype=float).reindex(r.index).fillna(0.0)
     beta = pd.Series({c: (s.beta_paid if c in PAID else s.beta_peer) for c in r.index})
     r["beta"] = beta
-    r["reg"] = r.registered * (r.spend / r.spend_2025) ** beta * (1 + s.form_recovery * r.abandon_ratio)
+    scale = (r.spend / r.spend_2025.where(r.spend_2025 > 0)) ** beta
+    r["reg_spend"] = r.registered * scale.fillna(0.0)          # before form recovery (drives reach needed)
+    r.loc["C08", "reg_spend"] = s.winback_pool * s.winback_reach * s.winback_rate
+    r["reg"] = r.reg_spend * (1 + s.form_recovery * r.abandon_ratio)
     r["conf"] = r.reg * (r.confirm_rate + s.waitlist_release * r.waitlist_ratio)
     tns = r.true_no_show
     if s.showup_regress:
@@ -106,13 +135,21 @@ def run(base: pd.DataFrame, s: Scenario) -> pd.DataFrame:
         tns = tns.where(~grows, tns + s.showup_regress * (blended - tns).clip(lower=0))
     r["no_show_new"] = tns * (1 - s.reminder_effect) + r.gate_loss * (1 - s.gate_fix)
     r["visitors"] = r.conf * (1 - r.no_show_new)
+    # Reach end of the funnel (DERIVED ratios, held at 2025 levels): people we must identify and
+    # anonymous impressions behind them. Win-back people are already identified and need no ads.
+    ratio = lambda col: (r[col] / r.registered.where(r.registered > 0)).fillna(0.0)
+    r["identified_needed"] = r.reg_spend * ratio("identified")
+    r.loc["C08", "identified_needed"] = s.winback_pool * s.winback_reach
+    r["impressions_needed"] = r.reg_spend * ratio("impressions")
     return r
 
 
 def summarise(r: pd.DataFrame, s: Scenario) -> dict:
     visitors = r.visitors.sum() + s.walk_ins
     spend = r.spend.sum() + s.programme_cost
-    return {"scenario": s.name, "registrations": r.reg.sum(), "confirmed": r.conf.sum(),
+    return {"scenario": s.name, "impressions": r.impressions_needed.sum(),
+            "identified": r.identified_needed.sum() + s.walk_ins, "registrations": r.reg.sum(),
+            "confirmed": r.conf.sum(), "came": r.visitors.sum(), "walk_ins": s.walk_ins,
             "visitors": visitors, "spend": spend, "inr_per_visitor": spend / visitors,
             "show_up": r.visitors.sum() / r.conf.sum()}
 
@@ -136,6 +173,9 @@ def main():
                      waitlist_release=0, form_recovery=0, walk_ins=walk_ins_2025)
     chk = summarise(run(base, s2025), s2025)
     assert round(chk["visitors"]) == 2050, chk
+    assert round(chk["identified"]) == 3625, chk
+    pool = winback_pool(d)
+    print(f"Win-back pool (DERIVED): {pool} people = 2025 verified visitors + confirmed no-shows, minus opt-outs")
     print(f"\nCheck: model reproduces 2025 with 2025 spend and no levers -> {chk['visitors']:.0f} visitors (actual 2,050)")
 
     # ---- ASSUMED: 2027 allocation of the same INR 3.0 lakh budget.
@@ -143,19 +183,22 @@ def main():
     # (Paid Social 59%, Creators 60%) to the peer and group channels (81-92%).
     # Paid Social keeps a retargeting budget for form-abandoners and page visitors.
     plan = {"C01": 55_000,  # Campus Ambassadors (paid per verified attendee)
-            "C02": 40_000,  # Paid Social, retargeting only
+            "C02": 30_000,  # Paid Social, retargeting only (form abandoners, page visitors)
             "C03": 10_000,  # Creator Partners, performance codes only
             "C04": 82_500,  # College & club partnerships, group registration (incl. half the reserve)
             "C05": 57_500,  # Student referrals, reward on friend's verified attendance (incl. half the reserve)
             "C06": 20_000,  # Organic search + event listings
-            "C07": 20_000}  # Community groups
+            "C07": 20_000,  # Community groups
+            "C08": 10_000}  # Win back 2025's people: WhatsApp marketing messages (~INR 1 each incl. GST) + email
     programme = 15_000      # show-up programme: WhatsApp utility reminders, reconfirmation, extra gate scanners
     assert sum(plan.values()) + programme == 300_000
 
     base_s = Scenario("Base", spend=plan, beta_paid=0.5, beta_peer=0.7, reminder_effect=0.10, gate_fix=0.5, waitlist_release=0.5,
-                      form_recovery=0.2, walk_ins=125, programme_cost=programme)
+                      form_recovery=0.2, walk_ins=125, programme_cost=programme,
+                      winback_pool=pool, winback_reach=0.4, winback_rate=0.10)
     stretch_s = Scenario("Stretch", spend=plan, beta_paid=0.6, beta_peer=0.9, reminder_effect=0.25, gate_fix=0.9, waitlist_release=0.9,
-                         form_recovery=0.4, walk_ins=175, programme_cost=programme)
+                         form_recovery=0.4, walk_ins=175, programme_cost=programme,
+                         winback_pool=pool, winback_reach=0.5, winback_rate=0.20)
 
     rows = [summarise(run(base, s2025), s2025)]
     detail = {}
@@ -187,9 +230,11 @@ def main():
         cur = steps[1][1]
         prev_v = summarise(run(base, s2025), s2025)["visitors"]
         print(f"  {'2025 actual':32s} {prev_v:7.0f}")
+        cur = replace(cur, spend={**plan, "C08": 0})
         seq = [("1. reallocate budget", cur),
-               ("2. form-abandoner recovery", replace(cur, form_recovery=target.form_recovery)),
-               ]
+               ("1b. win back 2025's people", replace(cur, spend=plan, winback_pool=pool,
+                                                      winback_reach=target.winback_reach, winback_rate=target.winback_rate))]
+        seq.append(("2. form-abandoner recovery", replace(seq[-1][1], form_recovery=target.form_recovery)))
         seq.append(("3. waitlist auto-release", replace(seq[-1][1], waitlist_release=target.waitlist_release)))
         seq.append(("4. reminders + reconfirmation", replace(seq[-1][1], reminder_effect=target.reminder_effect)))
         seq.append(("5. gate fix", replace(seq[-1][1], gate_fix=target.gate_fix)))
@@ -227,7 +272,7 @@ def main():
     # as spend_c ** beta_c, so d(visitors)/d(spend) = beta_c * visitors_c / spend_c.
     print("\n== Where the next rupee goes: marginal INR per extra visitor at the plan allocation")
     for name, r in detail.items():
-        m = (r.spend / (r.beta * r.visitors)).rename(name)
+        m = (r.spend / (r.beta * r.visitors)).drop("C08").rename(name)  # win-back is pool-limited, not spend-driven
         print(m.round(0).to_frame().join(r.channel).to_string())
 
     # ---- Capacity: gate throughput is the binding operational constraint.
@@ -249,17 +294,75 @@ def main():
         print(f"  {name}: {u:.0f} unique -> about {u * per_day.max() / f['visitors']:.0f} on the busier day,"
               f" peak gate load about {u * peak_share:.0f} admissions/hour (2025 peak: {peak})")
 
+    print("\n== Ranking the bets: score = extra visitors per INR 1,000 of new money x confidence")
+    print("   (each bet measured alone on top of 2025, Base settings; confidence High 1.0, Medium-high 0.8,")
+    print("    Medium 0.6, Low 0.4)")
+    ranked = rank_bets(base, base_s, s2025)
+    for b in ranked:
+        print(f"  {b['label']:52s} alone {b['alone']:+6.0f}  new money INR {b['new_money']:7,.0f}"
+              f"  conf {b['confidence']:.1f}  score {b['score']:5.2f}")
+    order = [b["key"] for b in ranked]
     for target in (base_s, stretch_s):
         print(f"\n== Contribution by bet ({target.name}; applied in rank order, parts add up to the total)")
-        for label, delta, total in bridge_by_bet(base, target, s2025):
+        for label, delta, total in bridge_by_bet(base, target, s2025, order):
             print(f"  {label:70s} {delta:+7.0f}   -> {total:6.0f}")
 
 
 
-def bridge_by_bet(base: pd.DataFrame, target: Scenario, s2025: Scenario):
+def winback_pool(d: ref.Data) -> int:
+    """DERIVED: people CampusFest already knows best: 2025 verified visitors plus confirmed
+    registrants who did not come, minus everyone who opted out of messages."""
+    v = set(ref.visitors(d, FINAL).person_id)
+    ps = ref.person_status(ref.registration_status(d, FINAL), ["person_id"])
+    conf = set(ps.loc[ps.status == "confirmed", "person_id"])
+    opted_out = set(d.interactions.loc[d.interactions.event_type == "opted_out", "person_id"])
+    return len((v | conf) - opted_out)
+
+
+# The five bets: what each changes, the new money it needs, and the confidence in its evidence.
+CONFIDENCE = {"High": 1.0, "Medium-high": 0.8, "Medium": 0.6, "Low": 0.4}
+
+
+def bet_changes(key: str, target: Scenario, spend: dict) -> dict:
+    plan = target.spend
+    return {
+        "showup": dict(waitlist_release=target.waitlist_release, reminder_effect=target.reminder_effect,
+                       gate_fix=target.gate_fix, programme_cost=target.programme_cost),
+        "partnerships": dict(spend={**spend, "C04": plan["C04"]}),
+        "ambassadors": dict(spend={**spend, "C01": plan["C01"]}),
+        "referrals": dict(spend={**spend, "C05": plan["C05"]}),
+        "winback": dict(spend={**spend, "C08": plan["C08"]}, winback_pool=target.winback_pool,
+                        winback_reach=target.winback_reach, winback_rate=target.winback_rate),
+    }[key]
+
+
+BETS = {  # key: (label, confidence, new money as a function of the plan and 2025 spend)
+    "showup": ("Show-up and gate programme", "High", lambda plan, b, t: t.programme_cost),
+    "partnerships": ("College & club partnerships (C04)", "Medium-high", lambda plan, b, t: plan["C04"] - b.spend_2025["C04"]),
+    "ambassadors": ("Ambassadors paid per verified attendee (C01)", "Medium-high", lambda plan, b, t: plan["C01"] - b.spend_2025["C01"]),
+    "referrals": ("Referral rewards on verified attendance (C05)", "Medium", lambda plan, b, t: plan["C05"] - b.spend_2025["C05"]),
+    "winback": ("Win back 2025's people (C08)", "Low", lambda plan, b, t: plan["C08"]),
+}
+
+
+def rank_bets(base: pd.DataFrame, target: Scenario, s2025: Scenario) -> list[dict]:
+    """Score each bet on its own (on top of 2025 with the target's betas), so the ranking does
+    not depend on the order the bets are applied in."""
+    start = replace(s2025, beta_paid=target.beta_paid, beta_peer=target.beta_peer)
+    v0 = summarise(run(base, start), start)["visitors"]
+    out = []
+    for key, (label, conf, money) in BETS.items():
+        s = replace(start, **bet_changes(key, target, dict(start.spend)))
+        alone = summarise(run(base, s), s)["visitors"] - v0
+        new_money = money(target.spend, base, target)
+        out.append({"key": key, "label": label, "alone": alone, "new_money": new_money, "confidence": CONFIDENCE[conf],
+                    "confidence_label": conf, "score": alone / (new_money / 1000) * CONFIDENCE[conf]})
+    return sorted(out, key=lambda b: -b["score"])
+
+
+def bridge_by_bet(base: pd.DataFrame, target: Scenario, s2025: Scenario, order: list[str]):
     """Contribution of each strategic bet, applied in rank order so the parts add
     up exactly to the total (each bet is measured on top of the ones before it)."""
-    spend = dict(s2025.spend)
     steps = []
     cur = replace(s2025, beta_paid=target.beta_paid, beta_peer=target.beta_peer)
 
@@ -271,16 +374,13 @@ def bridge_by_bet(base: pd.DataFrame, target: Scenario, s2025: Scenario):
         steps.append((label, after - before, after))
 
     plan = target.spend
-    add("1. College & club partnerships (C04)", spend={**spend, "C04": plan["C04"]}); spend = dict(cur.spend)
-    add("2. Referral rewards on verified attendance (C05)", spend={**spend, "C05": plan["C05"]}); spend = dict(cur.spend)
-    add("3. Show-up & gate programme (waitlist release, reminders, gate fix)",
-        waitlist_release=target.waitlist_release, reminder_effect=target.reminder_effect, gate_fix=target.gate_fix)
-    add("4. Paid Social to retargeting only (C02) + form-abandoner recovery",
-        spend={**spend, "C02": plan["C02"]}, form_recovery=target.form_recovery); spend = dict(cur.spend)
-    add("5. Ambassadors paid per verified attendee (C01)", spend={**spend, "C01": plan["C01"]}); spend = dict(cur.spend)
-    add("Other: cut Creators to performance codes (C03)", spend={**spend, "C03": plan["C03"]}); spend = dict(cur.spend)
-    add("Other: Organic + listings (C06), Community (C07)", spend={**spend, "C06": plan["C06"], "C07": plan["C07"]})
-    add("Other: walk-ins", walk_ins=target.walk_ins, programme_cost=target.programme_cost)
+    for n, key in enumerate(order, 1):
+        add(f"{n}. {BETS[key][0]}", **bet_changes(key, target, dict(cur.spend)))
+    add("Other: Paid Social to retargeting only (C02) + form-abandoner recovery",
+        spend={**cur.spend, "C02": plan["C02"]}, form_recovery=target.form_recovery)
+    add("Other: cut Creators to performance codes (C03)", spend={**cur.spend, "C03": plan["C03"]})
+    add("Other: Organic + listings (C06), Community (C07)", spend={**cur.spend, "C06": plan["C06"], "C07": plan["C07"]})
+    add("Other: walk-ins", walk_ins=target.walk_ins)
     return steps
 
 

@@ -7,77 +7,82 @@ C04  College Partnerships     31000.0       450.0         0.933           0.020 
 C05     Student Referrals     19000.0       350.0         0.914           0.026          0.086    0.141      0.000         0.141
 C06        Organic Search     14000.0       250.0         0.900           0.024          0.060    0.133      0.000         0.133
 C07      Community Groups     16000.0       200.0         0.925           0.015          0.050    0.108      0.000         0.108
+Win-back pool (DERIVED): 2564 people = 2025 verified visitors + confirmed no-shows, minus opt-outs
 
 Check: model reproduces 2025 with 2025 spend and no levers -> 2050 visitors (actual 2,050)
 
 == Scenarios (same INR 3.0 lakh budget in 2027)
-             registrations  confirmed  visitors     spend  inr_per_visitor  show_up
-scenario                                                                           
-2025 replay       2800.000   2500.000  2050.000  274000.0          133.659    0.770
-Base              3478.741   3206.724  2854.475  300000.0          105.098    0.851
-Stretch           3930.613   3672.655  3441.275  300000.0           87.177    0.889
+             impressions  identified  registrations  confirmed      came  walk_ins  visitors     spend  inr_per_visitor  show_up
+scenario                                                                                                                        
+2025 replay  1029015.000    3625.000       2800.000   2500.000  1925.000       125  2050.000  274000.0          133.659    0.770
+Base         1056541.738    5168.859       3519.796   3248.386  2781.465       125  2906.465  300000.0          103.218    0.856
+Stretch      1145304.573    5900.318       4118.211   3852.148  3444.403       175  3619.403  300000.0           82.887    0.894
 
 -- Base by channel
-                  channel  spend_2025    spend  registered    reg   conf  no_show  no_show_new  visitors
-C01    Campus Ambassadors     42000.0  55000.0       520.0  635.3  594.4      0.2          0.1     523.8
-C02           Paid Social     93000.0  40000.0       680.0  459.1  401.7      0.4          0.4     252.1
-C03      Creator Partners     59000.0  10000.0       350.0  149.9  128.0      0.4          0.4      82.3
-C04  College Partnerships     31000.0  82500.0       450.0  900.8  849.7      0.1          0.1     786.0
-C05     Student Referrals     19000.0  57500.0       350.0  772.8  716.5      0.1          0.1     625.8
-C06        Organic Search     14000.0  20000.0       250.0  324.8  296.2      0.1          0.1     260.6
-C07      Community Groups     16000.0  20000.0       200.0  236.2  220.2      0.1          0.1     198.8
+                    channel  spend_2025    spend  registered    reg   conf  no_show  no_show_new  visitors
+C01      Campus Ambassadors     42000.0  55000.0       520.0  635.3  594.4      0.2          0.1     523.8
+C02             Paid Social     93000.0  30000.0       680.0  397.6  347.9      0.4          0.4     218.3
+C03        Creator Partners     59000.0  10000.0       350.0  149.9  128.0      0.4          0.4      82.3
+C04    College Partnerships     31000.0  82500.0       450.0  900.8  849.7      0.1          0.1     786.0
+C05       Student Referrals     19000.0  57500.0       350.0  772.8  716.5      0.1          0.1     625.8
+C06          Organic Search     14000.0  20000.0       250.0  324.8  296.2      0.1          0.1     260.6
+C07        Community Groups     16000.0  20000.0       200.0  236.2  220.2      0.1          0.1     198.8
+C08  Win-back (2025 people)         0.0  10000.0         0.0  102.6   95.5      0.1          0.1      85.8
 
 -- Stretch by channel
-                  channel  spend_2025    spend  registered     reg    conf  no_show  no_show_new  visitors
-C01    Campus Ambassadors     42000.0  55000.0       520.0   678.1   641.2      0.2          0.1     603.2
-C02           Paid Social     93000.0  40000.0       680.0   434.0   387.4      0.4          0.3     267.2
-C03      Creator Partners     59000.0  10000.0       350.0   130.3   114.0      0.4          0.3      80.1
-C04  College Partnerships     31000.0  82500.0       450.0  1105.2  1051.4      0.1          0.1     985.7
-C05     Student Referrals     19000.0  57500.0       350.0   980.7   919.3      0.1          0.1     822.4
-C06        Organic Search     14000.0  20000.0       250.0   352.9   325.2      0.1          0.1     292.7
-C07      Community Groups     16000.0  20000.0       200.0   249.4   234.0      0.1          0.1     215.1
+                    channel  spend_2025    spend  registered     reg    conf  no_show  no_show_new  visitors
+C01      Campus Ambassadors     42000.0  55000.0       520.0   678.1   641.2      0.2          0.1     603.2
+C02             Paid Social     93000.0  30000.0       680.0   365.2   326.0      0.4          0.3     224.8
+C03        Creator Partners     59000.0  10000.0       350.0   130.3   114.0      0.4          0.3      80.1
+C04    College Partnerships     31000.0  82500.0       450.0  1105.2  1051.4      0.1          0.1     985.7
+C05       Student Referrals     19000.0  57500.0       350.0   980.7   919.3      0.1          0.1     822.4
+C06          Organic Search     14000.0  20000.0       250.0   352.9   325.2      0.1          0.1     292.7
+C07        Community Groups     16000.0  20000.0       200.0   249.4   234.0      0.1          0.1     215.1
+C08  Win-back (2025 people)         0.0  10000.0         0.0   256.4   240.9      0.1          0.1     220.5
 
 == Bridge 2025 -> Base
   2025 actual                         2050
-  1. reallocate budget                2695   (+645)
-  2. form-abandoner recovery          2732   (+37)
-  3. waitlist auto-release            2768   (+36)
-  4. reminders + reconfirmation       2817   (+49)
-  5. gate fix                         2854   (+37)
-  6. walk-ins                         2854   (+0)
+  1. reallocate budget                2665   (+615)
+  1b. win back 2025's people          2749   (+84)
+  2. form-abandoner recovery          2785   (+36)
+  3. waitlist auto-release            2822   (+37)
+  4. reminders + reconfirmation       2869   (+48)
+  5. gate fix                         2906   (+37)
+  6. walk-ins                         2906   (+0)
 
 == Bridge 2025 -> Stretch
   2025 actual                         2050
-  1. reallocate budget                3032   (+982)
-  2. form-abandoner recovery          3113   (+81)
-  3. waitlist auto-release            3186   (+73)
-  4. reminders + reconfirmation       3319   (+133)
-  5. gate fix                         3391   (+72)
-  6. walk-ins                         3441   (+50)
+  1. reallocate budget                2999   (+949)
+  1b. win back 2025's people          3209   (+209)
+  2. form-abandoner recovery          3288   (+79)
+  3. waitlist auto-release            3364   (+76)
+  4. reminders + reconfirmation       3497   (+133)
+  5. gate fix                         3569   (+72)
+  6. walk-ins                         3619   (+50)
 
 == Sensitivity of total visitors (other Base settings fixed; paid-channel beta 0.5)
            reminder 0%  reminder 10%  reminder 25%
 peer beta                                         
-0.4             2354.0        2398.0        2463.0
-0.5             2491.0        2536.0        2604.0
-0.6             2641.0        2688.0        2758.0
-0.7             2806.0        2854.0        2928.0
-0.8             2986.0        3037.0        3114.0
-0.9             3183.0        3237.0        3317.0
-1.0             3400.0        3457.0        3541.0
+0.4             2407.0        2450.0        2513.0
+0.5             2544.0        2588.0        2654.0
+0.6             2694.0        2740.0        2809.0
+0.7             2859.0        2906.0        2978.0
+0.8             3039.0        3089.0        3164.0
+0.9             3237.0        3289.0        3368.0
+1.0             3454.0        3509.0        3591.0
 
 == Stress tests (Base settings unless stated)
-  Base as planned                                                      2854 visitors   show-up 85.1%   INR 105/visitor
-  Peer beta 0.5 instead of 0.7                                         2536 visitors   show-up 84.5%   INR 118/visitor
-  Scaled channels' show-up regresses halfway to the 2025 average       2729 visitors   show-up 81.2%   INR 110/visitor
-  Reserve (INR 25k) never released                                     2670 visitors   show-up 84.8%   INR 103/visitor
-  Peer beta 0.5 AND show-up regresses halfway                          2426 visitors   show-up 80.7%   INR 124/visitor
-  All three together                                                   2322 visitors   show-up 80.5%   INR 118/visitor
+  Base as planned                                                      2906 visitors   show-up 85.6%   INR 103/visitor
+  Peer beta 0.5 instead of 0.7                                         2588 visitors   show-up 85.1%   INR 116/visitor
+  Scaled channels' show-up regresses halfway to the 2025 average       2777 visitors   show-up 81.6%   INR 108/visitor
+  Reserve (INR 25k) never released                                     2722 visitors   show-up 85.4%   INR 101/visitor
+  Peer beta 0.5 AND show-up regresses halfway                          2474 visitors   show-up 81.2%   INR 121/visitor
+  All three together                                                   2370 visitors   show-up 81.0%   INR 116/visitor
 
 == Where the next rupee goes: marginal INR per extra visitor at the plan allocation
       Base               channel
 C01  150.0    Campus Ambassadors
-C02  317.0           Paid Social
+C02  275.0           Paid Social
 C03  243.0      Creator Partners
 C04  150.0  College Partnerships
 C05  131.0     Student Referrals
@@ -85,7 +90,7 @@ C06  110.0        Organic Search
 C07  144.0      Community Groups
      Stretch               channel
 C01    101.0    Campus Ambassadors
-C02    250.0           Paid Social
+C02    222.0           Paid Social
 C03    208.0      Creator Partners
 C04     93.0  College Partnerships
 C05     78.0     Student Referrals
@@ -94,25 +99,36 @@ C07    103.0      Community Groups
 
 == Capacity check (DERIVED from 2025 check-ins)
   visitors on both days: 35.4%; day totals {datetime.date(2025, 4, 12): 1430, datetime.date(2025, 4, 13): 1345}; busiest hour 251 first admissions = 12.2% of unique visitors
-  Base: 2854 unique -> about 1991 on the busier day, peak gate load about 349 admissions/hour (2025 peak: 251)
-  Stretch: 3441 unique -> about 2400 on the busier day, peak gate load about 421 admissions/hour (2025 peak: 251)
+  Base: 2906 unique -> about 2027 on the busier day, peak gate load about 356 admissions/hour (2025 peak: 251)
+  Stretch: 3619 unique -> about 2525 on the busier day, peak gate load about 443 admissions/hour (2025 peak: 251)
+
+== Ranking the bets: score = extra visitors per INR 1,000 of new money x confidence
+   (each bet measured alone on top of 2025, Base settings; confidence High 1.0, Medium-high 0.8,
+    Medium 0.6, Low 0.4)
+  Show-up and gate programme                           alone   +115  new money INR  15,000  conf 1.0  score  7.63
+  College & club partnerships (C04)                    alone   +379  new money INR  51,500  conf 0.8  score  5.89
+  Referral rewards on verified attendance (C05)        alone   +322  new money INR  38,500  conf 0.6  score  5.02
+  Ambassadors paid per verified attendee (C01)         alone    +81  new money INR  13,000  conf 0.8  score  4.99
+  Win back 2025's people (C08)                         alone    +84  new money INR  10,000  conf 0.4  score  3.35
 
 == Contribution by bet (Base; applied in rank order, parts add up to the total)
-  1. College & club partnerships (C04)                                      +379   ->   2429
-  2. Referral rewards on verified attendance (C05)                          +322   ->   2751
-  3. Show-up & gate programme (waitlist release, reminders, gate fix)       +132   ->   2883
-  4. Paid Social to retargeting only (C02) + form-abandoner recovery         -87   ->   2796
-  5. Ambassadors paid per verified attendee (C01)                            +90   ->   2886
-  Other: cut Creators to performance codes (C03)                            -118   ->   2768
-  Other: Organic + listings (C06), Community (C07)                           +86   ->   2854
-  Other: walk-ins                                                             +0   ->   2854
+  1. Show-up and gate programme                                             +115   ->   2165
+  2. College & club partnerships (C04)                                      +386   ->   2551
+  3. Referral rewards on verified attendance (C05)                          +332   ->   2883
+  4. Ambassadors paid per verified attendee (C01)                            +89   ->   2972
+  5. Win back 2025's people (C08)                                            +86   ->   3058
+  Other: Paid Social to retargeting only (C02) + form-abandoner recovery    -120   ->   2938
+  Other: cut Creators to performance codes (C03)                            -118   ->   2820
+  Other: Organic + listings (C06), Community (C07)                           +86   ->   2906
+  Other: walk-ins                                                             +0   ->   2906
 
 == Contribution by bet (Stretch; applied in rank order, parts add up to the total)
-  1. College & club partnerships (C04)                                      +544   ->   2594
-  2. Referral rewards on verified attendance (C05)                          +470   ->   3064
-  3. Show-up & gate programme (waitlist release, reminders, gate fix)       +301   ->   3365
-  4. Paid Social to retargeting only (C02) + form-abandoner recovery         -71   ->   3294
-  5. Ambassadors paid per verified attendee (C01)                           +130   ->   3424
-  Other: cut Creators to performance codes (C03)                            -152   ->   3272
-  Other: Organic + listings (C06), Community (C07)                          +120   ->   3391
-  Other: walk-ins                                                            +50   ->   3441
+  1. Show-up and gate programme                                             +246   ->   2296
+  2. College & club partnerships (C04)                                      +567   ->   2863
+  3. Referral rewards on verified attendance (C05)                          +502   ->   3365
+  4. Ambassadors paid per verified attendee (C01)                           +127   ->   3492
+  5. Win back 2025's people (C08)                                           +220   ->   3712
+  Other: Paid Social to retargeting only (C02) + form-abandoner recovery    -110   ->   3602
+  Other: cut Creators to performance codes (C03)                            -152   ->   3450
+  Other: Organic + listings (C06), Community (C07)                          +120   ->   3569
+  Other: walk-ins                                                            +50   ->   3619

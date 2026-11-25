@@ -2,11 +2,11 @@
 
 RISA Labs · Growth APM assignment · **Challenge A: attendee growth** · festival city: **Pune**
 
-- **Live product:** _link added at deployment_
+- **Live product:** https://campusfest-growth-center-theta.vercel.app (no login; open the copilot from the button at the bottom right)
 - **Three-slide strategy (PDF):** [`slides/CampusFest_Growth_Strategy_Misbah_Ur_Rahman.pdf`](slides/CampusFest_Growth_Strategy_Misbah_Ur_Rahman.pdf)
 - **Author:** Md Misbah Ur Rahman
 
-> **Status:** product, data layer, tests, copilot evaluation and strategy complete; the live link is added once deployment finishes.
+> **Status:** complete. The live site reads a Neon copy of the original workbook, verified against the pandas reference (2,050 values, 0 mismatches).
 
 ---
 
@@ -176,26 +176,30 @@ Two limits of this testing, stated plainly:
 The three slides are in [`slides/`](slides/) (PDF plus the HTML they are rendered from). In short:
 
 ### Target (slide 1)
-**Aim for 3,441 verified visitors (1.7× the 2025 edition); commit to 2,854**, on the same ₹3.0 lakh budget. The festival is CampusFest 2027 in Pune on Sat–Sun 6–7 March.
+**Aim for 3,619 verified visitors (+77% on the 2025 edition); commit to 2,906**, on the same ₹3.0 lakh budget (rounded on the slide to 3,620 and 2,900). The festival is CampusFest 2027 in Pune on Sat–Sun 6–7 March.
 
 **The biggest assumption:** the supplied 2025 data does not name a city. The plan treats its channel costs, conversion and show-up as a fair starting point for Pune in March 2027. The week-3 lines on slide 3 exist to test that early.
 
 The model is `analysis/target_model.py`; its full output is in `analysis/output/target_model.txt`.
 - **Start:** each channel's 2025 funnel, all derived from the data: registrations per rupee, confirmation rate, waitlist share, form abandonment, and no-show split into "did not come" and "lost at the gate".
 - **Re-budget:** registrations scale as `(new spend ÷ 2025 spend)^β`, with β below 1 for diminishing returns.
+- **Win back 2025's people:** a new channel with no 2025 history. Its audience is derived: 2,564 people who came or confirmed in 2025, minus the 61 who opted out. Registrations = audience × share still reachable × incremental registration rate (net of people who would have come through another channel anyway). Confirmation and show-up are the 2025 peer-and-group average.
 - **Fix the leaks:** recover form abandoners, auto-release the waitlist, add reminders and reconfirmation, fix the gate.
-- **Built-in check:** with 2025 spend and every lever off, the model reproduces 2,050 exactly.
+- **Reach end of the funnel:** the people to identify and the impressions behind them, at each channel's 2025 ratios.
+- **Built-in check:** with 2025 spend and every lever off, the model reproduces 2,050 visitors and 3,625 identified people exactly.
 
 | | 2025 | Base | Stretch |
 |---|---|---|---|
-| Registered people | 2,800 | 3,479 | 3,931 |
-| Confirmed | 2,500 | 3,207 | 3,673 |
-| Confirmed who came (show-up) | 1,925 (77.0%) | 2,729 (85.1%) | 3,266 (88.9%) |
+| Impressions (anonymous events) | 10.29 lakh | 10.57 lakh | 11.45 lakh |
+| Identified people | 3,625 | 5,169 | 5,900 |
+| Registered people | 2,800 | 3,520 | 4,118 |
+| Confirmed | 2,500 | 3,248 | 3,852 |
+| Confirmed who came (show-up) | 1,925 (77.0%) | 2,781 (85.6%) | 3,444 (89.4%) |
 | + Walk-ins (no registration) | 125 | 125 | 175 |
-| **Verified visitors** | **2,050** | **2,854** | **3,441** |
-| ₹ per verified visitor | 134 | 105 | 87 |
+| **Verified visitors** | **2,050** | **2,906** | **3,619** |
+| ₹ per verified visitor | 134 | 103 | 83 |
 
-₹ per verified visitor counts all visitors, walk-ins included. Per campaign-sourced visitor, 2025 cost ₹142: that is the "blended" cost the Decide page compares campaigns with.
+About the same reach buys 43% more identified people, because the money moves from ads to people we can name. ₹ per verified visitor counts all visitors, walk-ins included; per campaign-sourced visitor, 2025 cost ₹142, the "blended" cost the Decide page compares campaigns with.
 
 | Input | Base | Stretch | Tag and evidence |
 |---|---|---|---|
@@ -203,50 +207,57 @@ The model is `analysis/target_model.py`; its full output is in `analysis/output/
 | Cut in "did not come" from reminders and reconfirmation | 10% | 25% | Assumed. Plain date-and-time reminders raised attendance by about 7 points from 58% in a randomised trial (OPRE Report 2022-49), roughly a 17% cut in no-shows |
 | Gate losses recovered | 50% | 90% | Assumed. 60 named people from one channel, one scanner flow (derived) |
 | Waitlist released / form abandoners recovered | 50% / 20% | 90% / 40% | Assumed. 88 waitlisted, 275 abandoned forms (derived) |
+| 2025 people still reachable / won back by the message | 40% / 10% | 50% / 20% | Assumed, with no evidence: two years on, many have graduated or left. Hence Low confidence and a 20% holdout read after 7 days |
 
 **How the gain builds up:**
 
 | Step | Base | Stretch |
 |---|---|---|
 | 2025 actual | 2,050 | 2,050 |
-| Move budget to peer and group channels | +645 | +982 |
-| Recover form abandoners | +37 | +81 |
-| Auto-release the waitlist | +36 | +73 |
-| Reminders and reconfirmation | +49 | +133 |
+| Move money to peer and group channels | +615 | +949 |
+| Win back 2025's people | +84 | +209 |
+| Recover form abandoners | +36 | +79 |
+| Auto-release the waitlist | +37 | +76 |
+| Reminders and reconfirmation | +48 | +133 |
 | Gate fix | +37 | +72 |
 | Walk-ins | 0 | +50 |
-| **Total** | **2,854** | **3,441** |
+| **Total** | **2,906** | **3,619** |
 
 **Stress tests on the base** (in `target_model.txt`):
 
 | Test | Visitors |
 |---|---|
-| Base as planned | 2,854 |
-| Peer-channel β 0.5 instead of 0.7 | 2,536 |
-| In channels whose spend grows, show-up regresses halfway to the 2025 average (newly reached people are less committed) | 2,729 |
-| The ₹25k reserve is never released | 2,670 |
-| All three together | **2,322** |
+| Base as planned | 2,906 |
+| Peer-channel β 0.5 instead of 0.7 | 2,588 |
+| In channels whose spend grows, show-up regresses halfway to the 2025 average (newly reached people are less committed) | 2,777 |
+| The ₹25k reserve is never released | 2,722 |
+| All three together | **2,370** |
 
-Even the combined case beats 2025's 2,050 and its 2,200 goal. The full peer-β range 0.4 to 1.0 gives about 2,400 to 3,460. β is the assumption the plan tests first (week-3 lines on bets 1 and 2).
+Even the combined case beats 2025's 2,050 and its 2,200 goal. The full peer-β range 0.4 to 1.0 gives about 2,450 to 3,510. β is the assumption the plan tests first (week-3 lines on bets 2 and 3). The commitment is the base case; the stress tests show how far it can fall.
 
-**The reserve.** Partnerships (₹82.5k) and referrals (₹57.5k) each hold back ₹12.5k until week 4. Each gets its share only if its scale line holds; a share not earned goes to the next bet past its line (1 → 2 → 4). The base case assumes the reserve is released.
+**The reserve.** Partnerships (₹82.5k) and referrals (₹57.5k) each hold back ₹12.5k until week 4. Each gets its share only if its scale line holds; a share not earned goes to the next bet past its scale line. The base case assumes the reserve is released.
 
 **Checks:**
-- **Market:** 3,441 is 0.4% of Pune district's urban 18–24 population of 8.7 lakh (Census 2011).
-- **Comparables:** 3,441 visitors is about 4,700 entries over two days, since 35% came on both days in 2025. Pune college fests claim 6,000–40,000 "footfall", but those figures are self-reported and cumulative.
-- **Capacity:** the gate binds, not the ground. The busiest hour needs about 420 admissions an hour against 251 in 2025, so gate throughput must rise about 1.7×. The busier day brings about 2,400 people; for comparison, police cleared an event of an estimated 8,000–10,000 at the SSPMS College ground in Shivajinagar in August 2026. No venue is booked yet; police permission is applied for first (NH7 Weekender 2024 was cancelled when it was refused).
+- **Market:** 3,619 is 0.4% of Pune district's urban 18–24 population of 8.7 lakh (Census 2011).
+- **Comparables:** 3,619 visitors is about 4,900 entries over two days, since 35% came on both days in 2025. Pune college fests claim 6,000–40,000 "footfall", but those figures are self-reported and cumulative.
+- **Capacity:** the gate binds, not the ground. The busiest hour needs about 440 admissions an hour against 251 in 2025, so gate throughput must rise about 1.8×. The busier day brings about 2,500 people; for comparison, police cleared an event of an estimated 8,000–10,000 at the SSPMS College ground in Shivajinagar in August 2026. No venue is booked yet; police permission is applied for first (NH7 Weekender 2024 was cancelled when it was refused).
 
 ### Bets (slide 2)
-Ranking = expected extra verified visitors × confidence in the evidence ÷ cost (rupees and team time), with ties broken by time to first signal. Contributions are applied in rank order, so they add up to the total (base / stretch):
+**Ranking:** score = extra verified visitors per ₹1,000 of new money × confidence in the evidence (High 1.0, Medium-high 0.8, Medium 0.6, Low 0.4). Each bet is scored on its own, on top of 2025, so the ranking does not depend on the order bets are applied in. A near-tie (referrals 5.02, ambassadors 4.99) goes to the faster test. Team time is a constraint rather than a score term: the same four owners run everything. Contributions are then applied in rank order, so they add up to the total (base / stretch):
 
-| # | Bet | Visitors | Budget (2025 → plan) | Owner |
-|---|---|---|---|---|
-| 1 | College and club partnerships with group registration | +379 / +544 | ₹31k → ₹82.5k | Meera Iyer |
-| 2 | Referral rewards paid only when the friend attends | +322 / +470 | ₹19k → ₹57.5k | Dev Malhotra |
-| 3 | Show-up and gate programme: reminders, 72-hour reconfirmation, waitlist release, a pre-event check of ambassador registrations, more lanes | +132 / +301 | ₹15k (new) | Nisha Rao |
-| 4 | Paid Social for retargeting only | −87 / −71 (frees ₹53k) | ₹93k → ₹40k | Arjun Verma |
-| 5 | Campus ambassadors paid per verified attendee, only for registrations that pass bet 3's check | +90 / +130 | ₹42k → ₹55k | Meera Iyer |
-| | Other: Creators to tracked performance codes; Organic, listings and Community (organic search is capped by demand, so extra rupees buy little even though the model's β would say otherwise) | −118 / −152; +86 / +120 | ₹59k → ₹10k; ₹30k → ₹40k | |
+| # | Bet | Visitors (alone) | New money | Confidence | Score | Visitors in rank order | Budget (2025 → plan) | Owner |
+|---|---|---|---|---|---|---|---|---|
+| 1 | Show-up and gate programme: reminders, 72-hour reconfirmation, waitlist release, a pre-event check of ambassador registrations, more lanes | +115 | ₹15,000 | High | 7.6 | +115 / +246 | ₹15k (new) | Nisha Rao |
+| 2 | College and club partnerships with group registration | +379 | ₹51,500 | Medium-high | 5.9 | +386 / +567 | ₹31k → ₹82.5k | Meera Iyer |
+| 3 | Referral rewards paid only when the friend attends | +322 | ₹38,500 | Medium | 5.0 | +332 / +502 | ₹19k → ₹57.5k | Dev Malhotra |
+| 4 | Campus ambassadors paid per verified attendee, only for registrations that pass bet 1's check | +81 | ₹13,000 | Medium-high | 5.0 | +89 / +127 | ₹42k → ₹55k | Meera Iyer |
+| 5 | Win back 2025's people: a personal invite (early access, a fast lane at the gate) to the 2,564 who came or confirmed, with a 20% holdout | +84 | ₹10,000 | Low | 3.4 | +86 / +220 | ₹10k (new) | Arjun Verma |
+| | Paid for by: Paid Social to retargeting only (form abandoners, page visitors), which also carries form-abandoner recovery | | | | | −120 / −110 | ₹93k → ₹30k | Arjun Verma |
+| | Paid for by: Creators to tracked performance codes | | | | | −118 / −152 | ₹59k → ₹10k | |
+| | Organic, listings and Community grow modestly (organic search is capped by demand, so extra rupees buy little even though the model's β would say otherwise) | | | | | +86 / +120 | ₹30k → ₹40k | |
+| | Walk-ins | | | | | 0 / +50 | | |
+
+The win-back budget pays for WhatsApp marketing messages (₹0.86 each plus GST under Meta's India rates) to about 2,000 people (the 80% not held out), three messages each, plus email.
 
 **Rejected or deprioritised:**
 - **Creator Partners as run:** ₹337 per verified visitor and 60% show-up.
@@ -278,7 +289,7 @@ Every figure used in the strategy was checked against its primary document. Copi
 | Pune is an X-class (tier 1) city | DoE OM 2/5/2017-E.II(B), [HRA annexure](https://finance.py.gov.in/sites/default/files/hra23aug18.pdf) | Annexure scan |
 | Institution sizes (e.g. MIT-WPU 22,540) | Each institution's NIRF data submission (e.g. [MIT-WPU 2026](https://mitwpu.edu.in/uploads/images/Overall-2026-NIRF-Report.pdf)) | Institution-reported; used only as an order of magnitude |
 | Pune Metro: Lines 1–2 plus Line 3 (Hinjewadi–Shivajinagar, opened 4 Nov 2026), meeting at District Court, Shivajinagar; 30% student pass | [Maha Metro](https://www.punemetrorail.org/); [Railway Journal](https://www.railjournal.com/regions/asia/pune-metro-line-3-opens-for-passenger-services/) | Pages read |
-| WhatsApp utility messages cost ₹0.115 each (plus GST) in India | [Free Press Journal, citing Meta's rate card](https://www.freepressjournal.in/tech/how-much-does-india-have-to-pay-for-whatsapp-messages-from-october-1) | Secondary |
+| WhatsApp business messages in India: utility ₹0.115, marketing ₹0.8631 each (plus GST) | [Free Press Journal, citing Meta's rate card](https://www.freepressjournal.in/tech/how-much-does-india-have-to-pay-for-whatsapp-messages-from-october-1) | Secondary |
 | NH7 Weekender 2024 (Pune) was cancelled after police refused permission | [Free Press Journal](https://www.freepressjournal.in/pune/nh7-weekender-music-fest-cancelled-in-pune-after-police-deny-permission) | Several reports agree (Dec 2024) |
 | SSPMS College ground, Shivajinagar: police cleared an event of an estimated 8,000–10,000 people, with 30 conditions (Aug 2026) | [ThePrint](https://theprint.in/india/police-grant-nod-for-rahul-gandhis-chhatron-ki-gunj-event-in-pune-with-30-conditions/3019870/) | Press report; an order of magnitude, not a booked venue |
 | Pune fest "footfall" (MindSpark 32,000+, Ignisense 17,000+ over three days, etc.) | Organisers' claims, e.g. [Punekar News](https://www.punekarnews.in/?p=246897), [Ignisense deck](https://siib.ac.in/wp-content/uploads/2025/01/Official-Sponsorship-Proposal-Ignisense-2025.pdf) | Self-reported; used only as a ceiling |
@@ -339,6 +350,7 @@ Schema or function changes on a live database: `db/load_workbook.py migrate` re-
 - **Projections before the event** rest on an assumed visitors-per-registration ratio, because the dataset has no earlier year to learn show-up from. The default is the plan's own ratio, and it can be edited.
 - **The 2027 rules are described, not built.** The replay has no earlier year, so its pre-event decisions use plain cost per registration and its projection uses the plan's ratio. The 2027 versions (cost per expected visitor, a per-channel show-up forecast) need last year's show-up per channel.
 - **Bets are tracked as text.** Each bet's KPIs and scale / change / stop lines are stored on the bets board, but the product does not compute bet KPIs such as clubs signed or invites per registrant: the 2025 data has no such fields.
+- **Win-back is a 2027 channel only.** It has no 2025 data, so it appears in the target model and on the bets board but not as a campaign in the replay.
 - **The 2027 plan is not loaded as a plan version.** The product replays 2025, and a 2027 version would never be in force on a 2025 date. Venue capacity per day is an optional plan field and is empty, since no venue is booked.
 - **Campaign status changes are not dated in replay time.** Pausing a campaign is logged with the real time, and the replay shows the current status on every as-of date.
 - **The budget what-if and the target model extrapolate.** Assuming registrations scale with spend to the power beta is a modelling choice; 2025 shows each channel at only one budget level. The stress tests are reported, not hidden.
