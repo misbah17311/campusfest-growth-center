@@ -1,0 +1,2736 @@
+[
+  {
+    "id": "F01",
+    "category": "factual",
+    "question": "How many people actually turned up to CampusFest?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "States the number of distinct external people (person_type = external) with at least one check-in where result = admitted AND verification = verified, occurred_at at or before the end of the selected day IST, after counting each repeated event_id once; each person counted once across days and across scanner/manual records. Says what was excluded (internal/staff/test people; denied, pending and unverified-only records). Ideally compares it with the unique_external_visitors_goal in force on 20 Apr 2025 (2,200, 'Attendee revised plan').",
+    "answer_type": "number",
+    "must_not": [
+      "counting check-in rows / admission events instead of distinct people",
+      "including internal, staff or test people",
+      "including denied, pending or unverified-only check-ins",
+      "counting a person who came on both days twice",
+      "counting a person twice because scanner and manual records overlap",
+      "counting import-retry duplicate event_ids",
+      "reporting registrations or confirmed registrations as attendance"
+    ],
+    "turns": [
+      {
+        "question": "How many people actually turned up to CampusFest?",
+        "answer": "**2,050 people turned up** — verified external visitors counted once each, as of 20 April 2025 (festival ended 13 April).\n\nEvidence (as of 2025-04-20):\n- 1,925 were registered people who attended (confirmed registrants showed up at a 77.0% rate)\n- 125 were walk-ins with no prior registration\n- That's 2,050 against the revised visitor goal of 2,200 (93.2% of goal)\n- Internal, staff and test people are excluded by definition\n\nAssumptions / limits: \"turned up\" here means admitted **and** verified at check-in — someone who entered but wasn't verified wouldn't count.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6804,
+          "completion": 319
+        },
+        "ms": 2905
+      }
+    ]
+  },
+  {
+    "id": "F02",
+    "category": "factual",
+    "question": "total marketing spend till date? are we within budget",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Sums marketing_spend_inr for all 7 campaigns with activity_date on or before 2025-04-20, each activity_id counted once, negative (vendor credit) rows netted in. Compares with the marketing_budget_inr in force on the selected date (INR 3,00,000, 'Attendee revised plan', effective 15 Mar 2025 09:00 IST) and states the amount remaining or overspent.",
+    "answer_type": "number",
+    "must_not": [
+      "double counting import-copy rows that share an activity_id",
+      "dropping negative rows or adding credits as positive spend",
+      "comparing with the superseded INR 2,40,000 launch budget",
+      "adding the two budget versions together",
+      "quoting the budget as if it were spend"
+    ],
+    "turns": [
+      {
+        "question": "total marketing spend till date? are we within budget",
+        "answer": "**Total marketing spend is ₹2,74,000 as of 20 April 2025 — yes, you're within budget, with ₹26,000 (8.7%) left under the ₹3,00,000 cap.**\n\nEvidence (as of 2025-04-20, end of day):\n- Net spend: ₹2,74,000 vs budget ₹3,00,000 → **91.3% of budget used**\n- Budget in force: \"Attendee revised plan\" (effective 15 Mar 2025, ₹3,00,000; the original launch plan was ₹2,40,000)\n- Working data has not been edited from the original workbook\n\nContext on outcomes vs that spend: 2,800 registrations (goal 3,200), 2,050 verified visitors (goal 2,200), 77.0% show-up of confirmed registrants — so the budget was respected, though the visitor goal was missed by 150.\n\nIf you want, I can break the ₹2,74,000 down by campaign and show cost per registration/visitor per channel.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Reading the plan versions"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6983,
+          "completion": 422
+        },
+        "ms": 6969
+      }
+    ]
+  },
+  {
+    "id": "F03",
+    "category": "factual",
+    "question": "whats the reg target",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Answers 3,200 (registration_goal of the 'Attendee revised plan', effective 15 Mar 2025 09:00 IST), and makes clear it is a target of distinct external people with a registration, not registration records. May mention the launch plan target was 2,800.",
+    "answer_type": "number",
+    "must_not": [
+      "giving 2,800 as the current target",
+      "summing 2,800 and 3,200",
+      "confusing it with the identified-people goal (3,600) or the visitor goal (2,200)"
+    ],
+    "turns": [
+      {
+        "question": "whats the reg target",
+        "answer": "The registration target is **3,200** (the \"Attendee revised plan\" in force since 15 Mar 2025; the original 15 Jan plan had it at 2,800).\n\n**Evidence (as of 2025-04-20):**\n- Registration goal: 3,200 · Actual registered: 2,800 — a shortfall of 400 (87.5% of goal)\n- For context: identified goal 3,600 (actual 3,625, met); visitor goal 2,200 (actual 2,050, short by 150)\n\n**Assumptions / limits:** \"Registered\" is people, not form starts (5,548 form-start events overall).",
+        "error": null,
+        "tools": [
+          "Reading the plan versions",
+          "Reading the headline funnel (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 10539,
+          "completion": 398
+        },
+        "ms": 6429
+      }
+    ]
+  },
+  {
+    "id": "F04",
+    "category": "factual",
+    "question": "How many registrations do we have in total?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Clarifies the unit. Primary answer: distinct external people with at least one registration registered on or before the selected date (the unit used by registration_goal), excluding internal/staff/test people. Ideally also gives the number of registration records and says whether cancelled registrations are included (or gives a latest-status breakdown). Compares with the 3,200 goal.",
+    "answer_type": "number",
+    "must_not": [
+      "counting Registration History rows or status versions as registrations",
+      "counting a person with more than one registration_id as several people without saying so",
+      "including internal/staff/test people in the goal comparison",
+      "counting identified registration_start interactions or anonymous daily registration_starts as registrations"
+    ],
+    "turns": [
+      {
+        "question": "How many registrations do we have in total?",
+        "answer": "As of 20 April 2025 (end of day), we have **2,800 registered people** in total.\n\nEvidence (as of 2025-04-20):\n- Registered people: 2,800 against the revised registration goal of 3,200 (87.5% of goal)\n- Of these: 2,500 confirmed, 183 cancelled, 88 waitlisted, 29 still interested\n- 1,925 of the registrants became verified visitors, plus 125 walk-ins (2,050 visitors total)\n\nNote: this counts registered *people* (deduplicated), not form-start events (5,548) or landing sessions (24,645).",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6788,
+          "completion": 248
+        },
+        "ms": 3318
+      }
+    ]
+  },
+  {
+    "id": "F05",
+    "category": "factual",
+    "question": "how much have we burnt on paid social so far",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Net marketing_spend_inr for Paid Social (C02) for activity dates up to 2025-04-20, each activity_id once, credits netted, in INR. May add its share of total spend or of the INR 3,00,000 budget.",
+    "answer_type": "number",
+    "must_not": [
+      "including Organic Search (also owned by Arjun Verma) or any other campaign",
+      "double counting duplicate activity_id rows",
+      "ignoring negative credit rows",
+      "quoting a budget or planned figure instead of spend"
+    ],
+    "turns": [
+      {
+        "question": "how much have we burnt on paid social so far",
+        "answer": "Paid Social (C02) has spent **₹93,000** as of 20 April 2025 (end of day).\n\nEvidence (as of 2025-04-20):\n- Spend: ₹93,000 across 3,25,693 impressions and 6,867 clicks (CTR 2.1%)\n- That spend produced 680 registrations (₹136.76 per registration) and 340 verified visitors (₹273.53 per visitor)\n- Campaign is still marked active, owned by Arjun Verma (T04)\n\nNote: no planned budget is set for C02 in the data, so I can't say how much of a budget this burn represents — only the absolute spend. If you want, I can compare it against the other campaigns' spend or run a what-if on shifting budget.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6863,
+          "completion": 273
+        },
+        "ms": 3934
+      }
+    ]
+  },
+  {
+    "id": "F06",
+    "category": "factual",
+    "question": "who's running creator partners, when was it supposed to run, and how big is its target audience?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Owner: Nisha Rao. Planned start 10 Feb 2025 09:00 IST, planned end 13 Apr 2025 20:00 IST, labelled as planned dates rather than actual activity (may add first/last actual activity dates from Daily Marketing). On audience size: says target_audience is only a text description ('Students engaging with creator-led event content'), not a count, so the data cannot give an audience size.",
+    "answer_type": "list",
+    "must_not": [
+      "inventing a numeric audience size",
+      "presenting summed reach or impressions as the target audience size",
+      "presenting the planned dates as actual run dates",
+      "naming the wrong owner"
+    ],
+    "turns": [
+      {
+        "question": "who's running creator partners, when was it supposed to run, and how big is its target audience?",
+        "answer": "**Creator Partners (C03) is owned by Nisha Rao (T05), and it was planned to run 10 Feb 2025 (09:00 IST) through 13 Apr 2025 (20:00 IST)** — i.e., through the end of the festival's second day. It's still marked active.\n\n**Evidence (as of 2025-04-20):**\n- Owner: Nisha Rao (T05), status active — from campaign metrics and the campaigns table (custom query).\n- Planned flight: 2025-02-10 09:00 to 2025-04-13 20:00 IST.\n- Target audience: the data stores only a description — \"Students engaging with creator-led event content\" — **not a numeric size**, so I can't tell you how many people it targets.\n\n**Closest available proxies for audience size:** 2,09,666 impressions and 5,274 clicks to date — but these are anonymous platform event counts, not unique people, so they can't be read as audience size. The people-based figure is 490 identified externals attributed to C03.\n\nIf you want, I can pull C03's weekly activity to see how its reach and spend were paced across the flight window.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics",
+          "Checking what the data contains",
+          "Running a read-only query: Get Creator Partners' planned flight dates and target audience size from the campaigns table"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13482,
+          "completion": 868
+        },
+        "ms": 9705
+      }
+    ]
+  },
+  {
+    "id": "F07",
+    "category": "factual",
+    "question": "How many people got denied entry at the gate?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Counts distinct people with at least one check-in result = denied (event_ids de-duplicated), says whether this is external-only or all person types, and distinguishes denied attempts (records) from people. Notes that some denied people may have been admitted on another attempt and gives that split if it can. Does not invent reasons.",
+    "answer_type": "number",
+    "must_not": [
+      "reporting denied rows as people without saying so",
+      "counting import-copy duplicates",
+      "treating pending as denied",
+      "claiming every denied person never got in without checking their other admission attempts",
+      "giving reasons for the denials"
+    ],
+    "turns": [
+      {
+        "question": "How many people got denied entry at the gate?",
+        "answer": "**50 external people were denied entry at the gate** (had a check-in with result = \"denied\"), as of 20 Apr 2025. Of those, 20 later got in on another day/attempt, so **30 people were denied and never made it in**.\n\n**Evidence (as of 2025-04-20, custom query on check-ins + funnel leaks):**\n- Denied check-ins: 50 external people; 20 of them later became verified visitors.\n- Pending check-ins: 30 external people, none of whom ever got in.\n- Combined, **60 confirmed registrants reached the gate and were never admitted** (denied or pending/unverified only) — all 60 attributed to **C01 Campus Ambassadors**; every other campaign had 0 gate losses.\n\n**Limits:** The data records only the check-in result, not the reason, so I can't say *why* they were denied (e.g., capacity vs. ID issues). Also, the 20 who were denied but later admitted suggest day-1 denials partly recovered on day 2 — a hypothesis, not something the data confirms.\n\nUseful next step: the gate losses are concentrated entirely in C01, worth a look if you're planning this year's gate process.",
+        "error": null,
+        "tools": [
+          "Finding where people drop out (as of 2025-04-20)",
+          "Checking what the data contains",
+          "Running a read-only query: Split gate check-in outcomes for external people: how many were denied vs pending, and whether any denied person was later admitted"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 19285,
+          "completion": 1869
+        },
+        "ms": 21752
+      }
+    ]
+  },
+  {
+    "id": "F08",
+    "category": "factual",
+    "question": "total reach for organic search?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "May give the sum of daily reported_reach for Organic Search (C06) up to the selected date (activity_id de-duplicated), but must label it as a sum of daily platform-reported reach that double counts people reached on several days, and state that unique people reached cannot be derived because cross-day overlap is not supplied.",
+    "answer_type": "number",
+    "must_not": [
+      "presenting summed daily reach as unique people reached",
+      "using impressions as reach",
+      "mixing in other campaigns' reach"
+    ],
+    "turns": [
+      {
+        "question": "total reach for organic search?",
+        "answer": "Organic Search (C06) reached **68,402 impressions** as of 20 April 2025 (end of day).\n\n**Evidence (as of 2025-04-20):**\n- Impressions: 68,402 (anonymous event counts, not unique people)\n- Clicks: 2,404 → CTR 3.5%\n- Spend: ₹14,000; 250 registrations, 195 verified visitors\n\n**Assumptions / limits:** \"Reach\" here means impressions — the data has no unique-reach metric, so this counts events, not distinct individuals.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6840,
+          "completion": 235
+        },
+        "ms": 3567
+      }
+    ]
+  },
+  {
+    "id": "F09",
+    "category": "factual",
+    "question": "how many walk-ins did we get",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "States its walk-in definition (external people with a verified admission and no registration, and/or first_touch_source = walk_in) and counts distinct admitted+verified external people meeting it. If the two definitions give different numbers, reports both or explains the difference. Notes that an empty campaign_id on check-ins means unattributed, not zero acquisition cost.",
+    "answer_type": "number",
+    "must_not": [
+      "counting check-in rows with empty registration_id instead of people",
+      "including staff/internal/test people",
+      "including denied or unverified-only check-ins",
+      "calling a registered person a walk-in just because one manual check-in row lacks a registration_id"
+    ],
+    "turns": [
+      {
+        "question": "how many walk-ins did we get",
+        "answer": "We got **125 walk-ins** as of 20 April 2025 (end of day).\n\nEvidence:\n- Visitors (external, verified, counted once): 2,050 total\n- Of those, 1,925 were confirmed registrants who attended and **125 were walk-ins** — i.e. people who showed up at the gate without registering\n- Walk-ins were 6.1% of all verified visitors (125 / 2,050)\n\nThat's against the revised plan's visitor goal of 2,200, so we finished 150 short overall.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6784,
+          "completion": 207
+        },
+        "ms": 4004
+      }
+    ]
+  },
+  {
+    "id": "F10",
+    "category": "factual",
+    "question": "did we get any refunds/credits from vendors? how much total",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Finds Daily Marketing rows with negative marketing_spend_inr (vendor credits), de-duplicated by activity_id, and reports their total (as a credit amount) with the campaigns/dates involved. Explains that the spend figures it reports elsewhere are already net of these credits.",
+    "answer_type": "number",
+    "must_not": [
+      "saying there are no credits without checking for negative rows",
+      "double counting duplicate credit rows",
+      "treating credits as extra spend",
+      "reporting net spend as the credit total"
+    ],
+    "turns": [
+      {
+        "question": "did we get any refunds/credits from vendors? how much total",
+        "answer": "Yes — **₹6,500 in vendor credits** were posted between 10 and 18 April 2025 (as of 2025-04-20). These are already netted into the ₹2,74,000 net spend figure, since spend is defined as debits minus credits.\n\n**Evidence** (custom query on `daily_marketing`; negative rows are vendor credits, per the data model):\n\n| Campaign | Credit | Posted |\n|---|---|---|\n| C02 Paid Social | ₹3,000 | 10 Apr |\n| C03 Creator Partners | ₹2,000 | 16 Apr |\n| C01 Campus Ambassadors | ₹1,000 | 10 Apr |\n| C05 Student Referrals | ₹500 | 18 Apr |\n| **Total** | **₹6,500** | 4 postings |\n\n**Limits:** the ledger records only the credit amount and posting date — there's no vendor name or reason field, so I can't say what each credit was for.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Running a read-only query: Total and per-campaign vendor credits (negative spend rows) posted through 2025-04-20",
+          "Calculating: 1000+3000+2000+500"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 19807,
+          "completion": 1248
+        },
+        "ms": 15036
+      }
+    ]
+  },
+  {
+    "id": "F11",
+    "category": "factual",
+    "question": "how many people came on both days?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Distinct external people with an admitted+verified check-in on 12 Apr 2025 AND another on 13 Apr 2025 (IST dates). Ideally also gives day-1-only and day-2-only counts that add up to the unique visitor total.",
+    "answer_type": "number",
+    "must_not": [
+      "counting people with two check-in rows on the same day as two-day visitors",
+      "including unverified, denied or pending records",
+      "including staff/internal/test people",
+      "using UTC instead of IST dates"
+    ],
+    "turns": [
+      {
+        "question": "how many people came on both days?",
+        "answer": "**725 people came on both days** — 35.4% of the 2,050 verified external visitors (as of 2025-04-20, custom query on `visitors_asof`).\n\nEvidence:\n- Total verified external visitors: 2,050\n- Attended both days: 725\n- Attended only one day: 1,325\n- Day 1 attendance: 1,430 · Day 2 attendance: 1,345\n\nAssumptions / limits: \"Came\" means an admitted **and** verified check-in; internal, staff and test people are excluded, and each person is counted once per day.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Running a read-only query: Count verified external visitors who attended both festival days vs one day, as of 2025-04-20",
+          "Calculating: 725 / 2050 * 100"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 18893,
+          "completion": 841
+        },
+        "ms": 10820
+      }
+    ]
+  },
+  {
+    "id": "F12",
+    "category": "factual",
+    "question": "Pls give status-wise breakup of registrations as on date - confirmed, waitlisted, cancelled etc.",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "For each registration_id registered on or before 2025-04-20, takes the latest Registration History version (effective_at at or before end of day IST, duplicate history_ids once) and reports counts per status (interested, confirmed, waitlisted, cancelled). States whether the counts are registrations or distinct people and whether non-external people are excluded. The counts add up to the total.",
+    "answer_type": "list",
+    "must_not": [
+      "counting every history row instead of the latest version per registration",
+      "counting a reconfirmed registration as both cancelled and confirmed",
+      "counting duplicate history_id rows",
+      "omitting the 'interested' status"
+    ],
+    "turns": [
+      {
+        "question": "Pls give status-wise breakup of registrations as on date - confirmed, waitlisted, cancelled etc.",
+        "answer": "**Status-wise breakup of registrations as of 20 April 2025** (post-festival, latest statuses):\n\n| Status | Count | Share of registered |\n|---|---|---|\n| Confirmed | 2,500 | 89.3% |\n| Cancelled | 183 | 6.5% |\n| Waitlisted | 88 | 3.1% |\n| Still interested | 29 | 1.0% |\n| **Total registered** | **2,800** | 100% |\n\n**Evidence (as of 2025-04-20):**\n- Registered external people: 2,800 (goal 3,200 under the \"Attendee revised\" plan)\n- Confirmed: 2,500 — of whom 1,925 attended (77.0% show-up rate)\n- Cancelled: 183; Waitlisted: 88; Interested: 29; no unknown-status records\n- Verified external visitors: 2,050 (1,925 from registrations + 125 walk-ins)\n\n**Note:** These are latest statuses as of the date — e.g., people who cancelled after the festival would show as cancelled, not confirmed.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Calculating: 2500/2800*100",
+          "Calculating: 183/2800*100",
+          "Calculating: 88/2800*100",
+          "Calculating: 29/2800*100"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 10978,
+          "completion": 781
+        },
+        "ms": 9692
+      }
+    ]
+  },
+  {
+    "id": "C01",
+    "category": "calculation",
+    "question": "What's our cost per verified visitor overall?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Total net marketing spend to 2025-04-20 (activity_id de-duplicated, credits netted) divided by the number of distinct external people (person_type = external) with at least one check-in where result = admitted AND verification = verified, occurred_at at or before the end of the selected day IST, after counting each repeated event_id once; each person counted once across days and across scanner/manual records. Shows both inputs and the INR result. Notes it is a blended cost (walk-ins and organic visitors are in the denominator), not a causal cost per incremental visitor.",
+    "answer_type": "number",
+    "must_not": [
+      "dividing by check-in rows or admission events",
+      "using the INR 3,00,000 budget instead of actual spend",
+      "using gross spend without credits",
+      "including staff/test/internal visitors",
+      "calling it an incremental cost"
+    ],
+    "turns": [
+      {
+        "question": "What's our cost per verified visitor overall?",
+        "answer": "Our overall cost per verified visitor is **₹133.66** (net spend ₹2,74,000 ÷ 2,050 verified external visitors), as of 20 April 2025, after the festival.\n\n**Evidence (as of 2025-04-20):**\n- Net spend: ₹2,74,000 against a ₹3,00,000 budget\n- Verified external visitors: 2,050 (1,925 from registrants + 125 walk-ins) vs a 2,200 goal\n- ₹2,74,000 ÷ 2,050 = ₹133.66 per verified visitor\n\nNote this is blended across all seven campaigns; per-campaign cost per verified visitor varies and I can pull that from campaign metrics if you want to compare channels.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Calculating: 274000 / 2050"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 10500,
+          "completion": 409
+        },
+        "ms": 4727
+      }
+    ]
+  },
+  {
+    "id": "C02",
+    "category": "calculation",
+    "question": "registration to show-up rate for each campaign pls",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "For each of the 7 campaigns: distinct external people whose registration campaign_id is that campaign, how many of them have an admitted+verified check-in, and the rate. States the attribution used (the registration's recorded acquisition source) and whether cancelled registrants are in the denominator. Walk-ins / unattributed visitors are kept out of campaign rates (may be listed separately).",
+    "answer_type": "comparison",
+    "must_not": [
+      "using check-in campaign_id for the numerator and registration campaign_id for the denominator without saying so",
+      "rates above 100% caused by counting rows",
+      "counting status versions as registrations",
+      "including staff/test people"
+    ],
+    "turns": [
+      {
+        "question": "registration to show-up rate for each campaign pls",
+        "answer": "Registration-to-show-up rate (verified visitors ÷ registered) by campaign, as of 2025-04-20 (post-festival):\n\n| Campaign | Registered | Visitors | Reg → show-up | Show-up of confirmed* |\n|---|---|---|---|---|\n| C04 College Partnerships | 450 | 385 | 85.6% | 91.7% |\n| C07 Community Groups | 200 | 165 | 82.5% | 89.2% |\n| C01 Campus Ambassadors | 520 | 390 | 75.0% | 81.3% |\n| C05 Student Referrals | 350 | 275 | 78.6% | 85.9% |\n| C06 Organic Search | 250 | 195 | 78.0% | 86.7% |\n| C02 Paid Social | 680 | 340 | 50.0% | 58.6% |\n| C03 Creator Partners | 350 | 175 | 50.0% | 60.3% |\n\n*The dashboard's show-up rate is confirmed registrants who attended; the first column is what you asked for (all registered).\n\n**Evidence (2025-04-20):** College Partnerships converts best end-to-end (385 of 450); Paid Social and Creator Partners lose half of registrants — 340 of 680 and 175 of 350 respectively, also the two highest opt-out counts (117 and 43).\n\n**Assumptions / limits:** Visitors are external people with admitted + verified check-ins, counted once; people are attributed to their recorded source campaign.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Calculating: 390/520",
+          "Calculating: 340/680",
+          "Calculating: 175/350",
+          "Calculating: 385/450",
+          "Calculating: 275/350",
+          "Calculating: 195/250",
+          "Calculating: 165/200"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13700,
+          "completion": 862
+        },
+        "ms": 10320
+      }
+    ]
+  },
+  {
+    "id": "C03",
+    "category": "calculation",
+    "question": "visitor goal se kitna peeche hain? give in % also",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Understands the Hinglish ('how far behind the visitor goal are we?'). Uses the unique_external_visitors_goal in force on 2025-04-20 (2,200, revised plan) and the count of distinct external people (person_type = external) with at least one check-in where result = admitted AND verification = verified, occurred_at at or before the end of the selected day IST, after counting each repeated event_id once; each person counted once across days and across scanner/manual records; reports the absolute gap and % achieved / % short (or the surplus if exceeded), showing the arithmetic.",
+    "answer_type": "number",
+    "must_not": [
+      "using the 1,800 launch goal",
+      "using registrations instead of verified visitors",
+      "computing the % against an unstated or wrong base",
+      "refusing or asking the user to rephrase in English"
+    ],
+    "turns": [
+      {
+        "question": "visitor goal se kitna peeche hain? give in % also",
+        "answer": "**Hum visitor goal se 150 verified visitors peeche hain — 6.8% short** (as of 20 Apr 2025, festival ke baad).\n\nEvidence:\n- Verified external visitors: **2,050** vs goal **2,200** (revised plan, in force since 15 Mar 2025)\n- Shortfall: 2,200 − 2,050 = **150 visitors**, i.e. **6.8%** of the goal\n- Breakdown: 1,925 registered attendees + 125 walk-ins; show-up rate of confirmed registrants was 77.0%\n\nAssumptions / limits: \"Visitors\" = external people with admitted AND verified check-ins, counted once (internal/staff/test excluded). The original launch plan (15 Jan) had a lower goal of 1,800 — against that, we'd be 250 *ahead* (+13.9%); the shortfall is against the revised plan.\n\nNext step, if useful: I can pull `get_funnel_leaks` to see where the 150-visitor gap came from (e.g. confirmed-but-no-shows or gate losses).",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Reading the plan versions",
+          "Calculating: 2200 - 2050",
+          "Calculating: (2200 - 2050) / 2200 * 100"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 10911,
+          "completion": 520
+        },
+        "ms": 8278
+      }
+    ]
+  },
+  {
+    "id": "C04",
+    "category": "calculation",
+    "question": "If we put another 50k into paid social at the same cost per registration, how many more registrations would we get?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Computes Paid Social cost per registered external person = net C02 spend / distinct external people with a C02-attributed registration (states the definition), then 50,000 / that cost, rounded to whole people. Flags the constant-marginal-cost assumption, likely diminishing returns, and that this is an attributed, not incremental, estimate. Notes whether 50k fits within the remaining approved budget.",
+    "answer_type": "number",
+    "must_not": [
+      "using clicks or anonymous registration_starts as registrations",
+      "presenting the result as a guaranteed forecast",
+      "using the budget instead of actual spend",
+      "ignoring that the extra 50k exceeds the remaining budget, if it does"
+    ],
+    "turns": [
+      {
+        "question": "If we put another 50k into paid social at the same cost per registration, how many more registrations would we get?",
+        "answer": "At a flat cost per registration, ₹50,000 more in Paid Social would buy about **366 more registrations** — but the plan's diminishing-returns model puts it closer to **163**, and since the festival ended 13 April, this is a planning estimate, not something that can still happen.\n\n**Evidence (as of 2025-04-20, C02 Paid Social):**\n- Spend ₹93,000 → 680 registrations, cost per registration ₹136.76\n- Linear: 50,000 ÷ 136.76 = **365.6 ≈ 366 registrations**\n- what_if_budget at ₹1,43,000 total (beta 0.5 for paid): registrations 680 → 843, i.e. **+163**; visitors 340 → 422 (+82)\n\n**Assumptions / limits:**\n- The linear figure assumes cost per registration stays flat as spend grows — in practice paid channels usually show diminishing returns, which is why the model's +163 implies a marginal cost of ~₹307 per extra registration (50,000 ÷ 163).\n- The model assumes response beyond the spend range actually observed in 2025; walk-ins excluded.\n- Post-event, the useful comparison is marginal cost per *visitor*: ~₹610 per extra verified visitor (50,000 ÷ 82) vs C02's current ₹273.53 average.\n\nNext step if useful: I can compare putting the ₹50,000 into a cheaper channel (e.g. C04 or C05) instead.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Running the budget what-if (as of 2025-04-20)",
+          "Calculating: 50000 / (93000/680)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 11757,
+          "completion": 1050
+        },
+        "ms": 11385
+      }
+    ]
+  },
+  {
+    "id": "C05",
+    "category": "calculation",
+    "question": "click to registration conversion for paid social?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Explains that clicks are anonymous platform events, not people, so a true per-person click-to-registration rate cannot be computed. May give (a) distinct external people with a C02 registration / de-duplicated C02 clicks, clearly labelled as a cross-source ratio, and/or (b) platform registration_starts / clicks (anonymous form starts, not completed registrations). Shows the inputs.",
+    "answer_type": "number",
+    "must_not": [
+      "presenting the ratio as '% of people who clicked went on to register'",
+      "treating registration_starts as completed registrations",
+      "double counting duplicate activity rows"
+    ],
+    "turns": [
+      {
+        "question": "click to registration conversion for paid social?",
+        "answer": "**Paid Social (C02) converted 9.9% of clicks into registrations** — 680 registrations from 6,867 clicks, as of 2025-04-20.\n\nEvidence (as of 2025-04-20):\n- Clicks: 6,867 (anonymous events) → landing sessions: 5,282 → form starts: 1,145 → registered: 680\n- 680 / 6,867 = **9.9%**\n- For context downstream: identified→registered 70.8%, registered→confirmed 85.3%, show-up 58.6%\n\nAssumptions / limits: clicks are anonymous event counts while registrations are people attributed to C02 as their source campaign, so this ratio mixes measurement bases (some clickers may register via another source, and vice versa). A people-based alternative is identified→registered at 70.8%.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Calculating: 680 / 6867"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 10579,
+          "completion": 438
+        },
+        "ms": 7208
+      }
+    ]
+  },
+  {
+    "id": "C06",
+    "category": "calculation",
+    "question": "Cost per confirmed registration - Campus Ambassadors vs Student Referrals, which is cheaper and by how much?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "For C01 and C05: net spend to the selected date / registrations (or distinct external people, stated) whose latest status as of 2025-04-20 is confirmed. Reports both INR values, which is cheaper, and the absolute and % difference, with the attribution and status definitions stated and applied identically to both.",
+    "answer_type": "comparison",
+    "must_not": [
+      "counting confirmed status versions (including later-cancelled ones) instead of the latest status",
+      "using all registrations rather than confirmed",
+      "using a different attribution or definition for each campaign"
+    ],
+    "turns": [
+      {
+        "question": "Cost per confirmed registration - Campus Ambassadors vs Student Referrals, which is cheaper and by how much?",
+        "answer": "**Student Referrals is cheaper: ₹59.38 per confirmed registration vs ₹87.50 for Campus Ambassadors — a gap of ₹28.13 (32.1% cheaper), as of 2025-04-20.**\n\nEvidence (as of 2025-04-20, end of day):\n| Campaign | Spend | Confirmed | Cost / confirmed |\n|---|---|---|---|\n| C01 Campus Ambassadors | ₹42,000 | 480 | ₹87.50 |\n| C05 Student Referrals | ₹19,000 | 320 | ₹59.38 |\n\n- Derived as spend ÷ confirmed (the dashboard's \"cost per registration\" uses all registrations, not confirmed ones).\n- Referrals also converts better downstream: show-up 85.9% vs 81.3%, cost per verified visitor ₹69.09 vs ₹107.69.\n\nAssumptions / limits: cost per confirmed uses total spend against final confirmed counts; it doesn't separate fixed vs variable costs per campaign.\n\nNext step, if useful: I can run a what-if on shifting budget from C01 to C05 to see the estimated registration impact (with the diminishing-returns assumptions stated).",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Calculating: 42000/480",
+          "Calculating: 19000/320",
+          "Calculating: 87.5-59.375"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 15321,
+          "completion": 594
+        },
+        "ms": 8941
+      }
+    ]
+  },
+  {
+    "id": "C07",
+    "category": "calculation",
+    "question": "If 30% of waitlisted folks had been confirmed and all of them came, would we have hit the visitor target?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Identifies external people whose latest registration status is waitlisted (states as of which time, e.g. event opening or the selected date), removes any who already have a verified admission, takes 30% of the rest (rounded), adds that to the current verified unique external visitors, and compares with the 2,200 goal. Gives the shortfall or surplus and labels the result as hypothetical.",
+    "answer_type": "number",
+    "must_not": [
+      "adding waitlisted people who already attended (double counting)",
+      "counting waitlisted history rows instead of currently waitlisted registrations",
+      "comparing against the 1,800 launch goal",
+      "presenting the hypothetical as an actual outcome"
+    ],
+    "turns": [
+      {
+        "question": "If 30% of waitlisted folks had been confirmed and all of them came, would we have hit the visitor target?",
+        "answer": "**No — even in that scenario you'd still miss the visitor target by ~124 people.** As of 2025-04-20 (post-event), you had 2,050 verified external visitors against the revised-plan goal of 2,200, with 88 people waitlisted.\n\n**Evidence (as of 2025-04-20):**\n- Visitors: 2,050 vs goal 2,200 (shortfall of 150)\n- Waitlisted: 88 → 30% confirmed-and-attended = 26.4 people\n- Hypothetical total: 2,050 + 26.4 ≈ **2,076**, still **~124 short** of 2,200\n- Even converting *all* 88 waitlisted at 100% show-up: 2,138, still **62 short**\n\n**Assumptions / limits:**\n- The scenario is generous: it assumes every converted waitlister shows up, whereas actual confirmed show-up was 77.0% (1,925 of 2,500). At 77% show-up, 30% conversion adds only ~20 visitors.\n- The real gap was driven elsewhere — 2,500 confirmed but only 1,925 attended (575 confirmed no-shows) plus 183 cancellations. Recovering even a quarter of the confirmed no-shows would have closed the 150-visitor gap.\n\nNext step, if useful: I can pull the funnel leaks breakdown to quantify exactly where the 150-visitor gap came from.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Reading the plan versions",
+          "Calculating: 0.30*88",
+          "Calculating: 2050 + 0.30*88",
+          "Calculating: 2200 - (2050 + 0.30*88)",
+          "Calculating: 2200 - (2050 + 88)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 11371,
+          "completion": 947
+        },
+        "ms": 11026
+      }
+    ]
+  },
+  {
+    "id": "C08",
+    "category": "calculation",
+    "question": "avg daily spend for creator partners in march?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Net Creator Partners (C03) spend with activity_date 1-31 Mar 2025 (activity_id de-duplicated, credits netted) divided by a stated number of days: 31 calendar days, or only the days with spend rows. Ideally gives both.",
+    "answer_type": "number",
+    "must_not": [
+      "including February or April rows",
+      "dividing by a row count that includes duplicate import copies",
+      "ignoring negative rows",
+      "not saying which day count was used"
+    ],
+    "turns": [
+      {
+        "question": "avg daily spend for creator partners in march?",
+        "answer": "Creator Partners (C03) averaged **₹3,638.7 per day** in March 2025 (≈ ₹3,639/day).\n\n**Evidence** (from the daily cumulative spend trend for C03):\n- Cumulative spend at 28 Feb 2025: ₹1,35,350\n- Cumulative spend at 31 Mar 2025: ₹2,48,150\n- March spend: ₹2,48,150 − ₹1,35,350 = **₹1,12,800** over 31 days → ₹1,12,800 ÷ 31 = ₹3,638.7/day\n\n**Assumptions / limits:** \"Average daily\" is total March spend ÷ 31 calendar days; spend was not spread evenly (e.g. no new spend 1–3 Mar, larger jumps mid-month). If you'd like it averaged only over days with spend, or a weekly breakdown, I can compute that.",
+        "error": null,
+        "tools": [
+          "Reading the trend (as of 2025-02-28)",
+          "Reading the trend (as of 2025-03-31)",
+          "Calculating: 248150 - 135350",
+          "Calculating: (248150 - 135350) / 31"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 22143,
+          "completion": 1178
+        },
+        "ms": 14747
+      }
+    ]
+  },
+  {
+    "id": "A01",
+    "category": "as_of",
+    "question": "What's our unique visitor target right now and what's the budget?",
+    "as_of": "2025-03-14",
+    "follow_up_turns": [],
+    "expected_behaviour": "Uses the 'Attendee launch plan', in force on 14 Mar 2025: unique_external_visitors_goal 1,800 and marketing_budget_inr 2,40,000. The revised plan (2,200 / 3,00,000) only takes effect 15 Mar 2025 09:00 IST and must not be presented as current; if mentioned at all it is clearly labelled as starting after the selected date.",
+    "answer_type": "number",
+    "must_not": [
+      "reporting 2,200 or INR 3,00,000 as the current target/budget",
+      "ignoring the selected date and using the latest plan"
+    ],
+    "turns": [
+      {
+        "question": "What's our unique visitor target right now and what's the budget?",
+        "answer": "As of 14 March 2025, the plan in force is the original \"Attendee launch plan\": a unique external visitor goal of **1,800** and a marketing budget of **₹2,40,000**.\n\nEvidence (plan versions, as of 2025-03-14):\n- Version 1, effective 15 Jan 2025: unique external visitors goal 1,800; budget ₹2,40,000 (also: 3,200 identified, 2,800 registrations).\n- Version 2, \"Attendee revised plan,\" takes effect **tomorrow, 15 March 2025**: visitor goal rises to 2,200 and budget to ₹3,00,000.\n\nSo if you're planning for the rest of the campaign, note the higher targets and budget apply from 15 March onward.",
+        "error": null,
+        "tools": [
+          "Reading the plan versions"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6798,
+          "completion": 368
+        },
+        "ms": 4004
+      }
+    ]
+  },
+  {
+    "id": "A02",
+    "category": "as_of",
+    "question": "budget as of today?",
+    "as_of": "2025-03-15",
+    "follow_up_turns": [],
+    "expected_behaviour": "INR 3,00,000: the revised plan takes effect 15 Mar 2025 09:00 IST, which is before the end of the selected day (the snapshot is end of day IST). May note it was INR 2,40,000 until that morning, and may add spend to date (activity up to 15 Mar) and the remaining amount.",
+    "answer_type": "number",
+    "must_not": [
+      "answering INR 2,40,000 (off-by-one on the effective timestamp)",
+      "treating 'today' as the real-world current date instead of the selected date"
+    ],
+    "turns": [
+      {
+        "question": "budget as of today?",
+        "answer": "As of 15 Mar 2025, the plan in force is the **Attendee revised plan** with a marketing budget of **₹3,00,000**; net spend so far is **₹1,89,575 (63.2%)**, leaving **₹1,10,425** unspent.\n\nEvidence (as of 2025-03-15):\n- Budget: ₹3,00,000 — the revised plan took effect today (15 Mar), raising it from the launch plan's ₹2,40,000.\n- Net spend: ₹1,89,575 → 63.2% used, ₹1,10,425 remaining.\n- Context: 1,562 registrations vs the 3,200 goal; projection of 2,368 registrations at the current run rate (29.9/day vs 60.7/day needed), so the remaining ₹1.1L may need to work harder.\n\nNext step if useful: I can run a what-if on reallocating the remaining budget across campaigns to close the registration gap.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-03-15)",
+          "Reading the plan versions",
+          "Calculating: 300000 - 189575",
+          "Calculating: 189575 / 300000 * 100"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 11132,
+          "completion": 574
+        },
+        "ms": 7098
+      }
+    ]
+  },
+  {
+    "id": "A03",
+    "category": "as_of",
+    "question": "how many confirmed registrations did we have at the end of Feb?",
+    "as_of": "2025-02-28",
+    "follow_up_turns": [],
+    "expected_behaviour": "Counts registrations registered on or before 28 Feb 2025 23:59:59 IST whose latest Registration History version with effective_at at or before that time is 'confirmed' (duplicate history_ids once; external-only or scope stated). Cancellations or reconfirmations after 28 Feb do not affect the count.",
+    "answer_type": "number",
+    "must_not": [
+      "using final (20 Apr) statuses",
+      "counting registrations created after 28 Feb",
+      "counting every 'confirmed' version ever recorded",
+      "counting history rows"
+    ],
+    "turns": [
+      {
+        "question": "how many confirmed registrations did we have at the end of Feb?",
+        "answer": "At the end of 28 Feb 2025 you had **899 confirmed registrations** (out of 1,114 total registered).\n\nEvidence (as of 2025-02-28, end of day):\n- Status confirmed: 899\n- Still interested: 103 · waitlisted: 36 · cancelled: 76\n- Registered people overall: 1,114 vs a goal of 2,800\n- Projection at the current run rate (~41/day): 2,839 registrations by the festival — just above goal\n\nNote: the festival hadn't happened yet (12–13 Apr), so there are no visitors or show-up figures as of this date.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-02-28)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6883,
+          "completion": 230
+        },
+        "ms": 3469
+      }
+    ]
+  },
+  {
+    "id": "A04",
+    "category": "as_of",
+    "question": "how many visitors have come so far?",
+    "as_of": "2025-04-11",
+    "follow_up_turns": [],
+    "expected_behaviour": "Recognises that on the selected date (11 Apr 2025) the festival (12-13 Apr, opening 10:00 IST on 12 Apr) has not started, so verified external visitors as of end of 11 Apr is zero, or only whatever admitted+verified external records exist with occurred_at at or before 11 Apr 23:59:59 IST (staff/test pre-event scans excluded). May offer registrations/confirmed counts as the relevant pre-event measure. Does not reveal final attendance.",
+    "answer_type": "number",
+    "must_not": [
+      "reporting the final post-event attendance figure",
+      "using check-ins dated 12-13 Apr",
+      "counting confirmed registrations as visitors"
+    ],
+    "turns": [
+      {
+        "question": "how many visitors have come so far?",
+        "answer": "**Zero visitors so far** — as of 11 April 2025 (end of day), the festival hasn't started yet. CampusFest runs 12–13 April, so no check-ins have occurred and there are no visitor or show-up numbers to report.\n\nEvidence (as of 2025-04-11):\n- Event phase: **before** the festival\n- Verified visitors: **0** (goal 2,200); walk-ins: 0\n- Confirmed registrants who attended: 0; show-up rate: not yet measurable\n- Funnel so far: 3,500 identified, 2,800 registered, 2,500 confirmed\n\nThe pre-event projection (using the plan's 0.6875 visitors-per-registration ratio) points to ~1,925 visitors against the 2,200 goal — worth watching once actual check-ins begin tomorrow. Ask me again on 12 or 13 April and I can report real verified visitors.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-11)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6878,
+          "completion": 329
+        },
+        "ms": 4367
+      }
+    ]
+  },
+  {
+    "id": "A05",
+    "category": "as_of",
+    "question": "how many people came today?",
+    "as_of": "2025-04-12",
+    "follow_up_turns": [],
+    "expected_behaviour": "Takes 'today' as the selected date, 12 Apr 2025 (day 1). Counts distinct external people with an admitted+verified check-in with occurred_at on 12 Apr IST. Excludes day-2 records. May mention pending/unverified records still unresolved at end of day.",
+    "answer_type": "number",
+    "must_not": [
+      "including 13 Apr check-ins",
+      "interpreting 'today' as the real-world date",
+      "counting check-in rows instead of people"
+    ],
+    "turns": [
+      {
+        "question": "how many people came today?",
+        "answer": "**1,430 people came today** — verified external visitors as of end of day 1 (12 April 2025).\n\n**Evidence (as of 2025-04-12):**\n- 1,350 confirmed registrants showed up + 80 walk-ins = 1,430 visitors\n- Show-up rate of confirmed registrants: 54.0% (1,350 of 2,500 confirmed)\n- Visitors by campaign (registered attendees only; walk-ins aren't attributed to a campaign): Campus Ambassadors 267, College Partnerships 266, Paid Social 240, Student Referrals 197, Organic Search 136, Creator Partners 129, Community Groups 115\n\n**Assumptions / limits:** \"Came\" = admitted AND verified check-in, external people only, counted once — internal, staff and test people are excluded. Since the festival began today, all visitors to date arrived today.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-12)",
+          "Reading campaign metrics (as of 2025-04-12)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 8628,
+          "completion": 816
+        },
+        "ms": 8472
+      }
+    ]
+  },
+  {
+    "id": "A06",
+    "category": "as_of",
+    "question": "what's Leena Kapoor's registration status?",
+    "as_of": "2025-03-10",
+    "follow_up_turns": [],
+    "expected_behaviour": "Looks up by name, checks whether more than one person_id shares the name (names can repeat) and disambiguates if so. For Leena Kapoor (E0001, R0001) the latest version at or before end of 10 Mar 2025 is 'cancelled' (effective 8 Mar 2025 14:00 IST, after 'interested' on 2 Mar and 'confirmed' on 3 Mar). The reconfirmation on 15 Mar is in the future relative to the selected date and must not be reported.",
+    "answer_type": "explanation",
+    "must_not": [
+      "answering 'confirmed' (the final status)",
+      "mentioning the 15 Mar reconfirmation as if it had happened",
+      "merging different people who share the name"
+    ],
+    "turns": [
+      {
+        "question": "what's Leena Kapoor's registration status?",
+        "answer": "Leena Kapoor's registration status as of 10 March 2025 is **cancelled**.\n\n**Evidence** (custom query on person + registration status, as of 2025-03-10):\n- Person: Leena Kapoor (E0001, external)\n- Registered 2 March 2025, 10:00 IST via C01 Campus Ambassadors (R0001)\n- Latest status: **cancelled**, effective 8 March 2025, 14:00 IST\n\n**Limits:** The data records only status changes, not reasons — I can't tell you why she cancelled. If useful, I can check whether she had any nurture-email or opt-out interactions before 8 March.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Running a read-only query: Look up Leena Kapoor's registration status as of 2025-03-10"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13060,
+          "completion": 764
+        },
+        "ms": 8760
+      }
+    ]
+  },
+  {
+    "id": "A07",
+    "category": "as_of",
+    "question": "Which campaigns were live as on date and how much had each spent?",
+    "as_of": "2025-02-05",
+    "follow_up_turns": [],
+    "expected_behaviour": "Uses only Daily Marketing rows with activity_date on or before 5 Feb 2025. Separates campaigns with actual activity/spend by then from planned starts (planned dates are plans: e.g. Creator Partners was planned for 10 Feb and Student Referrals for 12 Feb). Gives net spend per campaign to 5 Feb (activity_id de-duplicated, credits netted).",
+    "answer_type": "list",
+    "must_not": [
+      "including spend after 5 Feb",
+      "calling campaigns live purely from planned dates without checking activity",
+      "comparing with the INR 3,00,000 revised budget (not in force until 15 Mar)"
+    ],
+    "turns": [
+      {
+        "question": "Which campaigns were live as on date and how much had each spent?",
+        "answer": "As of 5 Feb 2025, all 7 campaigns were marked **active**, but only 4 had actually spent anything — Creator Partners (C03), Student Referrals (C05) and Community Groups (C07) were active on paper with ₹0 spend and no activity yet.\n\n| Campaign | Owner | Spend |\n|---|---|---|\n| C01 Campus Ambassadors | Meera Iyer | ₹10,750 |\n| C02 Paid Social | Arjun Verma | ₹9,600 |\n| C04 College Partnerships | Meera Iyer | ₹7,875 |\n| C06 Organic Search | Arjun Verma | ₹3,500 |\n| C03 Creator Partners | Nisha Rao | ₹0 |\n| C05 Student Referrals | Dev Malhotra | ₹0 |\n| C07 Community Groups | Nisha Rao | ₹0 |\n\nTotal spend across campaigns: **₹31,725**.\n\n**Evidence:** get_campaign_metrics as of 2025-02-05 (end of day, India time); status and spend_inr per campaign.\n\n**Assumptions / limits:** \"Live\" read as campaign status = active. If you meant \"actually running with spend/activity,\" the answer is the four campaigns above.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-02-05)",
+          "Calculating: 10750 + 9600 + 7875 + 3500"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13014,
+          "completion": 562
+        },
+        "ms": 6796
+      }
+    ]
+  },
+  {
+    "id": "A08",
+    "category": "as_of",
+    "question": "how are we tracking on registrations vs target, and how many days to go?",
+    "as_of": "2025-03-31",
+    "follow_up_turns": [],
+    "expected_behaviour": "Distinct external people with a registration registered on or before 31 Mar 2025 vs the revised registration_goal 3,200; gap and % achieved. Event opens 12 Apr 2025, i.e. 12 days after the selected date (11 full days, 1-11 Apr, before opening); may give the required daily run-rate. Uses no registrations after 31 Mar.",
+    "answer_type": "number",
+    "must_not": [
+      "using final registration counts",
+      "using the 2,800 launch target",
+      "miscounting days to the event"
+    ],
+    "turns": [
+      {
+        "question": "how are we tracking on registrations vs target, and how many days to go?",
+        "answer": "**As of 31 Mar 2025: 2,337 registrations against the 3,200 goal (73.0%), with 863 to go and 11 days until the festival opens on 12 April.** At the current pace you'd land at ~2,876 — about 324 short.\n\nEvidence (as of 2025-03-31, \"Attendee revised plan\" in force since 15 Mar):\n- Registered: 2,337 / 3,200 goal; confirmed 1,962, interested 150, waitlisted 71, cancelled 154.\n- Run rate: 49 registrations/day over the last 14 days; you need **78.45/day** to hit the goal.\n- Projection: 2,876 registrations (shortfall 324); implied visitors ~1,977 vs the 2,200 visitor goal.\n- Spend so far: ₹2,48,150 of ₹3,00,000 budget.\n\nLimits: the projection is a straight-line run-rate, not a forecast — a late push (e.g. ambassadors/referrals) or a drop-off could move it either way.\n\nNext step if useful: I can run a `what_if_budget` on the remaining ~₹52,000 to see which campaign mix closes the 324-registration gap fastest.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-03-31)",
+          "Reading the plan versions",
+          "Calculating: 2337/3200",
+          "Calculating: 3200-2337",
+          "Calculating: 3200-2876"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 11307,
+          "completion": 743
+        },
+        "ms": 8836
+      }
+    ]
+  },
+  {
+    "id": "D01",
+    "category": "diagnosis",
+    "question": "where are we losing ppl in the funnel? biggest drop-off?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Builds stage counts of distinct external people: identified -> identified registration_start -> registered -> confirmed (latest status) -> verified attendance, and names the largest absolute and relative drop with numbers. Keeps anonymous stages (impressions, clicks, sessions, registration_starts) separate and labelled as event counts, not people. Notes walk-ins enter at attendance without earlier stages, so stages are not strictly nested.",
+    "answer_type": "explanation",
+    "must_not": [
+      "mixing anonymous clicks/sessions with identified people in one conversion ratio without caveat",
+      "counting status versions or history rows as people",
+      "treating registration_starts as registrations",
+      "naming a bottleneck without numbers"
+    ],
+    "turns": [
+      {
+        "question": "where are we losing ppl in the funnel? biggest drop-off?",
+        "answer": "**Biggest single drop-off: no-shows.** 515 confirmed people never came to the festival (20.6% of the 2,500 confirmed) — the largest leak anywhere in the funnel, as of 2025-04-20.\n\n**Funnel shape (3,625 identified → 2,800 registered → 2,500 confirmed → 1,925 attended):**\n\n| Stage | Conversion | Lost |\n|---|---|---|\n| Identified → registered | 77.2% | 425 never started form + 275 abandoned it (700 total, 19.3%) |\n| Registered → confirmed | 89.3% | 183 cancelled, 88 waitlisted, 29 still interested |\n| Confirmed → attended | 77.0% | **515 did not come** + 60 lost at the gate |\n\n**Where it concentrates by campaign:**\n- **C02 Paid Social** is the biggest source of losses: 240 no-shows, 180 never started, 100 abandoned forms, 60 cancelled.\n- **C01 Campus Ambassadors** accounts for all 60 gate losses (reached the gate but never admitted/verified) — a check-in process issue, not a demand issue.\n- C03 Creator Partners is next: 115 no-shows, 70 abandoned, 70 never started.\n\nOn the plus side, 125 walk-ins arrived without registering.\n\nNext step if useful: I can pull show-up by registration lead time to see if late registrants no-showed more, or check the pre-committed decisions on C02.",
+        "error": null,
+        "tools": [
+          "Finding where people drop out (as of 2025-04-20)",
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Calculating: 2800/3625",
+          "Calculating: 2500/2800",
+          "Calculating: 1925/2500",
+          "Calculating: 515/2500",
+          "Calculating: (275+425)/3625"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 12471,
+          "completion": 1292
+        },
+        "ms": 13867
+      }
+    ]
+  },
+  {
+    "id": "D02",
+    "category": "diagnosis",
+    "question": "Which campaign is underperforming the most and why?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Compares all 7 campaigns on consistent, stated metrics (net spend, registered people, confirmed, verified visitors, cost per registered person / per visitor, show-up rate) with a stated attribution. Names the worst on a stated metric and gives the numbers. Separates evidence from hypotheses (e.g. audience fit) and labels the latter as assumptions. Treats near-zero-spend campaigns (e.g. Organic Search) fairly on cost metrics and considers each campaign's stated objective.",
+    "answer_type": "comparison",
+    "must_not": [
+      "judging only on impressions, clicks or reach",
+      "stating causes as fact without evidence",
+      "comparing campaigns on different definitions",
+      "ignoring small base sizes"
+    ],
+    "turns": [
+      {
+        "question": "Which campaign is underperforming the most and why?",
+        "answer": "**Creator Partners (C03) is underperforming the most** — it's the only campaign the pre-committed thresholds flag on five separate criteria, and it carries the worst cost per verified visitor of all seven campaigns (as of 2025-04-20, post-event).\n\n**Evidence (2025-04-20):**\n- Cost per verified visitor **₹337** = **2.37×** the blended ₹142 (stop threshold is 1.6×); Paid Social is next worst at 1.92×\n- Show-up of confirmed registrants **60.3%** (threshold ≥75%); 175 visitors from 290 confirmed\n- Confirmation rate **82.9%** and form completion **83.3%**, both below the 88% floor\n- Nurture opt-out rate **18.9%** (max 15%)\n- For contrast: Student Referrals got 275 visitors on ₹19,000 (₹69/visitor) — C03's cost per visitor is ~4.9× worse\n\n**Why (what the data shows):** C03's problem isn't top-of-funnel reach (209,666 impressions, 490 identified) — it's that people leak at every later stage: they start forms but don't finish, register but don't confirm, and confirm but don't show up. The team's decision rule therefore says **stop**.\n\n**Hypothesis (not proven by the data):** creator-driven audiences may be casual interest rather than intent — there's no comparison group to test whether nurture content or creator fit caused the low show-up.\n\nNext step if useful: I can prepare a campaign update to stop C03, or model shifting its ₹59,000 into the scale candidates (C04/C05/C06).",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Checking the decision rules (as of 2025-04-20)",
+          "Calculating: 337.14/69.09"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 15077,
+          "completion": 957
+        },
+        "ms": 11574
+      }
+    ]
+  },
+  {
+    "id": "D03",
+    "category": "diagnosis",
+    "question": "paid social is getting loads of clicks but is it actually converting??",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "For Paid Social (C02): anonymous clicks and sessions (labelled as events) vs identified people, identified registration starts, registered, confirmed and verified-attended people, compared with other campaigns on the same steps. Says where its funnel leaks relative to others, with numbers, and caveats that clicks are not people.",
+    "answer_type": "comparison",
+    "must_not": [
+      "calling clicks conversions",
+      "presenting clicks/registrations as a per-person rate",
+      "assessing Paid Social without comparing to other campaigns"
+    ],
+    "turns": [
+      {
+        "question": "paid social is getting loads of clicks but is it actually converting??",
+        "answer": "Yes, it converts — but weakly and expensively. Paid Social turns clicks into people at roughly half the efficiency of your best channels, and it fails the team's pre-committed stop thresholds (as of 2025-04-20).\n\n**Evidence — C02 funnel (2025-04-20):**\n- 6,867 clicks → 5,282 landing sessions (76.9%) → 780 form starters (14.8% of sessions) → 680 registered (9.9% of clicks) → 580 confirmed → **340 verified visitors (5.0% of clicks)**\n- ₹93,000 spend → ₹136.76 per registration, **₹273.53 per verified visitor vs ₹142.34 blended (1.92x)** — the stop threshold is 1.6x\n- Show-up 58.6% (threshold 75%), nurture opt-outs 26.0% (max 15%), form completion 87.2% and confirmation 85.3% (both below 88%)\n- Biggest leaks: 180 identified never started the form, 100 abandoned it, 240 confirmed but didn't come\n\nFor contrast: Student Referrals ₹69.09 and Organic Search ₹71.79 per visitor. The pre-committed decision for C02 is **stop**.\n\n**Assumptions / limits:** clicks and sessions are anonymous events, so click→person rates assume the recorded source campaign; \"why\" people didn't show up isn't in the data.\n\nWant me to prepare the campaign change (stop or pause C02) for you to confirm?",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Finding where people drop out (as of 2025-04-20)",
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Checking the decision rules (as of 2025-04-20)",
+          "Calculating: 5282/6867",
+          "Calculating: 680/6867",
+          "Calculating: 340/6867",
+          "Calculating: 780/5282"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 22022,
+          "completion": 1580
+        },
+        "ms": 18138
+      }
+    ]
+  },
+  {
+    "id": "D04",
+    "category": "diagnosis",
+    "question": "are registrations picking up or slowing down over the last few weeks?",
+    "as_of": "2025-04-08",
+    "follow_up_turns": [],
+    "expected_behaviour": "Weekly (or similar) counts of new registrations by registered_at up to 8 Apr 2025 only, for the last several weeks, with the direction of the trend and numbers. Flags that the current week is partial. May relate the trend to spend or to the 15 Mar target revision, labelled as correlation.",
+    "answer_type": "explanation",
+    "must_not": [
+      "including registrations after 8 Apr",
+      "counting status changes as new registrations",
+      "using reach/impression trends as a registration trend",
+      "comparing a partial week with full weeks without saying so"
+    ],
+    "turns": [
+      {
+        "question": "are registrations picking up or slowing down over the last few weeks?",
+        "answer": "Registrations picked up strongly through March but have **flattened out over the last two weeks** — the pace is no longer accelerating, and has ticked down slightly.\n\n**Evidence (as of 2025-04-08, daily registrations averaged per week):**\n\n| Week | Avg registrations/day |\n|---|---|\n| Mar 3–9 | 24.9 |\n| Mar 10–16 | 36.9 |\n| Mar 17–23 | 46.3 |\n| Mar 24–30 | 50.6 |\n| Mar 31–Apr 6 | 49.4 |\n| Apr 7–8 (partial) | 46.0 |\n\n- Daily volume roughly doubled from late February/early March (~25/day) to a peak week of Mar 24–30 (~50.6/day), with the best single days Mar 22 (61) and Apr 5 (60).\n- The last two weeks have plateaued at ~49/day, and Apr 7–8 are running at ~46/day — a mild slowdown, not a collapse.\n- Cumulative registrations stand at 2,722, with the festival 4 days away (12–13 April).\n\n**Assumptions / limits:** \"Last few weeks\" read as the last ~5 weeks; weeks run Monday–Sunday, and Apr 7–8 is a partial week so its average may shift.\n\nNext step if useful: I can break this plateau down by campaign (weekly grain) to see which channels are driving the flat patch.",
+        "error": null,
+        "tools": [
+          "Reading the trend (as of 2025-04-08)",
+          "Calculating: (21+29+27+24+26+20+27)/7",
+          "Calculating: (26+31+35+31+35+56+44)/7",
+          "Calculating: (45+34+46+47+51+61+40)/7",
+          "Calculating: (57+45+57+53+48+53+41)/7",
+          "Calculating: (53+46+43+46+49+60+49)/7",
+          "Calculating: (43+49)/2"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 19303,
+          "completion": 2047
+        },
+        "ms": 19755
+      }
+    ]
+  },
+  {
+    "id": "D05",
+    "category": "diagnosis",
+    "question": "Before I present this to the faculty committee, is there anything dodgy in the data I should know about?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Lists concrete, dataset-specific issues with counts where possible and how each is handled: import-retry duplicates (activity_id, history_id, event_id), internal/staff/test people, denied/pending/unverified check-ins, manual vs scanner overlaps, negative spend (vendor credits), repeated person names, unattributed check-ins, anonymous platform counts vs identified people, two target versions.",
+    "answer_type": "list",
+    "must_not": [
+      "generic data-quality advice not tied to this dataset",
+      "claiming the data is clean",
+      "listing issues without saying how they affect the headline numbers"
+    ],
+    "turns": [
+      {
+        "question": "Before I present this to the faculty committee, is there anything dodgy in the data I should know about?",
+        "answer": "I could not produce an answer. Please rephrase the question.",
+        "error": null,
+        "tools": [
+          "Reading the change log",
+          "Reading the headline funnel (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 15815,
+          "completion": 4285
+        },
+        "ms": 39882
+      }
+    ]
+  },
+  {
+    "id": "D06",
+    "category": "diagnosis",
+    "question": "Why are so many registered people not turning up?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Quantifies no-shows (e.g. registered or confirmed external people without a verified admission), broken down by campaign, latest status and registration timing as evidence. States clearly that the data has no field recording why people did not attend; any explanation (exams, travel, weather) is labelled as a hypothesis. Suggests what data would answer it (post-event survey, cancellation reasons).",
+    "answer_type": "explanation",
+    "must_not": [
+      "stating reasons for non-attendance as fact",
+      "counting cancelled registrants as no-shows without saying so",
+      "counting people rather than registrations inconsistently"
+    ],
+    "turns": [
+      {
+        "question": "Why are so many registered people not turning up?",
+        "answer": "Of the 2,500 confirmed registrants, 1,925 turned up (77.0% show-up, as of 2025-04-20). The gap is mostly two things: **low-intent registrations from paid channels** and **long lead time** — plus a smaller gate-operations loss.\n\n**Evidence (as of 2025-04-20):**\n- 515 confirmed people (20.6%) never came at all; another 60 (2.4%) reached the gate but were denied or left unverified.\n- Channel mix drives it: Paid Social (C02) shows up at 58.6% and Creators (C03) at 60.3%, vs 85.9–91.7% for Referrals, Organic, Community and College Partnerships. C02+C03 alone account for 355 of the 515 no-shows (68.9%).\n- Lead time: registrants from 0–14 days before showed up at 81.3%, but those who registered 43+ days out only 72.7%.\n- All 60 gate losses sit in Campus Ambassadors (C01) — an admission/verification issue, not true no-shows.\n- C02 also had the highest opt-outs (117), consistent with weaker intent, though nurture emails had no comparison group.\n\n**Hypotheses (beyond the data):** broad paid targeting pulls in people with shallow commitment; early registrants' plans decay over 6+ weeks. Correlation, not proven causation.\n\n**Next step:** for next year, shift budget from C02/C03 toward the high show-up peer channels — I can run a `what_if_budget` estimate, or propose a task to review C02 targeting and C01's gate process. Want either?",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Finding where people drop out (as of 2025-04-20)",
+          "Reading show-up by lead time (as of 2025-04-20)",
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Calculating: 515/2500",
+          "Calculating: (240+115)/515",
+          "Calculating: (200+244)/(247+299)",
+          "Calculating: (359+355)/(502+480)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 16910,
+          "completion": 2044
+        },
+        "ms": 21074
+      }
+    ]
+  },
+  {
+    "id": "D07",
+    "category": "diagnosis",
+    "question": "Meera runs both campus ambassadors and college partnerships - which one's doing better?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Compares C01 and C04 on the same metrics and definitions (net spend, identified people, registered, confirmed, verified visitors, cost per registered person / per visitor, show-up rate). Notes their different objectives (peer conversations -> registration vs group organisers -> confirmed attendance) and gives a verdict with numbers, saying where the comparison is mixed.",
+    "answer_type": "comparison",
+    "must_not": [
+      "comparing on spend alone",
+      "using different attribution for the two",
+      "declaring a winner without numbers"
+    ],
+    "turns": [
+      {
+        "question": "Meera runs both campus ambassadors and college partnerships - which one's doing better?",
+        "answer": "**College Partnerships (C04) is doing better** — it hits the team's \"scale\" threshold, while Campus Ambassadors (C01) lands on \"change.\" All numbers as of 2025-04-20 (post-festival, final).\n\n| Metric | C01 Ambassadors | C04 Partnerships |\n|---|---|---|\n| Spend | ₹42,000 | ₹31,000 |\n| Registered / confirmed | 520 / 480 | 450 / 420 |\n| Verified visitors | 390 | 385 |\n| Cost per registration | ₹80.77 | ₹68.89 |\n| Cost per verified visitor | ₹107.69 | ₹80.52 |\n| Show-up rate | 81.3% | 91.7% |\n\n**Evidence**\n- C04's cost per verified visitor is ₹80.52 = 0.57x the blended ₹142.34 → \"scale.\" C01's ₹107.69 = 0.76x → \"change,\" not scale.\n- C01 spent ₹11,000 more for essentially the same visitors (390 vs 385); its cost per visitor is 1.34x C04's.\n- C01's weak spot: 60 confirmed registrants (12.5%) reached the gate but were never admitted, dragging show-up to 81.3% vs C04's 91.7%.\n\n**Limits:** C01 still delivers more raw volume (520 vs 450 registrations), so it's not a stop — the pre-committed thresholds flag it for fixing, not cutting.\n\nNext step: I can propose a task for Meera to investigate why 60 ambassador-sourced confirmed registrants were lost at the gate — say the word and I'll prepare it.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Checking the decision rules (as of 2025-04-20)",
+          "Calculating: 107.69/80.52",
+          "Calculating: 42000-31000"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13673,
+          "completion": 1477
+        },
+        "ms": 15202
+      }
+    ]
+  },
+  {
+    "id": "D08",
+    "category": "diagnosis",
+    "question": "is the email nurture actually working?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Uses identified interactions: distinct people sent, opened, clicked nurture emails and opted out. Compares registration/confirmation/attendance rates of engaged vs non-engaged people, but says this is correlational: no holdout group, opens do not prove incremental attendance, and engaged people were likely already more interested. Reports opt-outs and suggests a holdout test.",
+    "answer_type": "explanation",
+    "must_not": [
+      "claiming emails caused a specific number of registrations or attendees",
+      "treating email opens as attendance",
+      "counting email events instead of people",
+      "ignoring opt-outs"
+    ],
+    "turns": [
+      {
+        "question": "is the email nurture actually working?",
+        "answer": "**Short answer: the emails are being engaged with and half the recipients registered afterwards — but the data cannot prove the emails *caused* those registrations, because there was no comparison group (emails went only to people who hadn't registered).** All numbers as of 2025-04-20, after the festival.\n\n**Evidence**\n- 1,400 nurture emails sent to external people; 992 opened (**70.9%**), 409 clicked (**29.2%**) — healthy engagement for either benchmark.\n- Custom query on interactions: of 1,400 distinct external recipients, **700 (50.0%) registered after their first send**.\n- Recipients who clicked registered at **57.0%** (233/409) vs **47.1%** (467/991) for non-clickers — but clickers are self-selected, so this is correlation, not causation.\n- 178 external people opted out (**12.7%**), under the team's 15% threshold overall — but **C02 Paid Social (26.0%)** and **C03 Creators (18.9%)** breach it, and both already carry \"stop\" decisions partly on that basis.\n\n**Limits**: no holdout group means \"actually working\" causally is unanswerable; the 50% post-send registration rate is the closest measurable proxy. Per-campaign opt-out counts (229) include non-external/duplicate events; 178 is the external-people figure from my query.\n\nUseful next step: for next year's replay, hold out a small random slice of non-registrants from nurture to get a true causal read — happy to draft that as a task if you want.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Running a read-only query: Of external people who got nurture emails, how many registered afterwards, and clickers vs non-clickers",
+          "Checking the decision rules (as of 2025-04-20)",
+          "Calculating: 992/1400",
+          "Calculating: 409/1400",
+          "Calculating: 700/1400",
+          "Calculating: 233/409",
+          "Calculating: 467/(1400-409)",
+          "Calculating: 178/1400"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 28611,
+          "completion": 3540
+        },
+        "ms": 32413
+      }
+    ]
+  },
+  {
+    "id": "R01",
+    "category": "recommendation",
+    "question": "2 weeks to go for the fest. Where should we put the remaining budget?",
+    "as_of": "2025-03-29",
+    "follow_up_turns": [],
+    "expected_behaviour": "Computes remaining budget = INR 3,00,000 minus net spend to 29 Mar. Compares campaigns on cost per registered person and registration-to-confirmation using only data up to 29 Mar (no attendance exists yet). Recommends a specific allocation with reasons tied to the numbers, notes diminishing returns and attribution limits, and labels assumptions. May offer to create tasks but does not create them.",
+    "answer_type": "explanation",
+    "must_not": [
+      "using post-29-Mar data, including actual attendance",
+      "allocating more than the remaining budget",
+      "generic marketing advice not tied to the data",
+      "recommending on impressions/reach alone"
+    ],
+    "turns": [
+      {
+        "question": "2 weeks to go for the fest. Where should we put the remaining budget?",
+        "answer": "**Put the remaining ₹59,900 into the four \"scale\" channels — Student Referrals +₹24,000, College Partnerships +₹15,000, Organic Search +₹12,000, Community Groups +₹8,900 — and add nothing to Paid Social or Creator Partners.** Spread beats concentration because every channel has diminishing returns.\n\n**Evidence (as of 2025-03-29):**\n- ₹59,900 left (₹2,40,100 spent of ₹3,00,000). Registrations 2,243 vs 3,200 goal; run rate 48.6/day vs 73.6/day needed → projected 2,875, ~325 short.\n- Pre-committed decisions: **scale** C04/C05/C06/C07 (₹59.72–₹81.29 per registration vs ₹107.04 blended); **stop** C03 (₹180.07 = 1.68x blended, confirmation 81.9% < 88%, opt-outs 20.3% > 15%); **change** C02 (₹138.46 = 1.29x, opt-outs 23.7%).\n- What-if on the same ₹59,900:\n\n| Option | Est. registrations | Est. visitors* |\n|---|---|---|\n| Spread across C04/C05/C06/C07 | 2,777 (+534) | 1,909 |\n| All into C05 | 2,719 (+476) | 1,868 |\n| All into C02 Paid Social | 2,431 (+188) | 1,670 |\n\n*at the plan ratio of 0.6875 visitors/registration; walk-ins excluded.\n\n**Assumptions / limits:** the what-if uses diminishing-returns betas (0.7 peer/group, 0.5 paid) and assumes response beyond the spend range already observed — an estimate, not a forecast. No show-up or gate data exists yet (fest is 12–13 Apr), so these calls rest on cost, confirmation and opt-outs only. Even the best case (+534) only just covers the projected ~325 shortfall on paper.\n\nI've prepared for your confirmation: **stop C03**, and planned budgets of ₹40,200 (C04), ₹39,600 (C05), ₹24,600 (C06), ₹21,700 (C07).",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-03-29)",
+          "Reading campaign metrics (as of 2025-03-29)",
+          "Checking the decision rules (as of 2025-03-29)",
+          "Reading the plan versions",
+          "Running the budget what-if (as of 2025-03-29)",
+          "Running the budget what-if (as of 2025-03-29)",
+          "Running the budget what-if (as of 2025-03-29)",
+          "Running the budget what-if (as of 2025-03-29)",
+          "Preparing a campaign change for you to confirm",
+          "Preparing a campaign change for you to confirm",
+          "Preparing a campaign change for you to confirm",
+          "Preparing a campaign change for you to confirm",
+          "Preparing a campaign change for you to confirm"
+        ],
+        "proposals": [
+          {
+            "kind": "update_campaign",
+            "campaign_id": "C03",
+            "status": "stopped",
+            "reason": "Pre-committed stop threshold hit as of 2025-03-29: cost per registration ₹180.07 = 1.68x blended ₹107.04 (stop at 1.6x); confirmation 81.9% < 88% floor; form completion 82.2% < 88% floor; nurture opt-outs 20.3% > 15% cap.",
+            "campaign_name": "Creator Partners"
+          },
+          {
+            "kind": "update_campaign",
+            "campaign_id": "C04",
+            "planned_budget_inr": 40200,
+            "reason": "Scale decision as of 2025-03-29 (₹81.29/registration = 0.76x blended ₹107.04). What-if: raising spend ₹25,200 → ₹40,200 adds ~120 registrations (310 → 430) under beta 0.7.",
+            "campaign_name": "College Partnerships"
+          },
+          {
+            "kind": "update_campaign",
+            "campaign_id": "C05",
+            "planned_budget_inr": 39600,
+            "reason": "Scale decision as of 2025-03-29 (₹66.10/registration = 0.62x blended ₹107.04, cheapest peer channel). What-if: ₹15,600 → ₹39,600 adds ~217 registrations (236 → 453) under beta 0.7.",
+            "campaign_name": "Student Referrals"
+          },
+          {
+            "kind": "update_campaign",
+            "campaign_id": "C06",
+            "planned_budget_inr": 24600,
+            "reason": "Scale decision as of 2025-03-29 (₹59.72/registration = 0.56x blended ₹107.04, cheapest channel overall). What-if: ₹12,600 → ₹24,600 adds ~126 registrations (211 → 337) under beta 0.7.",
+            "campaign_name": "Organic Search"
+          },
+          {
+            "kind": "update_campaign",
+            "campaign_id": "C07",
+            "planned_budget_inr": 21700,
+            "reason": "Scale decision as of 2025-03-29 (₹80.50/registration = 0.75x blended ₹107.04). What-if: ₹12,800 → ₹21,700 adds ~71 registrations (159 → 230) under beta 0.7.",
+            "campaign_name": "Community Groups"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 52528,
+          "completion": 8727
+        },
+        "ms": 82303
+      }
+    ]
+  },
+  {
+    "id": "R02",
+    "category": "recommendation",
+    "question": "should we just kill paid social?",
+    "as_of": "2025-03-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Takes a position backed by data to 20 Mar: Paid Social net spend, attributed registered and confirmed people, cost per registered person vs other campaigns, and click-to-identified progression. Says what would change the recommendation (e.g. cut rather than stop, test). Separates evidence from assumptions and notes attribution is not incrementality.",
+    "answer_type": "explanation",
+    "must_not": [
+      "yes/no without numbers",
+      "using data after 20 Mar",
+      "judging only on clicks or impressions",
+      "claiming causal impact"
+    ],
+    "turns": [
+      {
+        "question": "should we just kill paid social?",
+        "answer": "**No — the pre-committed thresholds say \"change,\" not \"stop.\"** Killing it would also hurt: you're behind plan and Paid Social is your single biggest registration engine.\n\n**Evidence (as of 2025-03-20):**\n- Cost per registration ₹134.50 = 1.13x the blended ₹119.24 — well under the 1.6x stop line (≈₹191). The campaign that *does* cross the stop line is C03 Creator Partners (₹208.29 = 1.75x).\n- C02 has 571 of 1,778 registrations — **32.1%** of your total, the largest source.\n- The funnel is behind: projected 2,568 registrations vs the 3,200 goal; you need 64.6/day vs the current 35.9/day run rate. Zeroing out a third of registrations makes that gap much worse.\n- But it does have real problems the framework flags: confirmation rate 84.7% (below the 88% minimum) and nurture opt-out rate 24.1% (above the 15% cap).\n\n**Recommendation:** keep it running but fix it — the opt-out rate suggests the nurture emails are alienating this audience (hypothesis; no comparison group in the data). Meanwhile, incremental budget is better spent on C05 Student Referrals (₹90.40/reg) and C06 Organic Search (₹61.88/reg); there's also ₹88,000 of the ₹3,00,000 budget unspent.\n\nWant me to run a what-if reallocating C02's spend to C05/C06, or propose a task for Arjun (T04) to fix the opt-out problem?",
+        "error": null,
+        "tools": [
+          "Checking the decision rules (as of 2025-03-20)",
+          "Reading campaign metrics (as of 2025-03-20)",
+          "Reading the headline funnel (as of 2025-03-20)",
+          "Calculating: 571/1778",
+          "Calculating: 1.6*119.24"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 14219,
+          "completion": 2079
+        },
+        "ms": 20689
+      }
+    ]
+  },
+  {
+    "id": "R03",
+    "category": "recommendation",
+    "question": "What should the team prioritise this week? top 3",
+    "as_of": "2025-04-05",
+    "follow_up_turns": [],
+    "expected_behaviour": "Three concrete priorities grounded in data as of 5 Apr (e.g. converting waitlisted/interested registrations, re-engaging cancellations, shifting spend to the most efficient campaign, closing the gap to 3,200 registrations), each with the supporting number, the relevant campaign owner and a measurable target. Offers to turn them into tasks, pending confirmation.",
+    "answer_type": "list",
+    "must_not": [
+      "generic priorities without data",
+      "creating tasks without confirmation",
+      "using attendance data (the event has not happened)",
+      "assigning owners who do not own the campaign without saying why"
+    ],
+    "turns": [
+      {
+        "question": "What should the team prioritise this week? top 3",
+        "answer": "**Top 3 for the week of 6 April (as of 5 Apr, 6 days to the festival): close the registration gap, retarget the 885 identified non-registrants, and convert/protect the confirmed base.**\n\n**1. Reallocate the last ₹47,100 of budget to the scale channels.** Registrations run at 49.4/day vs the 103.2/day needed; at the current rate you land at ~2,877 vs the 3,200 goal (shortfall 323). Pre-committed thresholds say stop C03 Creator Partners (₹175/registration, 1.79× blended ₹98) and scale C04/C05/C06 (₹71/₹58/₹55). A what-if moving the remaining ₹47,100 into C04 (+₹20,000), C05 (+₹15,000), C06 (+₹12,100) lifts projected registrations to ~3,063 and visitors to ~2,106 — still short of 3,200/2,200, so pair with priority 2.\n\n**2. Retarget the 885 identified people who never registered** — 365 abandoned the form mid-way, 520 never started. C02 Paid Social owns the biggest leak (108 + 185 = 293) and its decision is \"change\": narrow it to retargeting these people, and fix its nurture (24.8% opt-outs vs the 15% max).\n\n**3. Push the 155 \"interested\" and 74 waitlisted to confirmed, and protect the 2,192 already confirmed** with reconfirmation reminders (bet 3) — the visitor goal of 2,200 depends on show-up, which is unmeasured until 12 April.\n\n**Limits:** the what-if assumes the plan's diminishing-returns model (β 0.7 peer/group) beyond observed spend ranges; no causal evidence yet on reminders.\n\nWant me to prepare the C03 stop + budget reallocation cards for confirmation?",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-05)",
+          "Finding where people drop out (as of 2025-04-05)",
+          "Reading campaign metrics (as of 2025-04-05)",
+          "Checking the decision rules (as of 2025-04-05)",
+          "Reading tasks and bets",
+          "Running the budget what-if (as of 2025-04-05)",
+          "Calculating: 3200 - 2877",
+          "Calculating: 365 + 520"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 20414,
+          "completion": 1933
+        },
+        "ms": 19814
+      }
+    ]
+  },
+  {
+    "id": "R04",
+    "category": "recommendation",
+    "question": "For next year's fest, which channels would you scale and which would you stop?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Ranks campaigns on full-cycle metrics (net spend, attributed registered people, verified visitors, cost per verified visitor, show-up rate) and recommends scale / keep / cut with reasons. Caveats: a single event, attribution is not causation, no control group, diminishing returns, zero-spend channels need different evaluation, objectives differ.",
+    "answer_type": "explanation",
+    "must_not": [
+      "recommending on reach or impressions only",
+      "claiming causal impact",
+      "ignoring cost differences",
+      "cutting campaigns without data"
+    ],
+    "turns": [
+      {
+        "question": "For next year's fest, which channels would you scale and which would you stop?",
+        "answer": "**Scale: College Partnerships (C04), Student Referrals (C05), Organic Search (C06), Community Groups (C07). Stop: Paid Social (C02) and Creator Partners (C03). Keep Campus Ambassadors (C01) but fix its gate problem first.** All numbers as of 2025-04-20, post-event, against the team's pre-committed thresholds (scale < 0.8x, stop > 1.6x blended cost per verified visitor of ₹142.34).\n\n| Campaign | ₹/verified visitor | vs blended | Show-up | Decision |\n|---|---|---|---|---|\n| C05 Referrals | ₹69.09 | 0.49x | 85.9% | Scale |\n| C06 Organic | ₹71.79 | 0.50x | 86.7% | Scale |\n| C04 Partnerships | ₹80.52 | 0.57x | 91.7% | Scale |\n| C07 Community | ₹96.97 | 0.68x | 89.2% | Scale |\n| C01 Ambassadors | ₹107.69 | 0.76x | 81.3% | Change — 60 confirmed (12.5%) hit the gate but were never admitted, vs 5% max |\n| C02 Paid Social | ₹273.53 | 1.92x | 58.6% | Stop — also 26.0% opt-outs, below-threshold confirmation/form rates |\n| C03 Creators | ₹337.14 | 2.37x | 60.3% | Stop — also 18.9% opt-outs |\n\n**Trade-off:** C02+C03 cost ₹1,52,000 and brought 515 visitors (25.1% of the 2,050 total). A what-if reallocating that spend proportionally into the four scale channels (same ₹2.74L total) estimates 2,540 visitors vs 1,925 from registered sources — but that assumes diminishing-returns response (beta 0.7 peer / 0.5 paid) beyond the spend ranges actually observed, and excludes walk-ins.\n\nNext step: I can prepare campaign status changes (stop C02/C03) for you to confirm.",
+        "error": null,
+        "tools": [
+          "Checking the decision rules (as of 2025-04-20)",
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Running the budget what-if (as of 2025-04-20)",
+          "Calculating: (340+175)/2050",
+          "Calculating: 93000+59000"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 17115,
+          "completion": 2220
+        },
+        "ms": 21827
+      }
+    ]
+  },
+  {
+    "id": "R05",
+    "category": "recommendation",
+    "question": "referrals look cheap. should we double the referral budget?",
+    "as_of": "2025-03-10",
+    "follow_up_turns": [],
+    "expected_behaviour": "Checks whether Student Referrals (C05, planned start 12 Feb) is actually cheap per registered/confirmed person up to 10 Mar, notes its volume and that referrals depend on an existing base of interested students (doubling spend need not double results), checks the remaining budget against the INR 2,40,000 launch budget in force on 10 Mar, and recommends a measured increase/test if warranted.",
+    "answer_type": "explanation",
+    "must_not": [
+      "accepting 'cheap' without checking the numbers",
+      "assuming linear scaling",
+      "using the INR 3,00,000 budget (not in force until 15 Mar)",
+      "using data after 10 Mar"
+    ],
+    "turns": [
+      {
+        "question": "referrals look cheap. should we double the referral budget?",
+        "answer": "**No — referrals only look cheap next to the worst channels. By your own thresholds C05 is a \"change,\" not a \"scale,\" and doubling it buys registrations at ~₹195 each.** (All numbers as of 2025-03-10.)\n\n**Evidence**\n- C05 Student Referrals: ₹10,725 spend, 88 registrations → **₹121.88 per registration = 0.97x the blended ₹125.75**. Your scale threshold is ≤0.8x, so it doesn't qualify; the pre-committed decision is **\"change\"** because form completion on mature cohorts is 85.7% (below the 88% floor).\n- What-if, doubling C05 to ₹21,450: registrations 88 → ~143 (**+55**), i.e. **₹195 per extra registration** — well above blended.\n- Same ₹10,725 added to **C06 Organic Search** (₹9,800 → ₹20,525): 156 → ~262 registrations (**+106**), ~**₹101 per extra registration**. C06 is the genuinely cheap channel: ₹62.82/reg = 0.50x blended, already flagged \"scale.\"\n\n**Assumptions / limits**\n- What-if uses the plan's diminishing-returns model (beta 0.7 for peer channels); response beyond observed spend is assumed, not measured. No show-up data exists yet (festival is 12–13 April), so visitor estimates use the plan ratio.\n\n**Next step:** I can prepare a budget increase for C06 and/or a task for Dev (T06) to fix the referral form-completion leak — say the word and I'll put the card up for you to confirm.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-03-10)",
+          "Checking the decision rules (as of 2025-03-10)",
+          "Reading the plan versions",
+          "Running the budget what-if (as of 2025-03-10)",
+          "Running the budget what-if (as of 2025-03-10)",
+          "Calculating: 10725 / (143 - 88)",
+          "Calculating: 10725 / (262 - 156)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 24732,
+          "completion": 1815
+        },
+        "ms": 17333
+      }
+    ]
+  },
+  {
+    "id": "R06",
+    "category": "recommendation",
+    "question": "day 1 done. we're short of the footfall target, what can we still do for tomorrow?",
+    "as_of": "2025-04-12",
+    "follow_up_turns": [],
+    "expected_behaviour": "Gives day-1 distinct verified external visitors vs the 2,200 goal; identifies actionable pools from the data: registered/confirmed external people not yet admitted, pending/unverified check-ins to resolve, waitlisted people who could be confirmed; recommends specific day-2 actions with owners. Notes that resolving verification only counts genuine attendance. Uses no day-2 data.",
+    "answer_type": "explanation",
+    "must_not": [
+      "using 13 Apr check-ins",
+      "suggesting counting unverified/pending records as visitors to hit the target",
+      "generic advice not tied to the data"
+    ],
+    "turns": [
+      {
+        "question": "day 1 done. we're short of the footfall target, what can we still do for tomorrow?",
+        "answer": "I've prepared three day-2 tasks for you to confirm: the no-show reminder push (Arjun, high), the gate check-in fix (Meera, high), and the waitlist/interested release (Meera, medium) — all due tomorrow, 13 Apr.\n\nIf you also want to deploy the last ₹23,500, say the word and I'll prepare budget updates for C04/C05/C06 — but note that's the most speculative lever (assumes same-day response to spend), while the re-engagement push alone (~601 at day-1 rates) covers most of the 770 gap.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-12)",
+          "Reading the plan versions",
+          "Finding where people drop out (as of 2025-04-12)",
+          "Reading campaign metrics (as of 2025-04-12)",
+          "Reading show-up by lead time (as of 2025-04-12)",
+          "Checking the decision rules (as of 2025-04-12)",
+          "Running the budget what-if (as of 2025-04-12)",
+          "Calculating: 2200 - 1430",
+          "Calculating: 1113 * 0.54",
+          "Calculating: 37 / 2500",
+          "Calculating: 1113 + 88 + 29 + 37",
+          "Preparing a task for you to confirm",
+          "Preparing a task for you to confirm",
+          "Preparing a task for you to confirm"
+        ],
+        "proposals": [
+          {
+            "kind": "create_task",
+            "title": "Day-2 reminder push to the 1,113 confirmed no-shows",
+            "description": null,
+            "owner_id": "T04",
+            "owner_name": "Arjun Verma",
+            "due_date": "2025-04-13",
+            "priority": "high",
+            "campaign_id": "C02",
+            "initiative_id": null,
+            "evidence": "As of 12 Apr (day 1): 1,113 confirmed registrants did not come (largest pool C02 with 340 at 41.4% show-up); overall show-up 54.0%. At the day-1 rate, re-engagement could recover ~601 visitors vs the 770-visitor gap (1,430 actual vs 2,200 goal).",
+            "as_of": "2025-04-12"
+          },
+          {
+            "kind": "create_task",
+            "title": "Fix gate check-in for ambassador-sourced attendees before day-2 opening",
+            "description": null,
+            "owner_id": "T03",
+            "owner_name": "Meera Iyer",
+            "due_date": "2025-04-13",
+            "priority": "high",
+            "campaign_id": "C01",
+            "initiative_id": null,
+            "evidence": "As of 12 Apr: 37 confirmed attendees reached the gate and were never admitted (denied/pending check-ins), all sourced via C01 Campus Ambassadors — 1.5% of 2,500 confirmed. They already travelled once; fixing verification before day-2 opening recovers them.",
+            "as_of": "2025-04-12"
+          },
+          {
+            "kind": "create_task",
+            "title": "Release the 88 waitlisted and 29 interested with day-2 confirmations",
+            "description": null,
+            "owner_id": "T03",
+            "owner_name": "Meera Iyer",
+            "due_date": "2025-04-13",
+            "priority": "medium",
+            "campaign_id": null,
+            "initiative_id": null,
+            "evidence": "As of 12 Apr: 88 waitlisted + 29 still-interested registrants; the plan in force has no venue-capacity constraint, so they can be confirmed for day 2. Together with the 37 gate losses, that is 154 additional warm people against a 770-visitor gap.",
+            "as_of": "2025-04-12"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 46112,
+          "completion": 8648
+        },
+        "ms": 85153
+      }
+    ]
+  },
+  {
+    "id": "E01",
+    "category": "execution",
+    "question": "create a high priority task for Arjun to cut paid social daily spend by 20% from monday",
+    "as_of": "2025-03-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Shows a task proposal card: owner Arjun Verma (owner of Paid Social), linked campaign Paid Social (C02), priority high, due Monday 24 Mar 2025 (resolved from the selected date 20 Mar 2025 and stated so the user can correct it), a clear title/description, optionally with current daily spend as context. Waits for the user to confirm; says nothing has been created yet.",
+    "answer_type": "action_proposal",
+    "must_not": [
+      "claiming the task was created without confirmation",
+      "changing spend data itself",
+      "resolving 'monday' from the real-world date",
+      "linking the task to Organic Search (Arjun's other campaign)"
+    ],
+    "turns": [
+      {
+        "question": "create a high priority task for Arjun to cut paid social daily spend by 20% from monday",
+        "answer": "I've prepared a high-priority task for Arjun Verma (T04) to cut Paid Social daily spend by 20% starting Monday 24 March — it's on a card for you to confirm, and it isn't created until you click Confirm.\n\n**Evidence (as of 2025-03-20):**\n- Paid Social (C02) already carries a pre-committed **\"change\"** decision: cost per registration ₹134.5 = 1.13x the blended ₹119.24\n- Confirmation rate 84.7% (mature cohort) is below the 88% threshold\n- Nurture opt-out rate 24.1% is above the 15% threshold\n- Spend to date: ₹76,800 for 571 registrations\n\n**Assumptions / limits:** \"From Monday\" read as Monday 24 March 2025 (selected date is Thursday 20 March). The 20% cut is your instruction, not a threshold-derived number — the data supports a change but doesn't specify the size. If you'd like, I can also run a what-if on shifting the freed-up spend to the \"scale\" campaigns (Student Referrals, Organic Search).",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-03-20)",
+          "Checking the decision rules (as of 2025-03-20)",
+          "Preparing a task for you to confirm"
+        ],
+        "proposals": [
+          {
+            "kind": "create_task",
+            "title": "Cut Paid Social daily spend by 20% from Monday 24 March",
+            "description": "Reduce Paid Social (C02) daily spend by 20% starting Monday 24 March 2025, per the pre-committed \"change\" decision. Monitor cost per registration and confirmation rate over the following week to decide whether further cuts or a pause are needed.",
+            "owner_id": "T04",
+            "owner_name": "Arjun Verma",
+            "due_date": "2025-03-24",
+            "priority": "high",
+            "campaign_id": "C02",
+            "initiative_id": null,
+            "evidence": "As of 2025-03-20, Paid Social (C02) has a \"change\" decision under the team's thresholds: cost per registration ₹134.5 = 1.13x the blended ₹119.24, confirmation rate 84.7% (mature cohort) below the 88% minimum, and nurture opt-out rate 24.1% above the 15% maximum. Spend to date is ₹76,800 with 571 registrations.",
+            "as_of": "2025-03-20"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13173,
+          "completion": 1110
+        },
+        "ms": 11270
+      }
+    ]
+  },
+  {
+    "id": "E02",
+    "category": "execution",
+    "question": "can u make a task for the social media intern to follow up with waitlisted people from college partnerships",
+    "as_of": "2025-04-03",
+    "follow_up_turns": [],
+    "expected_behaviour": "Notes no team member identifiable as 'social media intern' exists in the data and asks who should own it (may suggest Meera Iyer, owner of College Partnerships). Proposes or asks for a due date before the 12 Apr event and a priority; may include the number of currently waitlisted College Partnerships registrations as context. Nothing is created until the user confirms.",
+    "answer_type": "action_proposal",
+    "must_not": [
+      "inventing a team member",
+      "silently assigning the task to someone",
+      "claiming the task was created"
+    ],
+    "turns": [
+      {
+        "question": "can u make a task for the social media intern to follow up with waitlisted people from college partnerships",
+        "answer": "I've prepared the task for you to confirm:\n\n- **Title:** Follow up with waitlisted College Partnerships registrants\n- **Owner:** Meera Iyer (T03) · **Due:** 10 Apr 2025 · **Priority:** medium · **Campaign:** C04\n\n**Evidence (as of 3 Apr 2025):** C04 has 8 waitlisted registrants (371 registered, 318 confirmed, 33 interested), and the festival is 12-13 April — so the follow-up window is tight.\n\nIt won't be created until you click Confirm. Want me to change the owner, due date, or priority first?",
+        "error": null,
+        "tools": [
+          "Reading tasks and bets",
+          "Reading campaign metrics (as of 2025-04-03)",
+          "Preparing a task for you to confirm"
+        ],
+        "proposals": [
+          {
+            "kind": "create_task",
+            "title": "Follow up with waitlisted College Partnerships registrants",
+            "description": "Personally contact each of the 8 waitlisted registrants from College Partnerships (C04), confirm they still want to attend, and move them to confirmed or release their spot before the festival on 12-13 April 2025.",
+            "owner_id": "T03",
+            "owner_name": "Meera Iyer",
+            "due_date": "2025-04-10",
+            "priority": "medium",
+            "campaign_id": "C04",
+            "initiative_id": null,
+            "evidence": "As of 2025-04-03, College Partnerships (C04) has 8 waitlisted registrants (out of 371 registered, 318 confirmed, 33 still interested). The festival is 12-13 April, so follow-up needs to land before then.",
+            "as_of": "2025-04-03"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 15645,
+          "completion": 2139
+        },
+        "ms": 18052
+      }
+    ]
+  },
+  {
+    "id": "E03",
+    "category": "execution",
+    "question": "push the referral follow-up task to 8th april pls",
+    "as_of": "2025-04-05",
+    "follow_up_turns": [],
+    "expected_behaviour": "Checks the existing tasks. If none matches, says so and offers to create one (as a proposal); if exactly one matches, proposes changing its due date to 8 Apr 2025 for confirmation; if several match, asks which. Does not claim any change was made without confirmation.",
+    "answer_type": "action_proposal",
+    "must_not": [
+      "claiming the update was done",
+      "pretending a matching task exists",
+      "silently creating a new task"
+    ],
+    "turns": [
+      {
+        "question": "push the referral follow-up task to 8th april pls",
+        "answer": "I've prepared a new **\"Referral follow-up\"** task for you to confirm — due **2025-04-08**, owned by **Dev Malhotra (T06)**, linked to C05 Student Referrals, medium priority. It won't be created until you click Confirm.\n\nIf you meant a different task (e.g., one tracked outside this dashboard), let me know its details and I'll set it up instead.",
+        "error": null,
+        "tools": [
+          "Reading tasks and bets",
+          "Preparing a task for you to confirm"
+        ],
+        "proposals": [
+          {
+            "kind": "create_task",
+            "title": "Referral follow-up",
+            "description": "Follow up on Student Referrals (C05) pipeline ahead of the festival.",
+            "owner_id": "T06",
+            "owner_name": "Dev Malhotra",
+            "due_date": "2025-04-08",
+            "priority": "medium",
+            "campaign_id": "C05",
+            "initiative_id": null,
+            "evidence": "Task tracker is empty as of 2025-04-05 — no existing referral follow-up task to reschedule. C05 Student Referrals is owned by Dev Malhotra (T06).",
+            "as_of": "2025-04-05"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13274,
+          "completion": 888
+        },
+        "ms": 11229
+      }
+    ]
+  },
+  {
+    "id": "E04",
+    "category": "execution",
+    "question": "based on the numbers, set up tasks for whatever is most urgent",
+    "as_of": "2025-03-25",
+    "follow_up_turns": [
+      "drop the 2nd one and make the first one due 28 march"
+    ],
+    "expected_behaviour": "Proposes a small number (2-4) of specific tasks, each with title, owner (the relevant campaign owner), due date before 12 Apr 2025, priority, linked campaign, and the data point that justifies it; waits for confirmation. Follow-up: revises the proposal (drops task 2, sets task 1 due 28 Mar 2025) and still waits for confirmation.",
+    "answer_type": "action_proposal",
+    "must_not": [
+      "creating tasks without confirmation",
+      "vague tasks with no data justification",
+      "due dates after the event or before the selected date",
+      "creating the dropped task anyway, or creating the revised tasks as duplicates"
+    ],
+    "turns": [
+      {
+        "question": "based on the numbers, set up tasks for whatever is most urgent",
+        "answer": "I could not produce an answer. Please rephrase the question.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-03-25)",
+          "Reading campaign metrics (as of 2025-03-25)",
+          "Finding where people drop out (as of 2025-03-25)",
+          "Checking the decision rules (as of 2025-03-25)",
+          "Reading tasks and bets"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 11041,
+          "completion": 4270
+        },
+        "ms": 43720
+      },
+      {
+        "question": "drop the 2nd one and make the first one due 28 march",
+        "answer": "I've prepared the single most urgent task for you to confirm — dropping the second one as asked:\n\n**Task: Stop C03 Creator Partners and reallocate its spend to C01/C05/C06** — owner Nisha Rao (T05), due 28 March 2025, high priority.\n\n**Evidence (as of 25 Mar 2025):**\n- C03 breaches 4 pre-committed thresholds: ₹205.91 per registration = 1.86x the blended ₹110.63 (stop rule is >1.6x), confirmation 81.3% (<88%), form completion 81.6% (<88%), opt-outs 18.7% (>15%).\n- Pace gap: run rate 44.79 registrations/day vs 68.71/day needed; projection 2,793 vs the 3,200 goal.\n- What-if at the same ₹2,24,800 total spend: registrations 2,032 → 2,221 (+189), visitors 1,397 → 1,528 (+131).\n\n**Assumptions / limits:** The what-if uses the plan's diminishing-returns model (beta 0.7 for peer/group channels, visitors per registration 0.6875 from the plan); response beyond the spend range already observed is assumed, not measured. The +189 registrations closes less than half the 407-registration gap, so the pace problem isn't solved by this alone.\n\nIf you want, I can also prepare the campaign status change (C03 → stopped) as a separate card.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-03-25)",
+          "Checking the decision rules (as of 2025-03-25)",
+          "Reading tasks and bets",
+          "Reading campaign metrics (as of 2025-03-25)",
+          "Finding where people drop out (as of 2025-03-25)",
+          "Running the budget what-if (as of 2025-03-25)",
+          "Preparing a task for you to confirm"
+        ],
+        "proposals": [
+          {
+            "kind": "create_task",
+            "title": "Stop C03 Creator Partners and reallocate its spend to C01/C05/C06",
+            "description": "Execute the pre-committed stop decision on C03 Creator Partners and shift its remaining spend to the three scale channels (C01 +₹16,000, C05 +₹16,000, C06 +₹16,800).",
+            "owner_id": "T05",
+            "owner_name": "Nisha Rao",
+            "due_date": "2025-03-28",
+            "priority": "high",
+            "campaign_id": "C03",
+            "initiative_id": null,
+            "evidence": "As of 2025-03-25: C03 breaches 4 stop/change thresholds — cost per registration ₹205.91 = 1.86x blended ₹110.63 (stop rule >1.6x), confirmation 81.3% (<88%), form completion 81.6% (<88%), nurture opt-outs 18.7% (>15%). Registration pace is short: run rate 44.79/day vs 68.71/day needed, projecting 2,793 vs the 3,200 goal. What-if (same ₹2,24,800 total spend): reallocation lifts registrations 2,032 → 2,221 (+189) and visitors 1,397 → 1,528 (+131).",
+            "as_of": "2025-03-25"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 39435,
+          "completion": 5811
+        },
+        "ms": 55895
+      }
+    ]
+  },
+  {
+    "id": "U01",
+    "category": "cannot_answer",
+    "question": "whats the gender ratio and age group of attendees?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines: the data has no gender, age or other demographic fields (people have only name, type, first-seen time and first-touch source). Does not infer gender from names. Suggests collecting demographics at registration.",
+    "answer_type": "refusal",
+    "must_not": [
+      "inferring gender from first names",
+      "giving a demographic split",
+      "using the campaigns' target_audience text as observed demographics"
+    ],
+    "turns": [
+      {
+        "question": "whats the gender ratio and age group of attendees?",
+        "answer": "The data can't answer this — there are no demographic fields at all. The `people` table records only person type, first-seen/source, and campaign; nothing about gender, age, or where attendees live or study. So no gender ratio or age breakdown of the 12-13 April attendees exists in CampusFest 2025 data (as of 20 April 2025).\n\n**What would answer it:** a demographic field on people or registrations (e.g., gender, date of birth or age band), or a gate-day survey linked to person IDs. If you want that next year, capturing age/gender on the registration form would make it queryable.\n\n**Closest things the data can answer:**\n- Verified visitor counts and show-up rate overall, by campaign, or by registration lead time\n- Attendance split by day 1 vs day 2, and by acquisition campaign (e.g., ambassadors vs paid social)\n\nWant me to pull one of those instead?",
+        "error": null,
+        "tools": [
+          "Checking what the data contains"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 7807,
+          "completion": 415
+        },
+        "ms": 5538
+      }
+    ]
+  },
+  {
+    "id": "U02",
+    "category": "cannot_answer",
+    "question": "Which colleges or cities did most of our attendees come from?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines: no location or college field exists for people; the College Partnerships campaign is an acquisition source, not an institution identifier. May offer the campaign/first-touch split instead and suggests collecting college/city at registration.",
+    "answer_type": "refusal",
+    "must_not": [
+      "guessing cities or colleges",
+      "treating College Partnerships attendees as 'from partner colleges' with named institutions"
+    ],
+    "turns": [
+      {
+        "question": "Which colleges or cities did most of our attendees come from?",
+        "answer": "The data can't answer that: there are no college, city or any location/demographic fields on people, registrations or check-ins, so attendee origin was never captured. To answer it next year, add a college/city field to the registration form (or capture it at gate check-in).\n\nThe closest question the data **can** answer is which acquisition channels attendees came from. As of 2025-04-20, of 2,050 verified external visitors, 1,925 were campaign-attributed (125 walk-ins have no source):\n\n| Campaign | Visitors | Share of attributed |\n|---|---|---|\n| Campus Ambassadors (C01) | 390 | 20.3% |\n| College Partnerships (C04) | 385 | 20.0% |\n| Paid Social (C02) | 340 | 17.7% |\n| Student Referrals (C05) | 275 | 14.3% |\n| Organic Search (C06) | 195 | 10.1% |\n| Creator Partners (C03) | 175 | 9.1% |\n| Community Groups (C07) | 165 | 8.6% |\n\n**Evidence:** campaign metrics and overview, as of 2025-04-20 (post-festival).\n\n**Limits:** attribution is single-touch (one recorded source per person), so this shows where attendees were *acquired*, not where they live or study.\n\nIf you want, I can propose a task to add a college/city field to next year's registration form.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Calculating: 390/1925",
+          "Calculating: 385/1925",
+          "Calculating: 340/1925",
+          "Calculating: 275/1925",
+          "Calculating: 195/1925",
+          "Calculating: 175/1925",
+          "Calculating: 165/1925"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 28339,
+          "completion": 1379
+        },
+        "ms": 15444
+      }
+    ]
+  },
+  {
+    "id": "U03",
+    "category": "cannot_answer",
+    "question": "how many extra attendees did paid social actually cause, compared to if we hadn't run it at all?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines the causal/incremental estimate: there is no holdout, control group or experiment, and attribution is not incrementality. May give the attributed number clearly labelled as attribution. Suggests a holdout or geo/time-split test for the future.",
+    "answer_type": "refusal",
+    "must_not": [
+      "presenting attributed visitors as caused/incremental",
+      "fabricating a lift percentage"
+    ],
+    "turns": [
+      {
+        "question": "how many extra attendees did paid social actually cause, compared to if we hadn't run it at all?",
+        "answer": "**The data can't measure true causation — there was no holdout or control group.** The best modeled estimate, using the plan's own diminishing-returns model, is **~340 extra verified visitors** (and 680 registrations) — but that number is \"all of Paid Social's attributed visitors\" by construction, not an independent measurement.\n\n**Evidence (as of 2025-04-20):**\n- Paid Social (C02): ₹93,000 net spend → 680 registrations → **340 verified visitors**, ₹273.53 per visitor, 58.6% show-up of confirmed.\n- `what_if_budget` with C02 spend set to ₹0: registrations 680 → 0, visitors 340 → 0 (beta 0.5), i.e. modeled increment = 340 − 0 = **340**.\n\n**Assumptions / limits:**\n- The model is a power law through the origin, so ₹0 spend always yields 0 — the \"caused\" figure equals the attributed count by assumption, and zero spend is outside the observed spend range.\n- Attribution is single-touch: each person has exactly one recorded source campaign, so we can't tell how many of those 340 would have arrived anyway via ambassadors, referrals, etc. (cross-channel substitution isn't modeled).\n- Walk-ins excluded.\n\nIf you want a genuinely causal number for next year, the data can't provide it retroactively — a geographic or audience holdout (running Paid Social in only some colleges) would.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Running the budget what-if (as of 2025-04-20)",
+          "Checking what the data contains",
+          "Calculating: 340 - 0"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 15985,
+          "completion": 1899
+        },
+        "ms": 18654
+      }
+    ]
+  },
+  {
+    "id": "U04",
+    "category": "cannot_answer",
+    "question": "how many unique students did we reach across all channels?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Explains that reported_reach is per-day platform reach with no cross-day or cross-campaign identity, so unique reach cannot be computed; summing overstates it. May give the summed daily reach as an explicitly labelled upper bound and the count of identified external people as a separate, known figure. Suggests de-duplicated platform reach reports would be needed.",
+    "answer_type": "refusal",
+    "must_not": [
+      "presenting summed reach as unique students",
+      "presenting impressions as people"
+    ],
+    "turns": [
+      {
+        "question": "how many unique students did we reach across all channels?",
+        "answer": "The data can't tell you how many *unique* students saw the campaigns — impressions and reach are anonymous platform event counts, so summing them double-counts people. The closest answer it can give: **3,625 unique external people were identified** across all channels as of 20 April 2025 (end of day).\n\n**Evidence (as of 2025-04-20):**\n- Identified external people: **3,625** (vs goal of 3,600) — distinct individuals first seen via campaigns or identified at the gate\n- Anonymous totals for context: 10,29,015 impressions and 32,070 clicks — these are events, not people\n- Down the funnel: 2,800 registered, 2,500 confirmed, 2,050 verified visitors\n\n**Assumptions / limits:** \"Identified\" means we know who they are (a person record), not that they merely saw an ad. If you meant unique people who engaged (e.g., clicked or started a form), I can pull that from the interactions table — just say which definition you want.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Checking what the data contains"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 8176,
+          "completion": 553
+        },
+        "ms": 6477
+      }
+    ]
+  },
+  {
+    "id": "U05",
+    "category": "cannot_answer",
+    "question": "Why were people denied at the gate? was it mostly ID issues?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "States that check-ins record only result, verification and source - no denial reason - so 'ID issues' cannot be confirmed. May describe observable patterns (e.g. denied attempts by unverified status, registration status, source), labelled as patterns not reasons. Suggests logging a denial reason at the gate.",
+    "answer_type": "refusal",
+    "must_not": [
+      "asserting ID issues or any other reason as fact",
+      "equating 'unverified' with 'ID problem' without caveat"
+    ],
+    "turns": [
+      {
+        "question": "Why were people denied at the gate? was it mostly ID issues?",
+        "answer": "The data can't say **why** they were denied — check-in records capture only the result (admitted/denied/pending) and verification status, with no reason field, so \"ID issues\" can't be confirmed or ruled out. What the data does show (as of 2025-04-20):\n\n**Evidence**\n- 60 confirmed registrants reached the gate and were never admitted (funnel leaks, 2025-04-20).\n- Custom query on their last check-in record: **30 denied** (verification: verified) and **30 pending / unverified** — an even split, all scanned (no manual overrides).\n- All 60 are attributed to **C01 Campus Ambassadors**; every other campaign had 0 gate losses.\n\n**Assumptions / limits**\n- \"Denied\" vs \"pending/unverified\" is the closest the data gets to a reason; the actual cause (ID mismatch, capacity, duplicate pass, etc.) is not recorded anywhere.\n- The C01 concentration *suggests* a verification problem specific to ambassador-sourced registrations, but that's a hypothesis — the data shows only that they were the ones turned away.\n\n**What would answer it:** gate-staff reason codes or a denial log per check-in. Closest available follow-up: I can pull the C01 gate-lost list (day, time, registration status) to see if denials clustered on one day or shift — say the word.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Finding where people drop out (as of 2025-04-20)",
+          "Running a read-only query: Break down the 60 gate-lost people by their last check-in result, verification and scanner source"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 15414,
+          "completion": 2224
+        },
+        "ms": 22231
+      }
+    ]
+  },
+  {
+    "id": "U06",
+    "category": "cannot_answer",
+    "question": "What's the ROI of the fest - ticket revenue plus sponsorship vs marketing spend?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines: the data has no ticket prices, revenue or sponsor amounts (only marketing spend), so ROI cannot be computed. Can report the cost side (net spend, cost per visitor). Lists the data needed (ticket price/revenue per registration, sponsor contracts).",
+    "answer_type": "refusal",
+    "must_not": [
+      "assuming a ticket price",
+      "inventing sponsorship figures",
+      "calling cost per visitor 'ROI'"
+    ],
+    "turns": [
+      {
+        "question": "What's the ROI of the fest - ticket revenue plus sponsorship vs marketing spend?",
+        "answer": "The data can't answer that ROI question: there are no ticket-revenue or sponsorship fields anywhere in the dataset (the sponsor data records associations only and isn't loaded here), so any revenue figure would be invented, not measured.\n\nWhat the data does give, as of 2025-04-20 (post-festival):\n\n- **Net marketing spend:** ₹2,74,000 against a ₹3,00,000 budget (revised plan)\n- **Verified external visitors:** 2,050 (1,925 from registrations + 125 walk-ins) vs a 2,200 goal\n- **Cost per verified visitor:** ₹133.7 (₹2,74,000 ÷ 2,050)\n- **Cost per registration:** ₹97.9 (₹2,74,000 ÷ 2,800 registered)\n- **Show-up rate of confirmed registrants:** 77.0% (1,925 of 2,500)\n\n**What would answer it:** ticket sales per attendee and sponsorship amounts loaded into the ledger — then ROI = (ticket revenue + sponsorship − ₹2,74,000) ÷ ₹2,74,000.\n\nIf you can supply those two figures, I'll compute the ROI exactly. Otherwise, the closest question I can answer is marketing efficiency — e.g. which campaign delivered visitors cheapest (via `get_decisions` / campaign metrics). Want that breakdown?",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Calculating: 274000/2050",
+          "Calculating: 274000/2800"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13445,
+          "completion": 818
+        },
+        "ms": 9710
+      }
+    ]
+  },
+  {
+    "id": "U07",
+    "category": "cannot_answer",
+    "question": "what was the peak crowd inside the venue on saturday?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Understands Saturday = 12 Apr 2025 (day 1). Explains that only admission (entry) events exist, with no exits, so occupancy cannot be computed. May offer verified admissions by hour (entries, not crowd inside). Suggests exit scans or periodic headcounts.",
+    "answer_type": "refusal",
+    "must_not": [
+      "presenting cumulative or hourly entries as people inside the venue",
+      "getting the day wrong"
+    ],
+    "turns": [
+      {
+        "question": "what was the peak crowd inside the venue on saturday?",
+        "answer": "The data can't answer that directly: check-ins record **admissions only — there are no exit/check-out timestamps** — so the number of people inside the venue at any moment (occupancy) isn't measurable. What the data does show (custom query on check-ins, as of 2025-04-20):\n\n**Saturday 12 April (day 1)**\n- **1,430** distinct external people had a verified admission that day (matches the day-1 visitor count).\n- Gate ran 10:00–19:00 IST; **all 1,430 had entered by 17:00** (cumulative first-time admissions: 159 by 10:00 → 1,091 by 15:00 → 1,430 by 17:00).\n- 18:00–19:00 were **pure re-entries**: 400 + 75 = 475 admission events with **zero** first-time admissions — people already inside that day leaving and coming back, likely for the evening programme.\n\n**Assumptions / limits**\n- If nobody left before the evening, the crowd would peak at **1,430** — but that's a ceiling, not a measurement. The 475 evening re-entries prove people were exiting, so the true peak inside was somewhere below 1,430 and can't be pinned down.\n- The plan in force (revised plan, 15 Mar) has no venue-capacity figure to compare against.\n\nTo answer this properly you'd need exit scans or periodic occupancy counts — worth adding to next year's gate setup.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Running a read-only query: Count distinct external verified visitors admitted on Saturday 12 April (day 1)",
+          "Running a read-only query: Hourly verified external admissions on 12 Apr and cumulative distinct people admitted (proxy for crowd buildup)",
+          "Running a read-only query: Compare visitors_asof day1/day2 counts with raw distinct external verified admissions per festival day",
+          "Reading the change log",
+          "Running a read-only query: Corrected hourly view for Saturday 12 Apr: admission events, distinct people admitted per hour, and cumulative distinct people admitted (crowd-buildup proxy)",
+          "Reading the plan versions"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 50724,
+          "completion": 6404
+        },
+        "ms": 62722
+      }
+    ]
+  },
+  {
+    "id": "U08",
+    "category": "cannot_answer",
+    "question": "Did people like the fest? whats our NPS",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines: no feedback, rating or survey data exists. Repeat attendance on day 2 or email engagement must not be presented as satisfaction. Suggests a post-event survey.",
+    "answer_type": "refusal",
+    "must_not": [
+      "computing an NPS",
+      "treating two-day attendance or email opens as satisfaction"
+    ],
+    "turns": [
+      {
+        "question": "Did people like the fest? whats our NPS",
+        "answer": "- **Repeat attendance** (custom query on `visitors_asof`): **725 of 2,050 visitors (35.4%) attended both days**; 1,325 came one day only.\n- On the negative side: 575 confirmed registrants never showed and 183 cancelled.\n\n**Interpretation (hypothesis, not measurement):** a 77.0% show-up rate, walk-ins, and 35.4% returning for day 2 suggest the event drew and held people — but that's behaviour, not opinion. Whether they *liked* it is unmeasured.\n\n**What would answer it:** a post-event survey with the standard 0–10 recommend question. If you want, I can propose a task for the team to run one at next year's fest — just say the word.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Running a read-only query: How many verified visitors attended day 1 only, day 2 only, or both days",
+          "Calculating: 725/2050*100"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 19568,
+          "completion": 1240
+        },
+        "ms": 14142
+      }
+    ]
+  },
+  {
+    "id": "M01",
+    "category": "multi_turn",
+    "question": "How many verified visitors came via Campus Ambassadors?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "and paid social?",
+      "so which one's cheaper per visitor?"
+    ],
+    "expected_behaviour": "Turn 1 (number): distinct external admitted+verified people attributed to Campus Ambassadors (C01), with the attribution stated (registration acquisition source, check-in campaign_id or first touch). Turn 2 (number): resolves 'and paid social?' to the same metric and definition for C02. Turn 3 (comparison): cost per verified visitor for both = net spend / the visitor counts already given, and says which is cheaper; numbers consistent with turns 1-2.",
+    "answer_type": "number",
+    "must_not": [
+      "asking what metric 'and paid social?' refers to",
+      "switching attribution between turns",
+      "numbers in turn 3 inconsistent with turns 1-2",
+      "counting check-in rows"
+    ],
+    "turns": [
+      {
+        "question": "How many verified visitors came via Campus Ambassadors?",
+        "answer": "**390 verified visitors** came via Campus Ambassadors (C01), as of 20 April 2025.\n\nEvidence (as of 2025-04-20):\n- 480 confirmed registrants → 390 attended and were verified at the gate (show-up rate 81.3%)\n- 520 registered, 23 cancelled, 13 waitlisted\n- Spend ₹42,000 → cost per verified visitor ₹107.69 (₹80.77 per registration)\n\nAll 390 visitors are external people with admitted and verified check-ins, attributed to C01 by their recorded source campaign.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6882,
+          "completion": 277
+        },
+        "ms": 3470
+      },
+      {
+        "question": "and paid social?",
+        "answer": "**340 verified visitors** came via Paid Social (C02), as of 20 April 2025.\n\nEvidence (as of 2025-04-20):\n- 580 confirmed registrants → 340 attended and were verified (show-up rate 58.6%)\n- 680 registered, 60 cancelled, 30 waitlisted\n- Spend ₹93,000 → cost per verified visitor ₹273.53 (₹136.76 per registration)\n\nFor comparison: Campus Ambassadors delivered 390 visitors on ₹42,000 (₹107.69 per visitor, 81.3% show-up) — Paid Social brought fewer visitors at roughly 2.5× the cost per visitor, with a much weaker show-up rate.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 7125,
+          "completion": 292
+        },
+        "ms": 3821
+      },
+      {
+        "question": "so which one's cheaper per visitor?",
+        "answer": "**Campus Ambassadors is cheaper: ₹107.69 per verified visitor vs Paid Social's ₹273.53** — Paid Social costs about 2.5× more (₹165.84 more per visitor), as of 20 April 2025.\n\nEvidence (as of 2025-04-20):\n| | C01 Campus Ambassadors | C02 Paid Social |\n|---|---|---|\n| Spend | ₹42,000 | ₹93,000 |\n| Verified visitors | 390 | 340 |\n| Cost per visitor | ₹107.69 | ₹273.53 |\n| Show-up rate | 81.3% | 58.6% |\n\nThe gap is driven by both sides of the funnel: Paid Social spent 2.2× as much but converted worse at every stage (identified→registered 70.8% vs 86.7%, show-up 58.6% vs 81.3%), so it ended with fewer visitors despite more spend.\n\nIf you're weighing a budget shift for a future event, I can run a what-if estimate — just say how you'd move the money.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Calculating: 273.53 - 107.69",
+          "Calculating: 273.53 / 107.69"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 12214,
+          "completion": 523
+        },
+        "ms": 6788
+      }
+    ]
+  },
+  {
+    "id": "M02",
+    "category": "multi_turn",
+    "question": "how far are we from the registration goal",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "what about on 1st march?",
+      "why was the goal changed?"
+    ],
+    "expected_behaviour": "Turn 1 (number): 3,200 minus distinct external people with a registration as of 20 Apr (or the surplus). Turn 2 (number): either answers as of 1 Mar 2025 with the 'Attendee launch plan' goal of 2,800 and registrations registered by 1 Mar, or asks the user to change the selected date; must not mix dates. Turn 3 (refusal/explanation): the data shows only that the 'Attendee revised plan' took effect 15 Mar 2025 09:00 IST with higher goals and budget; the reason for the change is not recorded, so any explanation is labelled as speculation.",
+    "answer_type": "number",
+    "must_not": [
+      "using the 3,200 goal for 1 Mar",
+      "using 20 Apr registration counts for 1 Mar",
+      "stating a reason for the target change as fact"
+    ],
+    "turns": [
+      {
+        "question": "how far are we from the registration goal",
+        "answer": "We finished 400 registrations short of the goal: 2,800 registered against the 3,200 target (87.5% achieved), as of 20 April 2025.\n\n**Evidence (as of 2025-04-20, end of day):**\n- Registered people: 2,800; registration goal: 3,200 (Attendee revised plan, in force since 15 March 2025) → shortfall of 400 (12.5% below goal)\n- The festival is over (12–13 April), so this gap is final — no further registrations can close it\n- For context: identified external people (3,625) actually beat their goal of 3,600, so the miss is in converting identified → registered, not in reach\n\n**Assumptions / limits:** I'm using the revised plan (v2) as the goal, since it's the version in force on the selected date. Against the original launch plan (2,800 goal), you'd be exactly at goal.\n\nNext step, if useful: I can break down where the identified → registered conversion leaked by campaign, to inform next year's plan.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Reading the plan versions",
+          "Calculating: 3200 - 2800",
+          "Calculating: 2800 / 3200 * 100"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 10885,
+          "completion": 538
+        },
+        "ms": 6723
+      },
+      {
+        "question": "what about on 1st march?",
+        "answer": "On 1 March 2025 we were 1,656 registrations short of the goal: 1,144 registered against the 2,800 target (40.9% of goal), with 41 days to go.\n\n**Evidence (as of 2025-03-01, end of day):**\n- Registered: 1,144; goal in force: 2,800 (Attendee launch plan — the revised 3,200 goal only took effect 15 March)\n- Gap: 1,656 (59.1% of the goal still to go)\n- The dashboard's projection that day: 2,775 registrations by the event — essentially on track, needing 40.39/day vs the then run rate of 39.79/day\n- Spend to date: ₹1,35,350 of ₹2,40,000 budget\n\n**Assumptions / limits:** The projection is the dashboard's own linear run-rate estimate, not a forecast of what actually happened.\n\nWorth noting: we ended at exactly 2,800 — the original goal — so the 1 March projection was accurate; the final \"miss\" only exists because the goal was raised to 3,200 on 15 March.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-03-01)",
+          "Reading the plan versions",
+          "Calculating: 2800 - 1144",
+          "Calculating: 1144 / 2800 * 100"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 11903,
+          "completion": 688
+        },
+        "ms": 7881
+      },
+      {
+        "question": "why was the goal changed?",
+        "answer": "The data doesn't record a reason — there's no change-log entry or note explaining the 15 March 2025 revision, so I can't tell you *why* from the data. What it does show is that this was a coordinated re-plan, not just a registration-target tweak.\n\n**Evidence:**\n- The \"Attendee revised plan\" (effective 15 Mar 2025) raised every goal together: identified 3,200 → 3,600, registrations 2,800 → 3,200, visitors 1,800 → 2,200, and budget ₹2,40,000 → ₹3,00,000 (+25%, +₹60,000)\n- On the day it took effect, the funnel was well ahead of the *original* plan's pace: 1,562 registered (55.8% of the old 2,800 goal) and 2,393 identified (74.8% of the old 3,200 goal), with 28 days to go\n- But spend was already ₹1,89,575 — 79.0% of the old budget — and the run-rate projection that day was 2,368, below even the old goal\n\n**Hypothesis (not in the data):** the team was ahead on absolute progress with budget running out, so they raised ambition and unlocked ₹60,000 more to fund the final push. The slower March run rate makes a pure \"we'll easily beat it\" rationale less likely.\n\n**Limit:** if the planning meeting notes exist, they're outside this dataset.",
+        "error": null,
+        "tools": [
+          "Reading the change log",
+          "Reading the plan versions",
+          "Reading the change log (as of 2025-03-16)",
+          "Reading tasks and bets",
+          "Reading the headline funnel (as of 2025-03-15)",
+          "Calculating: 1562/2800",
+          "Calculating: 2393/3200",
+          "Calculating: 189575/240000"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 89709,
+          "completion": 2603
+        },
+        "ms": 26593
+      }
+    ]
+  },
+  {
+    "id": "M03",
+    "category": "multi_turn",
+    "question": "which campaign has the worst no-show rate?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "why?",
+      "ok so what should we change next time?"
+    ],
+    "expected_behaviour": "Turn 1 (comparison): per-campaign no-show rate = registered (state whether cancelled are excluded; ideally confirmed) external people without a verified admission / that base; names the worst with its rate and base size. Turn 2 (explanation): data-backed correlates (status mix, registration timing, pre-registration engagement) labelled as evidence, and says reasons for not attending are not recorded; any other explanation labelled as a hypothesis. Turn 3 (explanation): recommendations that follow from turn 2, tied to the campaign and its owner, plus collecting reason/feedback data.",
+    "answer_type": "comparison",
+    "must_not": [
+      "changing the no-show definition between turns",
+      "stating hypotheses (exams, weather, travel) as facts",
+      "naming a small-base campaign worst without mentioning base size",
+      "generic advice unrelated to turn 2"
+    ],
+    "turns": [
+      {
+        "question": "which campaign has the worst no-show rate?",
+        "answer": "**Paid Social (C02) has the worst no-show rate: 41.4%** — 240 of its 580 confirmed registrants never showed up (as of 2025-04-20, post-festival).\n\nEvidence (confirmed → did not come, as of 2025-04-20):\n\n| Campaign | Confirmed | Did not come | No-show rate |\n|---|---|---|---|\n| **C02 Paid Social** | 580 | 240 | **41.4%** |\n| C03 Creator Partners | 290 | 115 | 39.7% |\n| C01 Campus Ambassadors | 480 | 30 | 6.3% |\n| C04 College Partnerships | 420 | 35 | 8.3% |\n| C05 Student Referrals | 320 | 45 | 14.1% |\n| C06 Organic Search | 225 | 30 | 13.3% |\n| C07 Community Groups | 185 | 20 | 10.8% |\n\nNotes:\n- C02 also has the highest opt-out count (117) and the highest cost per verified visitor (₹273.53), consistent with its weak post-confirmation engagement.\n- C01's 60 \"gate lost\" (reached the gate, never admitted) is a separate leak from no-shows — worth its own look, but not a no-show issue.\n\nNext step: I can pull the pre-committed scale/stop decision for C02 (get_decisions) or model shifting budget from C02 to C04/C05 — just say the word.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Finding where people drop out (as of 2025-04-20)",
+          "Calculating: 240/580",
+          "Calculating: 115/290"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 14568,
+          "completion": 717
+        },
+        "ms": 8506
+      },
+      {
+        "question": "why?",
+        "answer": "The data points to **low audience intent, compounded by early registration timing** — not timing alone (all as of 2025-04-20, custom lead-time query).\n\n**Evidence**\n- **C02 no-shows at every lead time**, so it's not just \"registered too early\": even people who registered 0-7 days before the festival showed up at only 53.3% (8/15), vs 81.0% for that bucket overall and 85.0% for C01 (34/40). Its 43-56-day and 57+-day registrants came at 58.8% (120/204) and 58.3% (112/192).\n- **Its confirmed base is heavily front-loaded**: 68.3% of C02's confirmed (396/580) registered 43+ days out, vs 20.7% for C04 (87/420) — and long lead time depresses show-up for everyone (71.5-74.0% in the 43+ buckets vs ~81% within 14 days).\n- **Intent was already weak upstream**: C02 has the lowest identified→registered (70.8%) and registered→confirmed (85.3%) of all campaigns, and the highest nurture opt-out rate (26.0% of 450 sends vs 8.6% for C01).\n- **Channel pattern**: C03 Creator Partners, the other paid-reach channel, is nearly as bad (60.3% show-up); owned/peer channels run 81-92%.\n\n**Hypothesis (beyond the data)**: broad paid-reach audiences have no personal or social tie to the festival, so confirmation is cheap and commitment is thin. The data has no motivation or demographic fields to test this directly.\n\n**Limits**: nurture emails went only to non-registrants, so they can't have caused confirmed people to no-show — opt-outs are a signal of a disengaged pool, not a mechanism. Attribution is single-touch.\n\nNext step: I can pull the pre-committed stop/change decision for C02, or model shifting its budget to C04/C05.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Reading show-up by lead time (as of 2025-04-20)",
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Running a read-only query: Show-up of confirmed registrants by campaign and registration lead-time bucket, to test whether C02's no-shows come from early registrations",
+          "Calculating: 8/15",
+          "Calculating: (204+192)/580",
+          "Calculating: (36+51)/420",
+          "Calculating: 117/450",
+          "Calculating: 18/210"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 31526,
+          "completion": 4104
+        },
+        "ms": 38139
+      },
+      {
+        "question": "ok so what should we change next time?",
+        "answer": "Confirmed lifts from the reallocation model: **+31.9% visitors** (1,925 → ~2,539) and **+12.6% registrations** (2,800 → 3,152) at the same ₹2,74,000 budget.\n\nI've prepared three cards for you to confirm:\n1. **Stop C02 Paid Social** (failed 4 stop thresholds)\n2. **Stop C03 Creator Partners** (failed 4 stop thresholds)\n3. **High-priority task for Meera (T03), due 2025-04-27**: diagnose the C01 gate-admission losses (60 of 480 confirmed, 12.5% vs 5% cap)\n\nNone are applied until you click Confirm. If you'd also like, I can prepare a task to draft the full CampusFest 2026 channel mix (₹1,52,000 shifted to C04/C05/C06/C07, paid pushes compressed into the final 2–3 weeks).",
+        "error": null,
+        "tools": [
+          "Checking the decision rules (as of 2025-04-20)",
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Running the budget what-if (as of 2025-04-20)",
+          "Calculating: (93000+59000)/274000",
+          "Calculating: (340+175)/1925",
+          "Preparing a campaign change for you to confirm",
+          "Preparing a campaign change for you to confirm",
+          "Preparing a task for you to confirm",
+          "Calculating: 2539/1925 - 1",
+          "Calculating: 3152/2800 - 1"
+        ],
+        "proposals": [
+          {
+            "kind": "update_campaign",
+            "campaign_id": "C02",
+            "status": "stopped",
+            "reason": "Failed 4 pre-committed stop thresholds as of 2025-04-20: ₹273.53/verified visitor (1.92x blended ₹142.34), show-up 58.6% (floor 75%), nurture opt-out 26.0% (cap 15%), confirmation 85.3% (floor 88%). ₹93,000 spend produced only 340 visitors.",
+            "campaign_name": "Paid Social"
+          },
+          {
+            "kind": "update_campaign",
+            "campaign_id": "C03",
+            "status": "stopped",
+            "reason": "Failed pre-committed stop thresholds as of 2025-04-20: ₹337.14/verified visitor (2.37x blended ₹142.34), show-up 60.3% (floor 75%), nurture opt-out 18.9% (cap 15%), confirmation 82.9% (floor 88%). ₹59,000 spend produced only 175 visitors.",
+            "campaign_name": "Creator Partners"
+          },
+          {
+            "kind": "create_task",
+            "title": "Fix gate admission process — 12.5% of C01 confirmed lost at gate",
+            "description": "60 of 480 confirmed C01 registrants (12.5%) reached the gate but were never admitted — 2.5x the 5% max gate-loss threshold. Diagnose admission-process causes (staffing, verification speed, capacity) before CampusFest 2026; C01's channel economics are healthy (₹107.69/visitor, 0.76x blended).",
+            "owner_id": "T03",
+            "owner_name": "Meera Iyer",
+            "due_date": "2025-04-27",
+            "priority": "high",
+            "campaign_id": "C01",
+            "initiative_id": null,
+            "evidence": "As of 2025-04-20: 60/480 confirmed C01 registrants lost at the gate (12.5%) vs 5% threshold; campaign otherwise at ₹107.69 per verified visitor.",
+            "as_of": "2025-04-20"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 33554,
+          "completion": 5373
+        },
+        "ms": 51053
+      }
+    ]
+  },
+  {
+    "id": "M04",
+    "category": "multi_turn",
+    "question": "total spend on creator partners?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "what if we'd halved it - how many fewer registrations?",
+      "and which creator did best?"
+    ],
+    "expected_behaviour": "Turn 1 (number): net Creator Partners (C03) spend to 20 Apr (de-duplicated, credits netted). Turn 2 (number/explanation): half of the turn-1 spend; any estimate of lost registrations states its assumption (e.g. proportional to attributed registrations) and says the data cannot establish the causal effect (no control group); gives a labelled estimate or range. Turn 3 (refusal): no creator-level identifier exists (only the campaign C03), so it cannot say which creator did best; suggests per-creator links or codes.",
+    "answer_type": "number",
+    "must_not": [
+      "presenting the halving estimate as certain",
+      "naming a creator",
+      "turn 2 not using the turn-1 figure"
+    ],
+    "turns": [
+      {
+        "question": "total spend on creator partners?",
+        "answer": "Total spend on Creator Partners (C03) was **₹59,000** as of 20 April 2025 (end of day).\n\nEvidence (as of 2025-04-20):\n- Spend: ₹59,000 — yielding 350 registrations (₹168.57 per registration) and 175 verified visitors (₹337.14 per visitor)\n- Campaign is still marked active; owner is Nisha Rao (T05)\n\nLet me know if you'd like this compared against other campaigns or the blended cost per registration.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6832,
+          "completion": 196
+        },
+        "ms": 2907
+      },
+      {
+        "question": "what if we'd halved it - how many fewer registrations?",
+        "answer": "Halving Creator Partners spend to ₹29,500 would have cost about **103 fewer registrations** (350 → 247) and **51 fewer verified visitors** (175 → 124), as of 20 April 2025.\n\nEvidence (what-if model, as of 2025-04-20):\n- C03 spend ₹59,000 → ₹29,500; registrations 350 → 247; visitors 175 → 124\n- Implied cost per registration improves from ₹168.6 to ₹119.4 — the model's diminishing returns (β = 0.5 for paid-reach channels) mean the last rupees bought the fewest registrations\n\nAssumptions / limits: this is an estimate under the plan's power-law response model, not a forecast — behaviour outside the observed spend range is assumed, and walk-ins are excluded. The trade-off: you'd save ₹29,500 but lose ~103 registrations and ~51 verified visitors, roughly ₹286 per lost visitor.",
+        "error": null,
+        "tools": [
+          "Running the budget what-if (as of 2025-04-20)",
+          "Calculating: 350 - 247",
+          "Calculating: 175 - 124"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 11652,
+          "completion": 595
+        },
+        "ms": 8054
+      },
+      {
+        "question": "and which creator did best?",
+        "answer": "The data can't tell you which individual creator performed best — Creator Partners (C03) is tracked as one campaign, with no creator-level breakdown anywhere.\n\nEvidence (checked as of 2025-04-20):\n- The campaigns table has only the 7 campaign rows; C03's spend sits in daily_marketing under a single platform (\"campaign link analytics\", ₹61,000 debits − ₹2,000 credit = ₹59,000 net)\n- Interactions for C03 carry generic event details (page views, form starts, nurture emails) — no creator or partner name field exists in any table\n\nWhat would answer it: per-creator spend and registrations (e.g., a creator dimension or separate campaign rows per partner, with UTM-tagged links).\n\nClosest questions I *can* answer: C03's overall performance vs the other campaigns (350 registrations, 175 verified visitors, ₹168.6 per registration, ₹337.1 per visitor as of 2025-04-20), or its week-by-week trend. Want either?",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Running a read-only query: Check whether any creator-level breakdown exists for C03 (platform values in daily_marketing)",
+          "Running a read-only query: Check whether C03 interactions carry creator names in the detail field"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 14233,
+          "completion": 934
+        },
+        "ms": 10810
+      }
+    ]
+  },
+  {
+    "id": "M05",
+    "category": "multi_turn",
+    "question": "top 3 campaigns by registrations?",
+    "as_of": "2025-04-01",
+    "follow_up_turns": [
+      "create a task for the owner of the 3rd one to review their funnel by 10 april, medium priority",
+      "yes go ahead"
+    ],
+    "expected_behaviour": "Turn 1 (list): ranks campaigns by distinct external registered people (registration campaign_id) registered on or before 1 Apr 2025, with attribution stated and counts. Turn 2 (action_proposal): resolves 'the 3rd one' from turn 1's ranking, takes that campaign's owner from the data, and proposes a card with that owner, due 10 Apr 2025, priority medium, linked campaign and a clear title; waits for confirmation. Turn 3: the task is created only through the confirmation step; the bot reports success only if creation actually succeeded (or points the user to the confirm control if typed 'yes' is not the mechanism); exactly one task.",
+    "answer_type": "list",
+    "must_not": [
+      "picking the 3rd campaign from a different ranking than turn 1",
+      "wrong owner",
+      "claiming the task exists before confirmation",
+      "creating duplicate tasks",
+      "changing the priority or due date that was asked for"
+    ],
+    "turns": [
+      {
+        "question": "top 3 campaigns by registrations?",
+        "answer": "Top 3 by registrations as of 1 April 2025:\n\n| # | Campaign | Registered | Cost/reg |\n|---|----------|-----------|----------|\n| 1 | C02 Paid Social (Arjun) | 641 | ₹134.79 |\n| 2 | C01 Campus Ambassadors (Meera) | 460 | ₹84.13 |\n| 3 | C04 College Partnerships (Meera) | 345 | ₹82.17 |\n\n**Evidence (as of 2025-04-01):**\n- C02: 641 registered, 532 confirmed (83.0% of registered), ₹86,400 spend\n- C01: 460 registered, 404 confirmed (87.8%), ₹38,700 spend\n- C04: 345 registered, 297 confirmed (86.1%), ₹28,350 spend\n\nNote: C02 leads on volume but is the most expensive per registration of the three; C04 and C01 deliver registrations at roughly 60% of C02's cost.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-01)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 8101,
+          "completion": 338
+        },
+        "ms": 4227
+      },
+      {
+        "question": "create a task for the owner of the 3rd one to review their funnel by 10 april, medium priority",
+        "answer": "I've prepared a task for you to confirm:\n\n- **Task:** Review C04 College Partnerships funnel ahead of the festival\n- **Owner:** Meera Iyer (T03, C04's owner) · **Due:** 10 April 2025 · **Priority:** medium\n- **Focus:** 88 identified people never started the form, 44 abandoned it, and 30 registrants are still \"interested\" — converting these is the biggest upside before 12 April.\n\n**Evidence (as of 2025-04-01):** C04 is 3rd by registrations (345 registered, 297 confirmed, ₹82.17 per registration — cheapest of the top 3).\n\nClick Confirm on the card to create it.",
+        "error": null,
+        "tools": [
+          "Finding where people drop out (as of 2025-04-01)",
+          "Preparing a task for you to confirm"
+        ],
+        "proposals": [
+          {
+            "kind": "create_task",
+            "title": "Review C04 College Partnerships funnel ahead of the festival",
+            "description": "Review the College Partnerships funnel end to end: 132 identified people never started the form and 44 abandoned it; 30 registrants are still 'interested' and need a confirmation push before the festival. Identify blockers and actions to convert the 88 never-started and 44 abandoned into registrations, and move the 30 interested to confirmed.",
+            "owner_id": "T03",
+            "owner_name": "Meera Iyer",
+            "due_date": "2025-04-10",
+            "priority": "medium",
+            "campaign_id": "C04",
+            "initiative_id": null,
+            "evidence": "As of 2025-04-01, C04 College Partnerships is the 3rd-largest campaign by registrations (345 registered, 297 confirmed, ₹28,350 spend, ₹82.17 per registration). Funnel leaks: 88 identified people never started the form, 44 started but abandoned it, 30 registrants still 'interested' (not confirmed), 7 waitlisted, 11 cancelled.",
+            "as_of": "2025-04-01"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13036,
+          "completion": 868
+        },
+        "ms": 9391
+      },
+      {
+        "question": "yes go ahead",
+        "answer": "The task card is now up for you — one click left:\n\n- **Review C04 College Partnerships funnel ahead of the festival**\n- Owner: Meera Iyer (T03) · Due: 10 April 2025 · Priority: medium · Campaign: C04\n- Scope: follow up the 88 never-started, 44 form abandoners, and 30 still-\"interested\" registrants (as of 2025-04-01)\n\nI checked the task list and it's still empty, so the task isn't created yet — please click **Confirm** on the card to make it official.",
+        "error": null,
+        "tools": [
+          "Reading tasks and bets",
+          "Preparing a task for you to confirm"
+        ],
+        "proposals": [
+          {
+            "kind": "create_task",
+            "title": "Review C04 College Partnerships funnel ahead of the festival",
+            "description": "Review the C04 College Partnerships funnel ahead of the festival (12-13 Apr): follow up the 88 identified people who never started the form, the 44 who abandoned it, and the 30 registrants still 'interested', to lift confirmed attendance before the gate.",
+            "owner_id": "T03",
+            "owner_name": "Meera Iyer",
+            "due_date": "2025-04-10",
+            "priority": "medium",
+            "campaign_id": "C04",
+            "initiative_id": null,
+            "evidence": "As of 2025-04-01: C04 is 3rd by registrations (345 registered, 297 confirmed, ₹82.17 per registration — cheapest of the top 3). Biggest gaps: 88 identified never started the form, 44 abandoned it, 30 registrants still 'interested'.",
+            "as_of": "2025-04-01"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 17135,
+          "completion": 2938
+        },
+        "ms": 27065
+      }
+    ]
+  },
+  {
+    "id": "M06",
+    "category": "multi_turn",
+    "question": "how many people were denied at the gate?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "how many of them eventually got in?",
+      "were those mostly walk-ins?"
+    ],
+    "expected_behaviour": "Turn 1 (number): distinct people with at least one denied check-in (event_ids de-duplicated; external-only or all stated). Turn 2 (number): of those same people, how many have an admitted+verified check-in (may note whether it came after the denial); counts people, not rows. Turn 3 (number): among the turn-2 group, how many had no registration / first_touch_source = walk_in, with the definition stated, answering 'mostly' with numbers.",
+    "answer_type": "number",
+    "must_not": [
+      "counting rows instead of people in any turn",
+      "turn 2 using a different population than turn 1",
+      "using unverified admissions as 'got in'"
+    ],
+    "turns": [
+      {
+        "question": "how many people were denied at the gate?",
+        "answer": "**50 external people were denied at the gate** (had a check-in record with result = denied), as of 20 Apr 2025. Of those, 20 were eventually admitted later, so **30 people were denied and never got in**.\n\nEvidence (custom query on `checkins`/`people`, as of 2025-04-20):\n- Denied record: 50 people; of them 20 later admitted → 30 denied and never admitted\n- Pending/unverified only, never admitted: another 30 people\n- Total who reached the gate and were never admitted: **60** (matches the funnel-leaks view), all from C01 Campus Ambassadors\n\nAssumptions / limits:\n- \"Denied\" here = any denied check-in record; the data records the result but not the reason for denial.\n- The dashboard's standard \"gate lost\" metric (60) counts everyone never admitted, including pending/unverified cases, not just denials.",
+        "error": null,
+        "tools": [
+          "Finding where people drop out (as of 2025-04-20)",
+          "Checking what the data contains",
+          "Running a read-only query: Count external people denied or pending at the gate as of 2025-04-20, split by check-in result"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 18738,
+          "completion": 1637
+        },
+        "ms": 18724
+      },
+      {
+        "question": "how many of them eventually got in?",
+        "answer": "**20 of the 50 denied people eventually got in** — all of them were admitted after their denial, and all 20 were verified admissions, so they count as visitors. The other 30 were never admitted.\n\nEvidence (custom query on `checkins`/`people`, external people only, as of 2025-04-20):\n- Denied at the gate: 50\n- Admitted after their first denial: 20 (none were admitted before being denied)\n- Of those 20, verified on admission: 20 → all count as visitors\n- Denied and never admitted: 30\n\nAssumptions / limits: the data records the check-in result but not why someone was first denied or what changed (e.g., re-scan vs. manual override), so I can't say what got them through — only that they were.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Running a read-only query: Of external people with a denied check-in, how many were later admitted (and verified) as of 2025-04-20"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 14427,
+          "completion": 1431
+        },
+        "ms": 18140
+      },
+      {
+        "question": "were those mostly walk-ins?",
+        "answer": "**No — none of them were walk-ins.** Every one of the 50 people denied at the gate had a registration beforehand, and all 20 who eventually got in had registered *before* their denial (0 registered after, i.e., nobody was turned away and then signed up at the gate).\n\nEvidence (custom query on `checkins`/`registrations`, external people, as of 2025-04-20):\n- Denied at gate: 50 — with no registration: **0**\n- Eventually admitted: 20 — walk-ins (no registration): **0**; registered before their denial: 20; registered after: 0\n\nAssumptions / limits: walk-in here follows the data's definition (a visitor with no registration). The data records no reason for denial, so I can't say why registered people were denied — only that they were all pre-registered, which makes the earlier \"gate lost\" figure a registrant-retention issue rather than a walk-in processing one.",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Running a read-only query: Of the people denied at the gate (and the subset eventually admitted), how many had no registration (walk-ins) vs registered, and whether registration happened before or after the denial"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 16016,
+          "completion": 2708
+        },
+        "ms": 24642
+      }
+    ]
+  },
+  {
+    "id": "CD01",
+    "category": "changed_data",
+    "question": "how much have we spent on paid social overall and how much budget is left?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "and what was paid social spend as of 19 march?"
+    ],
+    "expected_behaviour": "Paid Social net spend to 20 Apr and total net spend are both exactly INR 25,000 higher than the unedited baseline; remaining budget against INR 3,00,000 is INR 25,000 lower (flags overspend if it now exceeds the budget). Derived metrics it quotes (e.g. cost per registration) move accordingly. Follow-up: spend as of 19 Mar is identical to the baseline because the edited row is dated 20 Mar (or it asks to change the selected date, then gives the unchanged figure).",
+    "answer_type": "number",
+    "must_not": [
+      "returning the pre-edit (cached) total",
+      "applying the change to a different campaign or day",
+      "including the 20 Mar edit in the 19 Mar figure",
+      "counting the edited row as an extra row"
+    ],
+    "scenario_edit": "In the spend editor, change Paid Social (C02) marketing_spend_inr for activity_date 2025-03-20 to its original value + 25,000 (record the original first). No other edits.",
+    "turns": [
+      {
+        "question": "how much have we spent on paid social overall and how much budget is left?",
+        "answer": "As of 20 April 2025, Paid Social (C02) has spent **₹1,18,000** — 39.5% of the team's total ₹2,99,000 spend. Only **₹1,000** remains of the ₹3,00,000 marketing budget, so effectively the budget is exhausted.\n\n**Evidence (as of 2025-04-20):**\n- Paid Social (C02): spend ₹1,18,000; 680 registrations (₹173.53 per registration), 340 verified visitors (₹347.06 per visitor)\n- Overall: total spend ₹2,99,000 vs ₹3,00,000 budget under the \"Attendee revised plan\" (in force since 15 March 2025)\n- Budget left: ₹3,00,000 − ₹2,99,000 = ₹1,000\n\n**Assumptions / limits:** \"Budget left\" here is the overall marketing budget, since Paid Social has no separate planned budget recorded in the data. If you meant a per-campaign cap for C02, that figure isn't in the data.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-20)",
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Reading the plan versions",
+          "Calculating: 300000 - 299000",
+          "Calculating: 118000 / 299000 * 100"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 11824,
+          "completion": 791
+        },
+        "ms": 8843
+      },
+      {
+        "question": "and what was paid social spend as of 19 march?",
+        "answer": "As of 19 March 2025, Paid Social (C02) had spent **₹76,800** — about 65% of its eventual ₹1,18,000 total.\n\n**Evidence (as of 2025-03-19):**\n- Spend: ₹76,800; 567 registrations at ₹135.45 per registration\n- 474 confirmed, 53 cancelled, 24 waitlisted at that point\n- No visitors yet — the festival (12–13 April) hadn't started\n\n**Assumptions / limits:** This is cumulative spend to end of 19 March; the remaining ₹41,200 was spent between 20 March and the festival.",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-03-19)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 7385,
+          "completion": 246
+        },
+        "ms": 3423
+      }
+    ]
+  },
+  {
+    "id": "CD02",
+    "category": "changed_data",
+    "question": "did we hit the visitor target?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "what was the target on 31 march?",
+      "so how much more budget did we get in the new plan?"
+    ],
+    "expected_behaviour": "Uses the new 'Attendee stretch plan' (unique_external_visitors_goal 2,600) in force on 20 Apr and compares distinct verified external visitors with it: hit/miss and gap. Follow-up 1: on 31 Mar the 'Attendee revised plan' (2,200) was in force because the stretch plan starts 1 Apr 09:00 IST. Follow-up 2: the stretch plan budget is INR 30,000 more than the revised plan (3,30,000 vs 3,00,000); if it quotes 90,000 it must say that is versus the launch plan.",
+    "answer_type": "comparison",
+    "must_not": [
+      "still comparing with 2,200 on 20 Apr",
+      "applying the stretch plan to 31 Mar",
+      "summing target versions",
+      "answering from cached targets"
+    ],
+    "scenario_edit": "Add a new target version 'Attendee stretch plan' effective 2025-04-01 09:00 IST: identified_external_people_goal 4,000, registration_goal 3,500, unique_external_visitors_goal 2,600, marketing_budget_inr 3,30,000.",
+    "turns": [
+      {
+        "question": "did we hit the visitor target?",
+        "answer": "**No — we fell short of the final visitor target.** As of 20 April 2025, verified external visitors were **2,050 vs the 2,600 goal** (the \"Attendee stretch plan\" in force since 1 April) — a shortfall of **550 (78.8% of goal)**.\n\n**Evidence (as of 2025-04-20):**\n- Visitors: 2,050 (1,925 from registrants + 125 walk-ins); goal 2,600\n- Show-up rate of confirmed registrants: 77.0% (1,925 of 2,500 confirmed)\n- We did clear the earlier plan versions: 2,200 (revised, from 15 Mar) and 1,800 (launch, from 15 Jan)\n\n**Assumptions / limits:** The comparison is against the stretch plan, the version in force on the as-of date. The miss traces to two gaps upstream: registrations (2,800 vs 3,500 goal) and show-up (77% of confirmed).\n\nNext step, if useful: I can break the shortfall down by campaign (which channels under-delivered on visitors) or by lead-time cohort to see where show-up was lost.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Reading the plan versions",
+          "Calculating: 2050/2600",
+          "Calculating: 2600-2050"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 11080,
+          "completion": 563
+        },
+        "ms": 7865
+      },
+      {
+        "question": "what was the target on 31 march?",
+        "answer": "On 31 March 2025 the plan in force was the **\"Attendee revised plan\"** (effective 15 March), so the visitor target that day was **2,200** — the stretch target of 2,600 only took effect on 1 April.\n\n**Evidence (plan versions):**\n| Version | Effective | Identified | Registrations | Visitors | Budget |\n|---|---|---|---|---|---|\n| Attendee launch plan | 15 Jan | 3,200 | 2,800 | 1,800 | ₹2,40,000 |\n| Attendee revised plan | 15 Mar | 3,600 | 3,200 | **2,200** | ₹3,00,000 |\n| Attendee stretch plan | 1 Apr | 4,000 | 3,500 | 2,600 | ₹3,30,000 |\n\nSo against the target in force on 31 March, the final 2,050 visitors was still a shortfall (93.2% of 2,200), but a much smaller one than against the stretch plan.",
+        "error": null,
+        "tools": [
+          "Reading the plan versions"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 7386,
+          "completion": 383
+        },
+        "ms": 4853
+      },
+      {
+        "question": "so how much more budget did we get in the new plan?",
+        "answer": "The new plan (Attendee stretch plan, effective 1 April) added **₹30,000** of budget — from ₹3,00,000 in the revised plan to ₹3,30,000.\n\n**Evidence (plan versions):**\n- Launch plan (15 Jan): ₹2,40,000\n- Revised plan (15 Mar): ₹3,00,000 (+₹60,000)\n- Stretch plan (1 Apr): ₹3,30,000 (**+₹30,000**)\n\nSo across the whole campaign the budget grew by ₹90,000 (37.5%) from the original ₹2,40,000.",
+        "error": null,
+        "tools": [
+          "Calculating: 330000 - 300000",
+          "Calculating: 330000 - 240000"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 7850,
+          "completion": 421
+        },
+        "ms": 5267
+      }
+    ]
+  },
+  {
+    "id": "CD03",
+    "category": "changed_data",
+    "question": "how many confirmed registrations for campus ambassadors now?",
+    "as_of": "2025-04-10",
+    "follow_up_turns": [
+      "what was leena kapoor's status on 4th april?"
+    ],
+    "expected_behaviour": "Campus Ambassadors confirmed count as of 10 Apr is exactly one lower than the unedited baseline and its cancelled count one higher. Total registrations and identified people are unchanged (cancelling does not remove the person or the registration), and any verified admission she has is unaffected. Follow-up: on 4 Apr Leena Kapoor (R0001) was still 'confirmed' (reconfirmed 15 Mar); the cancellation only takes effect 5 Apr.",
+    "answer_type": "number",
+    "must_not": [
+      "returning the baseline confirmed count",
+      "applying the cancellation to 4 Apr",
+      "removing the person or registration from totals",
+      "counting R0001 as both confirmed and cancelled"
+    ],
+    "scenario_edit": "Cancel registration R0001 (Leena Kapoor, person E0001, Campus Ambassadors) effective 2025-04-05 10:00 IST, i.e. add a new 'cancelled' status version. Before the edit its latest status (from 15 Mar 2025) is 'confirmed'.",
+    "turns": [
+      {
+        "question": "how many confirmed registrations for campus ambassadors now?",
+        "answer": "Campus Ambassadors (C01) has **471 confirmed registrations** as of 10 April 2025 (end of day).\n\nEvidence (as of 2025-04-10):\n- 520 registered → 471 confirmed (90.6% confirmation rate), with 24 cancelled and 11 waitlisted\n- 600 identified people, ₹42,000 spend, ₹80.77 cost per registration\n- No visitors yet — the festival starts 12 April, so show-up data doesn't exist before then",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-04-10)"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 6857,
+          "completion": 217
+        },
+        "ms": 3588
+      },
+      {
+        "question": "what was leena kapoor's status on 4th april?",
+        "answer": "Leena Kapoor's status on 4 April 2025 was **confirmed**.\n\nEvidence (custom query on `registration_status_asof('2025-04-04')`, as of end of day 2025-04-04):\n- External person, registration R0001 via Campus Ambassadors (C01)\n- Registered 2 March 2025; status changed to confirmed on 15 March 2025 and had not changed since",
+        "error": null,
+        "tools": [
+          "Checking what the data contains",
+          "Running a read-only query: Find Leena Kapoor's registration status as of 4 April 2025"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 13143,
+          "completion": 483
+        },
+        "ms": 6734
+      }
+    ]
+  },
+  {
+    "id": "CD04",
+    "category": "changed_data",
+    "question": "which campaigns are live right now? and where should the next 20k go?",
+    "as_of": "2025-03-28",
+    "follow_up_turns": [],
+    "expected_behaviour": "Lists live campaigns as of 28 Mar excluding Paid Social (paused since 25 Mar), while keeping Paid Social's past spend and registrations in totals. If Daily Marketing still shows Paid Social spend after 25 Mar, flags the inconsistency (paused but spending) rather than silently ignoring it. The 20k recommendation goes to active campaigns, uses data to 28 Mar only, and checks 20k fits the remaining budget (INR 3,00,000 minus spend to date).",
+    "answer_type": "explanation",
+    "must_not": [
+      "listing Paid Social as live",
+      "recommending scaling Paid Social without noting it is paused",
+      "removing Paid Social's past spend or registrations from totals",
+      "using data after 28 Mar"
+    ],
+    "scenario_edit": "Mark campaign Paid Social (C02) as paused, effective 2025-03-25. Do not delete any spend rows.",
+    "turns": [
+      {
+        "question": "which campaigns are live right now? and where should the next 20k go?",
+        "answer": "**Live campaigns (as of 2025-03-28):** six — C01 Campus Ambassadors, C03 Creator Partners, C04 College Partnerships, C05 Student Referrals, C06 Organic Search, C07 Community Groups. C02 Paid Social is paused.\n\n**Where the next ₹20,000 should go:** split it ₹10k each into **C05 Student Referrals** and **C06 Organic Search** — both flagged \"scale\" by your pre-committed thresholds, and the model estimates **+198 registrations (~+136 visitors)**, the best of the scenarios I tested.\n\n**Evidence (2025-03-28):**\n- Cost per registration: C06 ₹60.87 and C05 ₹69.33 vs blended ₹105.25 (C07 ₹82.58 also qualifies to scale; C04 ₹84.56 and C01 ₹91.49 are \"keep\").\n- What-if estimates: C05+C06 +₹10k each → 2,388 registrations (vs 2,190 now); all ₹20k to C06 → 2,386; even three-way split with C07 → 2,379.\n- Budget fits: ₹2,30,500 spent of ₹3,00,000 → ₹69,500 headroom.\n- Even with the boost, projection is ~3,072 vs the 3,200 goal (run rate 48.86/day vs required 72.14/day) — the ₹20k helps but doesn't close the gap alone.\n\n**Watch-out:** C03 Creator Partners is still active but the thresholds say **stop** (₹186.26/reg = 1.77x blended, plus weak confirmation, form completion and 19.2% opt-outs). Redirecting its future spend is a bigger lever than the ₹20k.\n\n**Assumptions/limits:** what-if uses diminishing returns (beta 0.7 for these channels) and the plan's 0.6875 visitors-per-registration; response beyond observed spend ranges is assumed, not measured.\n\nWant me to prepare the budget updates for C05 and C06 (and/or pausing C03) for you to confirm?",
+        "error": null,
+        "tools": [
+          "Reading campaign metrics (as of 2025-03-28)",
+          "Checking the decision rules (as of 2025-03-28)",
+          "Reading the headline funnel (as of 2025-03-28)",
+          "Running the budget what-if (as of 2025-03-28)",
+          "Running the budget what-if (as of 2025-03-28)",
+          "Running the budget what-if (as of 2025-03-28)",
+          "Calculating: 300000 - 230500",
+          "Calculating: 2874 + 198"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 28005,
+          "completion": 2965
+        },
+        "ms": 33350
+      }
+    ]
+  }
+]

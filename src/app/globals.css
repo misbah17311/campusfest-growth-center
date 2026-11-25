@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+/* Colour roles from the data-viz reference palette (validated: categorical
+   slots 1-3 pass all-pairs colour-vision checks in both modes). Status colours
+   always appear with an icon and a label, never alone. */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.1);
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --s3: #1baf7a;
+  --good: #0ca30c;
+  --warning: #fab219;
+  --serious: #ec835a;
+  --critical: #d03b3b;
+  --good-text: #006300;
+  --track: #cde2fb;
+  --mid: #f0efec;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --ink: #f0efec;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255, 255, 255, 0.1);
+    --s1: #3987e5;
+    --s2: #d95926;
+    --s3: #199e70;
+    --good-text: #0ca30c;
+    --track: #184f95;
+    --mid: #383835;
+  }
+}
+
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-grid: var(--grid);
+  --color-line: var(--border);
+  --color-s1: var(--s1);
+  --color-s2: var(--s2);
+  --color-s3: var(--s3);
+  --color-good: var(--good);
+  --color-warning: var(--warning);
+  --color-serious: var(--serious);
+  --color-critical: var(--critical);
+  --color-good-text: var(--good-text);
+  --color-track: var(--track);
+  --font-sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Copilot answers (Markdown) */
+.prose-copilot p { margin: 0.4rem 0; }
+.prose-copilot ul, .prose-copilot ol { margin: 0.3rem 0 0.3rem 1.1rem; }
+.prose-copilot ul { list-style: disc; }
+.prose-copilot ol { list-style: decimal; }
+.prose-copilot li { margin: 0.15rem 0; }
+.prose-copilot strong { font-weight: 600; }
+.prose-copilot h1, .prose-copilot h2, .prose-copilot h3 { font-weight: 600; margin: 0.6rem 0 0.2rem; font-size: 0.9rem; }
+.prose-copilot table { border-collapse: collapse; margin: 0.4rem 0; font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+.prose-copilot th, .prose-copilot td { border-bottom: 1px solid var(--grid); padding: 0.2rem 0.4rem; text-align: left; }
+.prose-copilot code { font-size: 0.75rem; background: var(--grid); padding: 0 0.2rem; border-radius: 3px; }

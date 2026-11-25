@@ -1,0 +1,963 @@
+[
+  {
+    "id": "F01",
+    "category": "factual",
+    "question": "How many people actually turned up to CampusFest?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "States the number of distinct external people (person_type = external) with at least one check-in where result = admitted AND verification = verified, occurred_at at or before the end of the selected day IST, after counting each repeated event_id once; each person counted once across days and across scanner/manual records. Says what was excluded (internal/staff/test people; denied, pending and unverified-only records). Ideally compares it with the unique_external_visitors_goal in force on 20 Apr 2025 (2,200, 'Attendee revised plan').",
+    "answer_type": "number",
+    "must_not": [
+      "counting check-in rows / admission events instead of distinct people",
+      "including internal, staff or test people",
+      "including denied, pending or unverified-only check-ins",
+      "counting a person who came on both days twice",
+      "counting a person twice because scanner and manual records overlap",
+      "counting import-retry duplicate event_ids",
+      "reporting registrations or confirmed registrations as attendance"
+    ]
+  },
+  {
+    "id": "F02",
+    "category": "factual",
+    "question": "total marketing spend till date? are we within budget",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Sums marketing_spend_inr for all 7 campaigns with activity_date on or before 2025-04-20, each activity_id counted once, negative (vendor credit) rows netted in. Compares with the marketing_budget_inr in force on the selected date (INR 3,00,000, 'Attendee revised plan', effective 15 Mar 2025 09:00 IST) and states the amount remaining or overspent.",
+    "answer_type": "number",
+    "must_not": [
+      "double counting import-copy rows that share an activity_id",
+      "dropping negative rows or adding credits as positive spend",
+      "comparing with the superseded INR 2,40,000 launch budget",
+      "adding the two budget versions together",
+      "quoting the budget as if it were spend"
+    ]
+  },
+  {
+    "id": "F03",
+    "category": "factual",
+    "question": "whats the reg target",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Answers 3,200 (registration_goal of the 'Attendee revised plan', effective 15 Mar 2025 09:00 IST), and makes clear it is a target of distinct external people with a registration, not registration records. May mention the launch plan target was 2,800.",
+    "answer_type": "number",
+    "must_not": [
+      "giving 2,800 as the current target",
+      "summing 2,800 and 3,200",
+      "confusing it with the identified-people goal (3,600) or the visitor goal (2,200)"
+    ]
+  },
+  {
+    "id": "F04",
+    "category": "factual",
+    "question": "How many registrations do we have in total?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Clarifies the unit. Primary answer: distinct external people with at least one registration registered on or before the selected date (the unit used by registration_goal), excluding internal/staff/test people. Ideally also gives the number of registration records and says whether cancelled registrations are included (or gives a latest-status breakdown). Compares with the 3,200 goal.",
+    "answer_type": "number",
+    "must_not": [
+      "counting Registration History rows or status versions as registrations",
+      "counting a person with more than one registration_id as several people without saying so",
+      "including internal/staff/test people in the goal comparison",
+      "counting identified registration_start interactions or anonymous daily registration_starts as registrations"
+    ]
+  },
+  {
+    "id": "F05",
+    "category": "factual",
+    "question": "how much have we burnt on paid social so far",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Net marketing_spend_inr for Paid Social (C02) for activity dates up to 2025-04-20, each activity_id once, credits netted, in INR. May add its share of total spend or of the INR 3,00,000 budget.",
+    "answer_type": "number",
+    "must_not": [
+      "including Organic Search (also owned by Arjun Verma) or any other campaign",
+      "double counting duplicate activity_id rows",
+      "ignoring negative credit rows",
+      "quoting a budget or planned figure instead of spend"
+    ]
+  },
+  {
+    "id": "F06",
+    "category": "factual",
+    "question": "who's running creator partners, when was it supposed to run, and how big is its target audience?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Owner: Nisha Rao. Planned start 10 Feb 2025 09:00 IST, planned end 13 Apr 2025 20:00 IST, labelled as planned dates rather than actual activity (may add first/last actual activity dates from Daily Marketing). On audience size: says target_audience is only a text description ('Students engaging with creator-led event content'), not a count, so the data cannot give an audience size.",
+    "answer_type": "list",
+    "must_not": [
+      "inventing a numeric audience size",
+      "presenting summed reach or impressions as the target audience size",
+      "presenting the planned dates as actual run dates",
+      "naming the wrong owner"
+    ]
+  },
+  {
+    "id": "F07",
+    "category": "factual",
+    "question": "How many people got denied entry at the gate?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Counts distinct people with at least one check-in result = denied (event_ids de-duplicated), says whether this is external-only or all person types, and distinguishes denied attempts (records) from people. Notes that some denied people may have been admitted on another attempt and gives that split if it can. Does not invent reasons.",
+    "answer_type": "number",
+    "must_not": [
+      "reporting denied rows as people without saying so",
+      "counting import-copy duplicates",
+      "treating pending as denied",
+      "claiming every denied person never got in without checking their other admission attempts",
+      "giving reasons for the denials"
+    ]
+  },
+  {
+    "id": "F08",
+    "category": "factual",
+    "question": "total reach for organic search?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "May give the sum of daily reported_reach for Organic Search (C06) up to the selected date (activity_id de-duplicated), but must label it as a sum of daily platform-reported reach that double counts people reached on several days, and state that unique people reached cannot be derived because cross-day overlap is not supplied.",
+    "answer_type": "number",
+    "must_not": [
+      "presenting summed daily reach as unique people reached",
+      "using impressions as reach",
+      "mixing in other campaigns' reach"
+    ]
+  },
+  {
+    "id": "F09",
+    "category": "factual",
+    "question": "how many walk-ins did we get",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "States its walk-in definition (external people with a verified admission and no registration, and/or first_touch_source = walk_in) and counts distinct admitted+verified external people meeting it. If the two definitions give different numbers, reports both or explains the difference. Notes that an empty campaign_id on check-ins means unattributed, not zero acquisition cost.",
+    "answer_type": "number",
+    "must_not": [
+      "counting check-in rows with empty registration_id instead of people",
+      "including staff/internal/test people",
+      "including denied or unverified-only check-ins",
+      "calling a registered person a walk-in just because one manual check-in row lacks a registration_id"
+    ]
+  },
+  {
+    "id": "F10",
+    "category": "factual",
+    "question": "did we get any refunds/credits from vendors? how much total",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Finds Daily Marketing rows with negative marketing_spend_inr (vendor credits), de-duplicated by activity_id, and reports their total (as a credit amount) with the campaigns/dates involved. Explains that the spend figures it reports elsewhere are already net of these credits.",
+    "answer_type": "number",
+    "must_not": [
+      "saying there are no credits without checking for negative rows",
+      "double counting duplicate credit rows",
+      "treating credits as extra spend",
+      "reporting net spend as the credit total"
+    ]
+  },
+  {
+    "id": "F11",
+    "category": "factual",
+    "question": "how many people came on both days?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Distinct external people with an admitted+verified check-in on 12 Apr 2025 AND another on 13 Apr 2025 (IST dates). Ideally also gives day-1-only and day-2-only counts that add up to the unique visitor total.",
+    "answer_type": "number",
+    "must_not": [
+      "counting people with two check-in rows on the same day as two-day visitors",
+      "including unverified, denied or pending records",
+      "including staff/internal/test people",
+      "using UTC instead of IST dates"
+    ]
+  },
+  {
+    "id": "F12",
+    "category": "factual",
+    "question": "Pls give status-wise breakup of registrations as on date - confirmed, waitlisted, cancelled etc.",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "For each registration_id registered on or before 2025-04-20, takes the latest Registration History version (effective_at at or before end of day IST, duplicate history_ids once) and reports counts per status (interested, confirmed, waitlisted, cancelled). States whether the counts are registrations or distinct people and whether non-external people are excluded. The counts add up to the total.",
+    "answer_type": "list",
+    "must_not": [
+      "counting every history row instead of the latest version per registration",
+      "counting a reconfirmed registration as both cancelled and confirmed",
+      "counting duplicate history_id rows",
+      "omitting the 'interested' status"
+    ]
+  },
+  {
+    "id": "C01",
+    "category": "calculation",
+    "question": "What's our cost per verified visitor overall?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Total net marketing spend to 2025-04-20 (activity_id de-duplicated, credits netted) divided by the number of distinct external people (person_type = external) with at least one check-in where result = admitted AND verification = verified, occurred_at at or before the end of the selected day IST, after counting each repeated event_id once; each person counted once across days and across scanner/manual records. Shows both inputs and the INR result. Notes it is a blended cost (walk-ins and organic visitors are in the denominator), not a causal cost per incremental visitor.",
+    "answer_type": "number",
+    "must_not": [
+      "dividing by check-in rows or admission events",
+      "using the INR 3,00,000 budget instead of actual spend",
+      "using gross spend without credits",
+      "including staff/test/internal visitors",
+      "calling it an incremental cost"
+    ]
+  },
+  {
+    "id": "C02",
+    "category": "calculation",
+    "question": "registration to show-up rate for each campaign pls",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "For each of the 7 campaigns: distinct external people whose registration campaign_id is that campaign, how many of them have an admitted+verified check-in, and the rate. States the attribution used (the registration's recorded acquisition source) and whether cancelled registrants are in the denominator. Walk-ins / unattributed visitors are kept out of campaign rates (may be listed separately).",
+    "answer_type": "comparison",
+    "must_not": [
+      "using check-in campaign_id for the numerator and registration campaign_id for the denominator without saying so",
+      "rates above 100% caused by counting rows",
+      "counting status versions as registrations",
+      "including staff/test people"
+    ]
+  },
+  {
+    "id": "C03",
+    "category": "calculation",
+    "question": "visitor goal se kitna peeche hain? give in % also",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Understands the Hinglish ('how far behind the visitor goal are we?'). Uses the unique_external_visitors_goal in force on 2025-04-20 (2,200, revised plan) and the count of distinct external people (person_type = external) with at least one check-in where result = admitted AND verification = verified, occurred_at at or before the end of the selected day IST, after counting each repeated event_id once; each person counted once across days and across scanner/manual records; reports the absolute gap and % achieved / % short (or the surplus if exceeded), showing the arithmetic.",
+    "answer_type": "number",
+    "must_not": [
+      "using the 1,800 launch goal",
+      "using registrations instead of verified visitors",
+      "computing the % against an unstated or wrong base",
+      "refusing or asking the user to rephrase in English"
+    ]
+  },
+  {
+    "id": "C04",
+    "category": "calculation",
+    "question": "If we put another 50k into paid social at the same cost per registration, how many more registrations would we get?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Computes Paid Social cost per registered external person = net C02 spend / distinct external people with a C02-attributed registration (states the definition), then 50,000 / that cost, rounded to whole people. Flags the constant-marginal-cost assumption, likely diminishing returns, and that this is an attributed, not incremental, estimate. Notes whether 50k fits within the remaining approved budget.",
+    "answer_type": "number",
+    "must_not": [
+      "using clicks or anonymous registration_starts as registrations",
+      "presenting the result as a guaranteed forecast",
+      "using the budget instead of actual spend",
+      "ignoring that the extra 50k exceeds the remaining budget, if it does"
+    ]
+  },
+  {
+    "id": "C05",
+    "category": "calculation",
+    "question": "click to registration conversion for paid social?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Explains that clicks are anonymous platform events, not people, so a true per-person click-to-registration rate cannot be computed. May give (a) distinct external people with a C02 registration / de-duplicated C02 clicks, clearly labelled as a cross-source ratio, and/or (b) platform registration_starts / clicks (anonymous form starts, not completed registrations). Shows the inputs.",
+    "answer_type": "number",
+    "must_not": [
+      "presenting the ratio as '% of people who clicked went on to register'",
+      "treating registration_starts as completed registrations",
+      "double counting duplicate activity rows"
+    ]
+  },
+  {
+    "id": "C06",
+    "category": "calculation",
+    "question": "Cost per confirmed registration - Campus Ambassadors vs Student Referrals, which is cheaper and by how much?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "For C01 and C05: net spend to the selected date / registrations (or distinct external people, stated) whose latest status as of 2025-04-20 is confirmed. Reports both INR values, which is cheaper, and the absolute and % difference, with the attribution and status definitions stated and applied identically to both.",
+    "answer_type": "comparison",
+    "must_not": [
+      "counting confirmed status versions (including later-cancelled ones) instead of the latest status",
+      "using all registrations rather than confirmed",
+      "using a different attribution or definition for each campaign"
+    ]
+  },
+  {
+    "id": "C07",
+    "category": "calculation",
+    "question": "If 30% of waitlisted folks had been confirmed and all of them came, would we have hit the visitor target?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Identifies external people whose latest registration status is waitlisted (states as of which time, e.g. event opening or the selected date), removes any who already have a verified admission, takes 30% of the rest (rounded), adds that to the current verified unique external visitors, and compares with the 2,200 goal. Gives the shortfall or surplus and labels the result as hypothetical.",
+    "answer_type": "number",
+    "must_not": [
+      "adding waitlisted people who already attended (double counting)",
+      "counting waitlisted history rows instead of currently waitlisted registrations",
+      "comparing against the 1,800 launch goal",
+      "presenting the hypothetical as an actual outcome"
+    ]
+  },
+  {
+    "id": "C08",
+    "category": "calculation",
+    "question": "avg daily spend for creator partners in march?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Net Creator Partners (C03) spend with activity_date 1-31 Mar 2025 (activity_id de-duplicated, credits netted) divided by a stated number of days: 31 calendar days, or only the days with spend rows. Ideally gives both.",
+    "answer_type": "number",
+    "must_not": [
+      "including February or April rows",
+      "dividing by a row count that includes duplicate import copies",
+      "ignoring negative rows",
+      "not saying which day count was used"
+    ]
+  },
+  {
+    "id": "A01",
+    "category": "as_of",
+    "question": "What's our unique visitor target right now and what's the budget?",
+    "as_of": "2025-03-14",
+    "follow_up_turns": [],
+    "expected_behaviour": "Uses the 'Attendee launch plan', in force on 14 Mar 2025: unique_external_visitors_goal 1,800 and marketing_budget_inr 2,40,000. The revised plan (2,200 / 3,00,000) only takes effect 15 Mar 2025 09:00 IST and must not be presented as current; if mentioned at all it is clearly labelled as starting after the selected date.",
+    "answer_type": "number",
+    "must_not": [
+      "reporting 2,200 or INR 3,00,000 as the current target/budget",
+      "ignoring the selected date and using the latest plan"
+    ]
+  },
+  {
+    "id": "A02",
+    "category": "as_of",
+    "question": "budget as of today?",
+    "as_of": "2025-03-15",
+    "follow_up_turns": [],
+    "expected_behaviour": "INR 3,00,000: the revised plan takes effect 15 Mar 2025 09:00 IST, which is before the end of the selected day (the snapshot is end of day IST). May note it was INR 2,40,000 until that morning, and may add spend to date (activity up to 15 Mar) and the remaining amount.",
+    "answer_type": "number",
+    "must_not": [
+      "answering INR 2,40,000 (off-by-one on the effective timestamp)",
+      "treating 'today' as the real-world current date instead of the selected date"
+    ]
+  },
+  {
+    "id": "A03",
+    "category": "as_of",
+    "question": "how many confirmed registrations did we have at the end of Feb?",
+    "as_of": "2025-02-28",
+    "follow_up_turns": [],
+    "expected_behaviour": "Counts registrations registered on or before 28 Feb 2025 23:59:59 IST whose latest Registration History version with effective_at at or before that time is 'confirmed' (duplicate history_ids once; external-only or scope stated). Cancellations or reconfirmations after 28 Feb do not affect the count.",
+    "answer_type": "number",
+    "must_not": [
+      "using final (20 Apr) statuses",
+      "counting registrations created after 28 Feb",
+      "counting every 'confirmed' version ever recorded",
+      "counting history rows"
+    ]
+  },
+  {
+    "id": "A04",
+    "category": "as_of",
+    "question": "how many visitors have come so far?",
+    "as_of": "2025-04-11",
+    "follow_up_turns": [],
+    "expected_behaviour": "Recognises that on the selected date (11 Apr 2025) the festival (12-13 Apr, opening 10:00 IST on 12 Apr) has not started, so verified external visitors as of end of 11 Apr is zero, or only whatever admitted+verified external records exist with occurred_at at or before 11 Apr 23:59:59 IST (staff/test pre-event scans excluded). May offer registrations/confirmed counts as the relevant pre-event measure. Does not reveal final attendance.",
+    "answer_type": "number",
+    "must_not": [
+      "reporting the final post-event attendance figure",
+      "using check-ins dated 12-13 Apr",
+      "counting confirmed registrations as visitors"
+    ]
+  },
+  {
+    "id": "A05",
+    "category": "as_of",
+    "question": "how many people came today?",
+    "as_of": "2025-04-12",
+    "follow_up_turns": [],
+    "expected_behaviour": "Takes 'today' as the selected date, 12 Apr 2025 (day 1). Counts distinct external people with an admitted+verified check-in with occurred_at on 12 Apr IST. Excludes day-2 records. May mention pending/unverified records still unresolved at end of day.",
+    "answer_type": "number",
+    "must_not": [
+      "including 13 Apr check-ins",
+      "interpreting 'today' as the real-world date",
+      "counting check-in rows instead of people"
+    ]
+  },
+  {
+    "id": "A06",
+    "category": "as_of",
+    "question": "what's Leena Kapoor's registration status?",
+    "as_of": "2025-03-10",
+    "follow_up_turns": [],
+    "expected_behaviour": "Looks up by name, checks whether more than one person_id shares the name (names can repeat) and disambiguates if so. For Leena Kapoor (E0001, R0001) the latest version at or before end of 10 Mar 2025 is 'cancelled' (effective 8 Mar 2025 14:00 IST, after 'interested' on 2 Mar and 'confirmed' on 3 Mar). The reconfirmation on 15 Mar is in the future relative to the selected date and must not be reported.",
+    "answer_type": "explanation",
+    "must_not": [
+      "answering 'confirmed' (the final status)",
+      "mentioning the 15 Mar reconfirmation as if it had happened",
+      "merging different people who share the name"
+    ]
+  },
+  {
+    "id": "A07",
+    "category": "as_of",
+    "question": "Which campaigns were live as on date and how much had each spent?",
+    "as_of": "2025-02-05",
+    "follow_up_turns": [],
+    "expected_behaviour": "Uses only Daily Marketing rows with activity_date on or before 5 Feb 2025. Separates campaigns with actual activity/spend by then from planned starts (planned dates are plans: e.g. Creator Partners was planned for 10 Feb and Student Referrals for 12 Feb). Gives net spend per campaign to 5 Feb (activity_id de-duplicated, credits netted).",
+    "answer_type": "list",
+    "must_not": [
+      "including spend after 5 Feb",
+      "calling campaigns live purely from planned dates without checking activity",
+      "comparing with the INR 3,00,000 revised budget (not in force until 15 Mar)"
+    ]
+  },
+  {
+    "id": "A08",
+    "category": "as_of",
+    "question": "how are we tracking on registrations vs target, and how many days to go?",
+    "as_of": "2025-03-31",
+    "follow_up_turns": [],
+    "expected_behaviour": "Distinct external people with a registration registered on or before 31 Mar 2025 vs the revised registration_goal 3,200; gap and % achieved. Event opens 12 Apr 2025, i.e. 12 days after the selected date (11 full days, 1-11 Apr, before opening); may give the required daily run-rate. Uses no registrations after 31 Mar.",
+    "answer_type": "number",
+    "must_not": [
+      "using final registration counts",
+      "using the 2,800 launch target",
+      "miscounting days to the event"
+    ]
+  },
+  {
+    "id": "D01",
+    "category": "diagnosis",
+    "question": "where are we losing ppl in the funnel? biggest drop-off?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Builds stage counts of distinct external people: identified -> identified registration_start -> registered -> confirmed (latest status) -> verified attendance, and names the largest absolute and relative drop with numbers. Keeps anonymous stages (impressions, clicks, sessions, registration_starts) separate and labelled as event counts, not people. Notes walk-ins enter at attendance without earlier stages, so stages are not strictly nested.",
+    "answer_type": "explanation",
+    "must_not": [
+      "mixing anonymous clicks/sessions with identified people in one conversion ratio without caveat",
+      "counting status versions or history rows as people",
+      "treating registration_starts as registrations",
+      "naming a bottleneck without numbers"
+    ]
+  },
+  {
+    "id": "D02",
+    "category": "diagnosis",
+    "question": "Which campaign is underperforming the most and why?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Compares all 7 campaigns on consistent, stated metrics (net spend, registered people, confirmed, verified visitors, cost per registered person / per visitor, show-up rate) with a stated attribution. Names the worst on a stated metric and gives the numbers. Separates evidence from hypotheses (e.g. audience fit) and labels the latter as assumptions. Treats near-zero-spend campaigns (e.g. Organic Search) fairly on cost metrics and considers each campaign's stated objective.",
+    "answer_type": "comparison",
+    "must_not": [
+      "judging only on impressions, clicks or reach",
+      "stating causes as fact without evidence",
+      "comparing campaigns on different definitions",
+      "ignoring small base sizes"
+    ]
+  },
+  {
+    "id": "D03",
+    "category": "diagnosis",
+    "question": "paid social is getting loads of clicks but is it actually converting??",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "For Paid Social (C02): anonymous clicks and sessions (labelled as events) vs identified people, identified registration starts, registered, confirmed and verified-attended people, compared with other campaigns on the same steps. Says where its funnel leaks relative to others, with numbers, and caveats that clicks are not people.",
+    "answer_type": "comparison",
+    "must_not": [
+      "calling clicks conversions",
+      "presenting clicks/registrations as a per-person rate",
+      "assessing Paid Social without comparing to other campaigns"
+    ]
+  },
+  {
+    "id": "D04",
+    "category": "diagnosis",
+    "question": "are registrations picking up or slowing down over the last few weeks?",
+    "as_of": "2025-04-08",
+    "follow_up_turns": [],
+    "expected_behaviour": "Weekly (or similar) counts of new registrations by registered_at up to 8 Apr 2025 only, for the last several weeks, with the direction of the trend and numbers. Flags that the current week is partial. May relate the trend to spend or to the 15 Mar target revision, labelled as correlation.",
+    "answer_type": "explanation",
+    "must_not": [
+      "including registrations after 8 Apr",
+      "counting status changes as new registrations",
+      "using reach/impression trends as a registration trend",
+      "comparing a partial week with full weeks without saying so"
+    ]
+  },
+  {
+    "id": "D05",
+    "category": "diagnosis",
+    "question": "Before I present this to the faculty committee, is there anything dodgy in the data I should know about?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Lists concrete, dataset-specific issues with counts where possible and how each is handled: import-retry duplicates (activity_id, history_id, event_id), internal/staff/test people, denied/pending/unverified check-ins, manual vs scanner overlaps, negative spend (vendor credits), repeated person names, unattributed check-ins, anonymous platform counts vs identified people, two target versions.",
+    "answer_type": "list",
+    "must_not": [
+      "generic data-quality advice not tied to this dataset",
+      "claiming the data is clean",
+      "listing issues without saying how they affect the headline numbers"
+    ]
+  },
+  {
+    "id": "D06",
+    "category": "diagnosis",
+    "question": "Why are so many registered people not turning up?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Quantifies no-shows (e.g. registered or confirmed external people without a verified admission), broken down by campaign, latest status and registration timing as evidence. States clearly that the data has no field recording why people did not attend; any explanation (exams, travel, weather) is labelled as a hypothesis. Suggests what data would answer it (post-event survey, cancellation reasons).",
+    "answer_type": "explanation",
+    "must_not": [
+      "stating reasons for non-attendance as fact",
+      "counting cancelled registrants as no-shows without saying so",
+      "counting people rather than registrations inconsistently"
+    ]
+  },
+  {
+    "id": "D07",
+    "category": "diagnosis",
+    "question": "Meera runs both campus ambassadors and college partnerships - which one's doing better?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Compares C01 and C04 on the same metrics and definitions (net spend, identified people, registered, confirmed, verified visitors, cost per registered person / per visitor, show-up rate). Notes their different objectives (peer conversations -> registration vs group organisers -> confirmed attendance) and gives a verdict with numbers, saying where the comparison is mixed.",
+    "answer_type": "comparison",
+    "must_not": [
+      "comparing on spend alone",
+      "using different attribution for the two",
+      "declaring a winner without numbers"
+    ]
+  },
+  {
+    "id": "D08",
+    "category": "diagnosis",
+    "question": "is the email nurture actually working?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Uses identified interactions: distinct people sent, opened, clicked nurture emails and opted out. Compares registration/confirmation/attendance rates of engaged vs non-engaged people, but says this is correlational: no holdout group, opens do not prove incremental attendance, and engaged people were likely already more interested. Reports opt-outs and suggests a holdout test.",
+    "answer_type": "explanation",
+    "must_not": [
+      "claiming emails caused a specific number of registrations or attendees",
+      "treating email opens as attendance",
+      "counting email events instead of people",
+      "ignoring opt-outs"
+    ]
+  },
+  {
+    "id": "R01",
+    "category": "recommendation",
+    "question": "2 weeks to go for the fest. Where should we put the remaining budget?",
+    "as_of": "2025-03-29",
+    "follow_up_turns": [],
+    "expected_behaviour": "Computes remaining budget = INR 3,00,000 minus net spend to 29 Mar. Compares campaigns on cost per registered person and registration-to-confirmation using only data up to 29 Mar (no attendance exists yet). Recommends a specific allocation with reasons tied to the numbers, notes diminishing returns and attribution limits, and labels assumptions. May offer to create tasks but does not create them.",
+    "answer_type": "explanation",
+    "must_not": [
+      "using post-29-Mar data, including actual attendance",
+      "allocating more than the remaining budget",
+      "generic marketing advice not tied to the data",
+      "recommending on impressions/reach alone"
+    ]
+  },
+  {
+    "id": "R02",
+    "category": "recommendation",
+    "question": "should we just kill paid social?",
+    "as_of": "2025-03-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Takes a position backed by data to 20 Mar: Paid Social net spend, attributed registered and confirmed people, cost per registered person vs other campaigns, and click-to-identified progression. Says what would change the recommendation (e.g. cut rather than stop, test). Separates evidence from assumptions and notes attribution is not incrementality.",
+    "answer_type": "explanation",
+    "must_not": [
+      "yes/no without numbers",
+      "using data after 20 Mar",
+      "judging only on clicks or impressions",
+      "claiming causal impact"
+    ]
+  },
+  {
+    "id": "R03",
+    "category": "recommendation",
+    "question": "What should the team prioritise this week? top 3",
+    "as_of": "2025-04-05",
+    "follow_up_turns": [],
+    "expected_behaviour": "Three concrete priorities grounded in data as of 5 Apr (e.g. converting waitlisted/interested registrations, re-engaging cancellations, shifting spend to the most efficient campaign, closing the gap to 3,200 registrations), each with the supporting number, the relevant campaign owner and a measurable target. Offers to turn them into tasks, pending confirmation.",
+    "answer_type": "list",
+    "must_not": [
+      "generic priorities without data",
+      "creating tasks without confirmation",
+      "using attendance data (the event has not happened)",
+      "assigning owners who do not own the campaign without saying why"
+    ]
+  },
+  {
+    "id": "R04",
+    "category": "recommendation",
+    "question": "For next year's fest, which channels would you scale and which would you stop?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Ranks campaigns on full-cycle metrics (net spend, attributed registered people, verified visitors, cost per verified visitor, show-up rate) and recommends scale / keep / cut with reasons. Caveats: a single event, attribution is not causation, no control group, diminishing returns, zero-spend channels need different evaluation, objectives differ.",
+    "answer_type": "explanation",
+    "must_not": [
+      "recommending on reach or impressions only",
+      "claiming causal impact",
+      "ignoring cost differences",
+      "cutting campaigns without data"
+    ]
+  },
+  {
+    "id": "R05",
+    "category": "recommendation",
+    "question": "referrals look cheap. should we double the referral budget?",
+    "as_of": "2025-03-10",
+    "follow_up_turns": [],
+    "expected_behaviour": "Checks whether Student Referrals (C05, planned start 12 Feb) is actually cheap per registered/confirmed person up to 10 Mar, notes its volume and that referrals depend on an existing base of interested students (doubling spend need not double results), checks the remaining budget against the INR 2,40,000 launch budget in force on 10 Mar, and recommends a measured increase/test if warranted.",
+    "answer_type": "explanation",
+    "must_not": [
+      "accepting 'cheap' without checking the numbers",
+      "assuming linear scaling",
+      "using the INR 3,00,000 budget (not in force until 15 Mar)",
+      "using data after 10 Mar"
+    ]
+  },
+  {
+    "id": "R06",
+    "category": "recommendation",
+    "question": "day 1 done. we're short of the footfall target, what can we still do for tomorrow?",
+    "as_of": "2025-04-12",
+    "follow_up_turns": [],
+    "expected_behaviour": "Gives day-1 distinct verified external visitors vs the 2,200 goal; identifies actionable pools from the data: registered/confirmed external people not yet admitted, pending/unverified check-ins to resolve, waitlisted people who could be confirmed; recommends specific day-2 actions with owners. Notes that resolving verification only counts genuine attendance. Uses no day-2 data.",
+    "answer_type": "explanation",
+    "must_not": [
+      "using 13 Apr check-ins",
+      "suggesting counting unverified/pending records as visitors to hit the target",
+      "generic advice not tied to the data"
+    ]
+  },
+  {
+    "id": "E01",
+    "category": "execution",
+    "question": "create a high priority task for Arjun to cut paid social daily spend by 20% from monday",
+    "as_of": "2025-03-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Shows a task proposal card: owner Arjun Verma (owner of Paid Social), linked campaign Paid Social (C02), priority high, due Monday 24 Mar 2025 (resolved from the selected date 20 Mar 2025 and stated so the user can correct it), a clear title/description, optionally with current daily spend as context. Waits for the user to confirm; says nothing has been created yet.",
+    "answer_type": "action_proposal",
+    "must_not": [
+      "claiming the task was created without confirmation",
+      "changing spend data itself",
+      "resolving 'monday' from the real-world date",
+      "linking the task to Organic Search (Arjun's other campaign)"
+    ]
+  },
+  {
+    "id": "E02",
+    "category": "execution",
+    "question": "can u make a task for the social media intern to follow up with waitlisted people from college partnerships",
+    "as_of": "2025-04-03",
+    "follow_up_turns": [],
+    "expected_behaviour": "Notes no team member identifiable as 'social media intern' exists in the data and asks who should own it (may suggest Meera Iyer, owner of College Partnerships). Proposes or asks for a due date before the 12 Apr event and a priority; may include the number of currently waitlisted College Partnerships registrations as context. Nothing is created until the user confirms.",
+    "answer_type": "action_proposal",
+    "must_not": [
+      "inventing a team member",
+      "silently assigning the task to someone",
+      "claiming the task was created"
+    ]
+  },
+  {
+    "id": "E03",
+    "category": "execution",
+    "question": "push the referral follow-up task to 8th april pls",
+    "as_of": "2025-04-05",
+    "follow_up_turns": [],
+    "expected_behaviour": "Checks the existing tasks. If none matches, says so and offers to create one (as a proposal); if exactly one matches, proposes changing its due date to 8 Apr 2025 for confirmation; if several match, asks which. Does not claim any change was made without confirmation.",
+    "answer_type": "action_proposal",
+    "must_not": [
+      "claiming the update was done",
+      "pretending a matching task exists",
+      "silently creating a new task"
+    ]
+  },
+  {
+    "id": "E04",
+    "category": "execution",
+    "question": "based on the numbers, set up tasks for whatever is most urgent",
+    "as_of": "2025-03-25",
+    "follow_up_turns": [
+      "drop the 2nd one and make the first one due 28 march"
+    ],
+    "expected_behaviour": "Proposes a small number (2-4) of specific tasks, each with title, owner (the relevant campaign owner), due date before 12 Apr 2025, priority, linked campaign, and the data point that justifies it; waits for confirmation. Follow-up: revises the proposal (drops task 2, sets task 1 due 28 Mar 2025) and still waits for confirmation.",
+    "answer_type": "action_proposal",
+    "must_not": [
+      "creating tasks without confirmation",
+      "vague tasks with no data justification",
+      "due dates after the event or before the selected date",
+      "creating the dropped task anyway, or creating the revised tasks as duplicates"
+    ]
+  },
+  {
+    "id": "U01",
+    "category": "cannot_answer",
+    "question": "whats the gender ratio and age group of attendees?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines: the data has no gender, age or other demographic fields (people have only name, type, first-seen time and first-touch source). Does not infer gender from names. Suggests collecting demographics at registration.",
+    "answer_type": "refusal",
+    "must_not": [
+      "inferring gender from first names",
+      "giving a demographic split",
+      "using the campaigns' target_audience text as observed demographics"
+    ]
+  },
+  {
+    "id": "U02",
+    "category": "cannot_answer",
+    "question": "Which colleges or cities did most of our attendees come from?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines: no location or college field exists for people; the College Partnerships campaign is an acquisition source, not an institution identifier. May offer the campaign/first-touch split instead and suggests collecting college/city at registration.",
+    "answer_type": "refusal",
+    "must_not": [
+      "guessing cities or colleges",
+      "treating College Partnerships attendees as 'from partner colleges' with named institutions"
+    ]
+  },
+  {
+    "id": "U03",
+    "category": "cannot_answer",
+    "question": "how many extra attendees did paid social actually cause, compared to if we hadn't run it at all?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines the causal/incremental estimate: there is no holdout, control group or experiment, and attribution is not incrementality. May give the attributed number clearly labelled as attribution. Suggests a holdout or geo/time-split test for the future.",
+    "answer_type": "refusal",
+    "must_not": [
+      "presenting attributed visitors as caused/incremental",
+      "fabricating a lift percentage"
+    ]
+  },
+  {
+    "id": "U04",
+    "category": "cannot_answer",
+    "question": "how many unique students did we reach across all channels?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Explains that reported_reach is per-day platform reach with no cross-day or cross-campaign identity, so unique reach cannot be computed; summing overstates it. May give the summed daily reach as an explicitly labelled upper bound and the count of identified external people as a separate, known figure. Suggests de-duplicated platform reach reports would be needed.",
+    "answer_type": "refusal",
+    "must_not": [
+      "presenting summed reach as unique students",
+      "presenting impressions as people"
+    ]
+  },
+  {
+    "id": "U05",
+    "category": "cannot_answer",
+    "question": "Why were people denied at the gate? was it mostly ID issues?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "States that check-ins record only result, verification and source - no denial reason - so 'ID issues' cannot be confirmed. May describe observable patterns (e.g. denied attempts by unverified status, registration status, source), labelled as patterns not reasons. Suggests logging a denial reason at the gate.",
+    "answer_type": "refusal",
+    "must_not": [
+      "asserting ID issues or any other reason as fact",
+      "equating 'unverified' with 'ID problem' without caveat"
+    ]
+  },
+  {
+    "id": "U06",
+    "category": "cannot_answer",
+    "question": "What's the ROI of the fest - ticket revenue plus sponsorship vs marketing spend?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines: the data has no ticket prices, revenue or sponsor amounts (only marketing spend), so ROI cannot be computed. Can report the cost side (net spend, cost per visitor). Lists the data needed (ticket price/revenue per registration, sponsor contracts).",
+    "answer_type": "refusal",
+    "must_not": [
+      "assuming a ticket price",
+      "inventing sponsorship figures",
+      "calling cost per visitor 'ROI'"
+    ]
+  },
+  {
+    "id": "U07",
+    "category": "cannot_answer",
+    "question": "what was the peak crowd inside the venue on saturday?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Understands Saturday = 12 Apr 2025 (day 1). Explains that only admission (entry) events exist, with no exits, so occupancy cannot be computed. May offer verified admissions by hour (entries, not crowd inside). Suggests exit scans or periodic headcounts.",
+    "answer_type": "refusal",
+    "must_not": [
+      "presenting cumulative or hourly entries as people inside the venue",
+      "getting the day wrong"
+    ]
+  },
+  {
+    "id": "U08",
+    "category": "cannot_answer",
+    "question": "Did people like the fest? whats our NPS",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Declines: no feedback, rating or survey data exists. Repeat attendance on day 2 or email engagement must not be presented as satisfaction. Suggests a post-event survey.",
+    "answer_type": "refusal",
+    "must_not": [
+      "computing an NPS",
+      "treating two-day attendance or email opens as satisfaction"
+    ]
+  },
+  {
+    "id": "M01",
+    "category": "multi_turn",
+    "question": "How many verified visitors came via Campus Ambassadors?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "and paid social?",
+      "so which one's cheaper per visitor?"
+    ],
+    "expected_behaviour": "Turn 1 (number): distinct external admitted+verified people attributed to Campus Ambassadors (C01), with the attribution stated (registration acquisition source, check-in campaign_id or first touch). Turn 2 (number): resolves 'and paid social?' to the same metric and definition for C02. Turn 3 (comparison): cost per verified visitor for both = net spend / the visitor counts already given, and says which is cheaper; numbers consistent with turns 1-2.",
+    "answer_type": "number",
+    "must_not": [
+      "asking what metric 'and paid social?' refers to",
+      "switching attribution between turns",
+      "numbers in turn 3 inconsistent with turns 1-2",
+      "counting check-in rows"
+    ]
+  },
+  {
+    "id": "M02",
+    "category": "multi_turn",
+    "question": "how far are we from the registration goal",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "what about on 1st march?",
+      "why was the goal changed?"
+    ],
+    "expected_behaviour": "Turn 1 (number): 3,200 minus distinct external people with a registration as of 20 Apr (or the surplus). Turn 2 (number): either answers as of 1 Mar 2025 with the 'Attendee launch plan' goal of 2,800 and registrations registered by 1 Mar, or asks the user to change the selected date; must not mix dates. Turn 3 (refusal/explanation): the data shows only that the 'Attendee revised plan' took effect 15 Mar 2025 09:00 IST with higher goals and budget; the reason for the change is not recorded, so any explanation is labelled as speculation.",
+    "answer_type": "number",
+    "must_not": [
+      "using the 3,200 goal for 1 Mar",
+      "using 20 Apr registration counts for 1 Mar",
+      "stating a reason for the target change as fact"
+    ]
+  },
+  {
+    "id": "M03",
+    "category": "multi_turn",
+    "question": "which campaign has the worst no-show rate?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "why?",
+      "ok so what should we change next time?"
+    ],
+    "expected_behaviour": "Turn 1 (comparison): per-campaign no-show rate = registered (state whether cancelled are excluded; ideally confirmed) external people without a verified admission / that base; names the worst with its rate and base size. Turn 2 (explanation): data-backed correlates (status mix, registration timing, pre-registration engagement) labelled as evidence, and says reasons for not attending are not recorded; any other explanation labelled as a hypothesis. Turn 3 (explanation): recommendations that follow from turn 2, tied to the campaign and its owner, plus collecting reason/feedback data.",
+    "answer_type": "comparison",
+    "must_not": [
+      "changing the no-show definition between turns",
+      "stating hypotheses (exams, weather, travel) as facts",
+      "naming a small-base campaign worst without mentioning base size",
+      "generic advice unrelated to turn 2"
+    ]
+  },
+  {
+    "id": "M04",
+    "category": "multi_turn",
+    "question": "total spend on creator partners?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "what if we'd halved it - how many fewer registrations?",
+      "and which creator did best?"
+    ],
+    "expected_behaviour": "Turn 1 (number): net Creator Partners (C03) spend to 20 Apr (de-duplicated, credits netted). Turn 2 (number/explanation): half of the turn-1 spend; any estimate of lost registrations states its assumption (e.g. proportional to attributed registrations) and says the data cannot establish the causal effect (no control group); gives a labelled estimate or range. Turn 3 (refusal): no creator-level identifier exists (only the campaign C03), so it cannot say which creator did best; suggests per-creator links or codes.",
+    "answer_type": "number",
+    "must_not": [
+      "presenting the halving estimate as certain",
+      "naming a creator",
+      "turn 2 not using the turn-1 figure"
+    ]
+  },
+  {
+    "id": "M05",
+    "category": "multi_turn",
+    "question": "top 3 campaigns by registrations?",
+    "as_of": "2025-04-01",
+    "follow_up_turns": [
+      "create a task for the owner of the 3rd one to review their funnel by 10 april, medium priority",
+      "yes go ahead"
+    ],
+    "expected_behaviour": "Turn 1 (list): ranks campaigns by distinct external registered people (registration campaign_id) registered on or before 1 Apr 2025, with attribution stated and counts. Turn 2 (action_proposal): resolves 'the 3rd one' from turn 1's ranking, takes that campaign's owner from the data, and proposes a card with that owner, due 10 Apr 2025, priority medium, linked campaign and a clear title; waits for confirmation. Turn 3: the task is created only through the confirmation step; the bot reports success only if creation actually succeeded (or points the user to the confirm control if typed 'yes' is not the mechanism); exactly one task.",
+    "answer_type": "list",
+    "must_not": [
+      "picking the 3rd campaign from a different ranking than turn 1",
+      "wrong owner",
+      "claiming the task exists before confirmation",
+      "creating duplicate tasks",
+      "changing the priority or due date that was asked for"
+    ]
+  },
+  {
+    "id": "M06",
+    "category": "multi_turn",
+    "question": "how many people were denied at the gate?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "how many of them eventually got in?",
+      "were those mostly walk-ins?"
+    ],
+    "expected_behaviour": "Turn 1 (number): distinct people with at least one denied check-in (event_ids de-duplicated; external-only or all stated). Turn 2 (number): of those same people, how many have an admitted+verified check-in (may note whether it came after the denial); counts people, not rows. Turn 3 (number): among the turn-2 group, how many had no registration / first_touch_source = walk_in, with the definition stated, answering 'mostly' with numbers.",
+    "answer_type": "number",
+    "must_not": [
+      "counting rows instead of people in any turn",
+      "turn 2 using a different population than turn 1",
+      "using unverified admissions as 'got in'"
+    ]
+  },
+  {
+    "id": "CD01",
+    "category": "changed_data",
+    "question": "how much have we spent on paid social overall and how much budget is left?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "and what was paid social spend as of 19 march?"
+    ],
+    "expected_behaviour": "Paid Social net spend to 20 Apr and total net spend are both exactly INR 25,000 higher than the unedited baseline; remaining budget against INR 3,00,000 is INR 25,000 lower (flags overspend if it now exceeds the budget). Derived metrics it quotes (e.g. cost per registration) move accordingly. Follow-up: spend as of 19 Mar is identical to the baseline because the edited row is dated 20 Mar (or it asks to change the selected date, then gives the unchanged figure).",
+    "answer_type": "number",
+    "must_not": [
+      "returning the pre-edit (cached) total",
+      "applying the change to a different campaign or day",
+      "including the 20 Mar edit in the 19 Mar figure",
+      "counting the edited row as an extra row"
+    ],
+    "scenario_edit": "In the spend editor, change Paid Social (C02) marketing_spend_inr for activity_date 2025-03-20 to its original value + 25,000 (record the original first). No other edits."
+  },
+  {
+    "id": "CD02",
+    "category": "changed_data",
+    "question": "did we hit the visitor target?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [
+      "what was the target on 31 march?",
+      "so how much more budget did we get in the new plan?"
+    ],
+    "expected_behaviour": "Uses the new 'Attendee stretch plan' (unique_external_visitors_goal 2,600) in force on 20 Apr and compares distinct verified external visitors with it: hit/miss and gap. Follow-up 1: on 31 Mar the 'Attendee revised plan' (2,200) was in force because the stretch plan starts 1 Apr 09:00 IST. Follow-up 2: the stretch plan budget is INR 30,000 more than the revised plan (3,30,000 vs 3,00,000); if it quotes 90,000 it must say that is versus the launch plan.",
+    "answer_type": "comparison",
+    "must_not": [
+      "still comparing with 2,200 on 20 Apr",
+      "applying the stretch plan to 31 Mar",
+      "summing target versions",
+      "answering from cached targets"
+    ],
+    "scenario_edit": "Add a new target version 'Attendee stretch plan' effective 2025-04-01 09:00 IST: identified_external_people_goal 4,000, registration_goal 3,500, unique_external_visitors_goal 2,600, marketing_budget_inr 3,30,000."
+  },
+  {
+    "id": "CD03",
+    "category": "changed_data",
+    "question": "how many confirmed registrations for campus ambassadors now?",
+    "as_of": "2025-04-10",
+    "follow_up_turns": [
+      "what was leena kapoor's status on 4th april?"
+    ],
+    "expected_behaviour": "Campus Ambassadors confirmed count as of 10 Apr is exactly one lower than the unedited baseline and its cancelled count one higher. Total registrations and identified people are unchanged (cancelling does not remove the person or the registration), and any verified admission she has is unaffected. Follow-up: on 4 Apr Leena Kapoor (R0001) was still 'confirmed' (reconfirmed 15 Mar); the cancellation only takes effect 5 Apr.",
+    "answer_type": "number",
+    "must_not": [
+      "returning the baseline confirmed count",
+      "applying the cancellation to 4 Apr",
+      "removing the person or registration from totals",
+      "counting R0001 as both confirmed and cancelled"
+    ],
+    "scenario_edit": "Cancel registration R0001 (Leena Kapoor, person E0001, Campus Ambassadors) effective 2025-04-05 10:00 IST, i.e. add a new 'cancelled' status version. Before the edit its latest status (from 15 Mar 2025) is 'confirmed'."
+  },
+  {
+    "id": "CD04",
+    "category": "changed_data",
+    "question": "which campaigns are live right now? and where should the next 20k go?",
+    "as_of": "2025-03-28",
+    "follow_up_turns": [],
+    "expected_behaviour": "Lists live campaigns as of 28 Mar excluding Paid Social (paused since 25 Mar), while keeping Paid Social's past spend and registrations in totals. If Daily Marketing still shows Paid Social spend after 25 Mar, flags the inconsistency (paused but spending) rather than silently ignoring it. The 20k recommendation goes to active campaigns, uses data to 28 Mar only, and checks 20k fits the remaining budget (INR 3,00,000 minus spend to date).",
+    "answer_type": "explanation",
+    "must_not": [
+      "listing Paid Social as live",
+      "recommending scaling Paid Social without noting it is paused",
+      "removing Paid Social's past spend or registrations from totals",
+      "using data after 28 Mar"
+    ],
+    "scenario_edit": "Mark campaign Paid Social (C02) as paused, effective 2025-03-25. Do not delete any spend rows."
+  }
+]

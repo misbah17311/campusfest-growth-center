@@ -1,0 +1,61 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# ---- project-specific ----
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Kept local on purpose (not for the public repo):
+# RISA's assignment brief, the personal working plan, downloaded source PDFs
+/docs/
+/PLAN.md
+/research/sources/
+/NEXTJS_SCAFFOLD_README.md
+
+# Claude Code local settings
+.claude/settings.local.json
+# Not used by the attendee track
+/data/original/Sponsor Dataset.xlsx
+# Raw, not-yet-verified research notes (a checked version will be added later)
+/research/

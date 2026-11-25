@@ -1,0 +1,533 @@
+{
+  "F01": {
+    "must_include": [
+      {
+        "value": 2050,
+        "tol": 0,
+        "label": "verified unique external visitors"
+      }
+    ]
+  },
+  "F02": {
+    "must_include": [
+      {
+        "value": 274000,
+        "tol": 0,
+        "label": "net spend"
+      },
+      {
+        "value": 300000,
+        "tol": 0,
+        "label": "budget"
+      },
+      {
+        "value": 26000,
+        "tol": 0,
+        "label": "remaining"
+      }
+    ]
+  },
+  "F03": {
+    "must_include": [
+      {
+        "value": 3200,
+        "tol": 0,
+        "label": "registration goal (revised plan)"
+      }
+    ]
+  },
+  "F04": {
+    "must_include": [
+      {
+        "value": 2800,
+        "tol": 0,
+        "label": "external people registered"
+      }
+    ],
+    "notes": "2,840 registration records include 40 internal registrations"
+  },
+  "F05": {
+    "must_include": [
+      {
+        "value": 93000,
+        "tol": 0,
+        "label": "Paid Social net spend"
+      }
+    ]
+  },
+  "F06": {
+    "must_include": [
+      "Nisha Rao",
+      "10 Feb",
+      "13 Apr"
+    ],
+    "notes": "target_audience is a description ('Students engaging with creator-led event content'), not a count; must say there is no audience size"
+  },
+  "F07": {
+    "must_include": [
+      {
+        "value": 50,
+        "tol": 0,
+        "label": "distinct external people with a denied check-in"
+      }
+    ],
+    "notes": "50 denied rows after dedup; 50 people of any type; of 50 external, 20 later had a verified admission and 30 never did"
+  },
+  "F08": {
+    "must_include": [
+      {
+        "value": 45091,
+        "tol": 0,
+        "label": "summed daily reported reach (not unique people)"
+      }
+    ],
+    "notes": "must say summed daily reach is not unique people"
+  },
+  "F09": {
+    "must_include": [
+      {
+        "value": 125,
+        "tol": 0,
+        "label": "walk-ins"
+      }
+    ]
+  },
+  "F10": {
+    "must_include": [
+      {
+        "value": 4,
+        "tol": 0,
+        "label": "credit rows"
+      },
+      {
+        "value": 6500,
+        "tol": 0,
+        "label": "total credits INR"
+      }
+    ]
+  },
+  "F11": {
+    "must_include": [
+      {
+        "value": 725,
+        "tol": 0,
+        "label": "visitors on both days"
+      }
+    ]
+  },
+  "F12": {
+    "must_include": [
+      {
+        "value": 2500,
+        "tol": 0,
+        "label": "confirmed"
+      },
+      {
+        "value": 88,
+        "tol": 0,
+        "label": "waitlisted"
+      },
+      {
+        "value": 183,
+        "tol": 0,
+        "label": "cancelled"
+      },
+      {
+        "value": 29,
+        "tol": 0,
+        "label": "interested"
+      }
+    ]
+  },
+  "C01": {
+    "must_include": [
+      {
+        "value": 133.66,
+        "tol": 1.0,
+        "label": "INR per verified visitor (all visitors)"
+      }
+    ],
+    "notes": "also acceptable if clearly defined: per campaign-attributed visitor INR 142.34"
+  },
+  "C02": {
+    "must_include": [
+      {
+        "value": 75.0,
+        "tol": 0.15,
+        "label": "Campus Ambassadors registration to visit %"
+      },
+      {
+        "value": 50.0,
+        "tol": 0.15,
+        "label": "Paid Social registration to visit %"
+      },
+      {
+        "value": 50.0,
+        "tol": 0.15,
+        "label": "Creator Partners registration to visit %"
+      },
+      {
+        "value": 85.6,
+        "tol": 0.15,
+        "label": "College Partnerships registration to visit %"
+      },
+      {
+        "value": 78.6,
+        "tol": 0.15,
+        "label": "Student Referrals registration to visit %"
+      },
+      {
+        "value": 78.0,
+        "tol": 0.15,
+        "label": "Organic Search registration to visit %"
+      },
+      {
+        "value": 82.5,
+        "tol": 0.15,
+        "label": "Community Groups registration to visit %"
+      }
+    ],
+    "notes": "may also give confirmed-to-visit show-up; must state which"
+  },
+  "C03": {
+    "must_include": [
+      {
+        "value": 150,
+        "tol": 0,
+        "label": "visitors short of goal"
+      },
+      {
+        "value": 6.82,
+        "tol": 0.1,
+        "label": "% short"
+      }
+    ]
+  },
+  "C04": {
+    "must_include": [
+      {
+        "value": 366,
+        "tol": 1,
+        "label": "extra registrations at constant cost per registration"
+      }
+    ],
+    "notes": "cost per registration INR 136.76; should flag that constant cost per registration is optimistic (diminishing returns)"
+  },
+  "C05": {
+    "must_include": [
+      {
+        "value": 6867,
+        "tol": 0,
+        "label": "Paid Social clicks"
+      },
+      {
+        "value": 680,
+        "tol": 0,
+        "label": "Paid Social registrations"
+      },
+      {
+        "value": 9.9,
+        "tol": 0.15,
+        "label": "registrations per click %"
+      }
+    ],
+    "notes": "must say clicks are anonymous events, registrations are people, so the ratio mixes sources"
+  },
+  "C06": {
+    "must_include": [
+      {
+        "value": 87.5,
+        "tol": 0.5,
+        "label": "Ambassadors INR per confirmed"
+      },
+      {
+        "value": 59.38,
+        "tol": 0.5,
+        "label": "Referrals INR per confirmed"
+      },
+      {
+        "value": 28.12,
+        "tol": 0.6,
+        "label": "difference"
+      }
+    ]
+  },
+  "C07": {
+    "must_include": [
+      {
+        "value": 88,
+        "tol": 0,
+        "label": "waitlisted people"
+      },
+      {
+        "value": 2076,
+        "tol": 1,
+        "label": "hypothetical visitors"
+      },
+      {
+        "value": 124,
+        "tol": 1,
+        "label": "still short"
+      }
+    ],
+    "notes": "0 waitlisted people attended anyway; +26 -> 2076, still below 2200"
+  },
+  "C08": {
+    "must_include": [
+      {
+        "value": 30500,
+        "tol": 0,
+        "label": "Creators March spend"
+      },
+      {
+        "value": 983.87,
+        "tol": 1.0,
+        "label": "per calendar day"
+      }
+    ],
+    "notes": "spend was posted on 4 days in March (per spend day INR 7625); either average is fine if defined"
+  },
+  "A01": {
+    "must_include": [
+      {
+        "value": 1800,
+        "tol": 0,
+        "label": "visitor goal (launch plan)"
+      },
+      {
+        "value": 240000,
+        "tol": 0,
+        "label": "budget (launch plan)"
+      }
+    ]
+  },
+  "A02": {
+    "must_include": [
+      {
+        "value": 300000,
+        "tol": 0,
+        "label": "budget (revised plan from 15 Mar 09:00)"
+      }
+    ]
+  },
+  "A03": {
+    "must_include": [
+      {
+        "value": 899,
+        "tol": 0,
+        "label": "confirmed at end of Feb"
+      }
+    ]
+  },
+  "A04": {
+    "must_include": [
+      {
+        "value": 0,
+        "tol": 0,
+        "label": "visitors before the festival"
+      }
+    ],
+    "notes": "must not leak 2,050 or day-1 numbers"
+  },
+  "A05": {
+    "must_include": [
+      {
+        "value": 1430,
+        "tol": 0,
+        "label": "verified visitors on 12 Apr"
+      }
+    ]
+  },
+  "A06": {
+    "must_include": [
+      "cancelled"
+    ],
+    "notes": "R0001 history: [('02 Mar 10:00', 'interested'), ('03 Mar 12:00', 'confirmed'), ('08 Mar 14:00', 'cancelled'), ('15 Mar 11:00', 'confirmed')]; people named Leena Kapoor: 1"
+  },
+  "A07": {
+    "must_include": [
+      "Campus Ambassadors",
+      "Paid Social",
+      "College Partnerships",
+      "Organic Search"
+    ],
+    "notes": "planned start on or before 5 Feb: Campus Ambassadors spent INR 10750; Paid Social spent INR 9600; College Partnerships spent INR 7875; Organic Search spent INR 3500; not started: Creator Partners, Student Referrals, Community Groups"
+  },
+  "A08": {
+    "must_include": [
+      {
+        "value": 2337,
+        "tol": 0,
+        "label": "registered on 31 Mar"
+      },
+      {
+        "value": 3200,
+        "tol": 0,
+        "label": "goal"
+      },
+      {
+        "value": 12,
+        "tol": 1,
+        "label": "days to the festival (12 Apr)"
+      }
+    ]
+  },
+  "M01": {
+    "must_include": [
+      {
+        "value": 390,
+        "tol": 0,
+        "label": "Ambassadors visitors"
+      },
+      {
+        "value": 340,
+        "tol": 0,
+        "label": "Paid Social visitors"
+      },
+      {
+        "value": 108,
+        "tol": 1,
+        "label": "Ambassadors INR/visitor"
+      },
+      {
+        "value": 274,
+        "tol": 1,
+        "label": "Paid INR/visitor"
+      }
+    ]
+  },
+  "M02": {
+    "must_include": [
+      {
+        "value": 400,
+        "tol": 0,
+        "label": "gap on 20 Apr"
+      },
+      {
+        "value": 1656,
+        "tol": 0,
+        "label": "gap on 1 Mar (launch plan)"
+      }
+    ],
+    "notes": "1 Mar: 1144 of 2800; reason for the goal change is not recorded"
+  },
+  "M03": {
+    "must_include": [
+      "Paid Social",
+      {
+        "value": 41.4,
+        "tol": 0.15,
+        "label": "no-show % of confirmed"
+      }
+    ],
+    "notes": "Campus Ambassadors 18.8%; Paid Social 41.4%; Creator Partners 39.7%; College Partnerships 8.3%; Student Referrals 14.1%; Organic Search 13.3%; Community Groups 10.8%"
+  },
+  "M04": {
+    "must_include": [
+      {
+        "value": 59000,
+        "tol": 0,
+        "label": "Creators spend"
+      }
+    ],
+    "notes": "halving at constant cost per registration -> 175 fewer; with diminishing returns fewer than that; no creator-level data exists"
+  },
+  "M05": {
+    "must_include": [
+      "Paid Social",
+      "Campus Ambassadors",
+      "College Partnerships"
+    ],
+    "notes": "top 3 on 1 Apr: Paid Social 641, Campus Ambassadors 460, College Partnerships 345; owner of 3rd: T03"
+  },
+  "M06": {
+    "must_include": [
+      {
+        "value": 50,
+        "tol": 0,
+        "label": "denied people"
+      },
+      {
+        "value": 20,
+        "tol": 0,
+        "label": "later admitted"
+      },
+      {
+        "value": 0,
+        "tol": 0,
+        "label": "of whom walk-ins"
+      }
+    ]
+  },
+  "CD01": {
+    "baseline": {
+      "paid_spend": 93000,
+      "total_spend": 274000
+    },
+    "must_include": [
+      {
+        "value": 118000,
+        "tol": 0,
+        "label": "Paid Social spend after edit"
+      },
+      {
+        "value": 1000,
+        "tol": 0,
+        "label": "budget left after edit"
+      },
+      {
+        "value": 76800,
+        "tol": 0,
+        "label": "Paid Social spend as of 19 Mar (unchanged)"
+      }
+    ]
+  },
+  "CD02": {
+    "must_include": [
+      {
+        "value": 2600,
+        "tol": 0,
+        "label": "visitor goal in force on 20 Apr after edit"
+      },
+      {
+        "value": 550,
+        "tol": 0,
+        "label": "gap"
+      },
+      {
+        "value": 2200,
+        "tol": 0,
+        "label": "goal on 31 Mar"
+      },
+      {
+        "value": 30000,
+        "tol": 0,
+        "label": "extra budget vs revised plan"
+      }
+    ]
+  },
+  "CD03": {
+    "baseline": {
+      "C01_confirmed_0410": 472
+    },
+    "must_include": [
+      {
+        "value": 471,
+        "tol": 0,
+        "label": "C01 confirmed as of 10 Apr after edit"
+      },
+      "confirmed"
+    ],
+    "notes": "Leena Kapoor on 4 Apr: confirmed (edit only from 5 Apr 10:00)"
+  },
+  "CD04": {
+    "must_include": [
+      {
+        "value": 69500,
+        "tol": 0,
+        "label": "budget remaining on 28 Mar"
+      }
+    ],
+    "notes": "Paid Social must be shown as paused; status changes are not dated in the app, so 'since 25 Mar' cannot be verified from data"
+  }
+}
