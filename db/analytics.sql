@@ -449,7 +449,7 @@ begin
                     when y.ratio <= (select scale_cost_ratio from r) then 'scale'
                     else 'keep' end,
                case when (select post from ph) then 'cost per verified visitor' else 'cost per registration' end,
-               round(y.cost, 2), round(y.blended_cost, 2), round(y.ratio, 3),
+               round(y.cost, 2), round(y.blended_cost, 2), round(y.ratio, 2),  -- same rounding as the reason text
                case when y.registered < (select min_registrations from r)
                         then array['only ' || y.registered || ' registrations; need ' || (select min_registrations from r)]
                     else array_prepend(

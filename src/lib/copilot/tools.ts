@@ -46,7 +46,7 @@ export const TOOL_DEFS = [
   },
   {
     name: "get_funnel_leaks",
-    description: "Where people leave the funnel as of a date, overall and per campaign: abandoned the registration form, never started it, still interested, waitlisted, cancelled, confirmed but lost at the gate (denied/pending only), confirmed but did not come, plus walk-ins.",
+    description: "Where people leave the funnel as of a date, overall and per campaign: abandoned the registration form, never started it, still interested, waitlisted, cancelled, confirmed but lost at the gate (denied/pending only), confirmed but did not come, plus walk-ins. Also a gate breakdown: people with a denied scan, how many of them were later admitted, and people left pending/unverified.",
     parameters: { type: "object", properties: { ...asOfParam }, additionalProperties: false },
   },
   {
@@ -214,8 +214,25 @@ export async function runTool(name: string, rawArgs: unknown, ctx: ToolContext):
     }
     case "get_funnel_leaks": {
       const d = await asOfFrom(args, ctx);
-      const [all, byCampaign] = await Promise.all([getLeaks(d), getCampaignLeaks(d)]);
-      return { as_of: d, overall: compact(all), by_campaign: compact(byCampaign) };
+      const [all, byCampaign, f, gate] = await Promise.all([getLeaks(d), getCampaignLeaks(d), getFunnel(d), query(
+        `with ext as (select person_id from people where person_type = 'external'),
+         ck as (select c.* from checkins c join ext using (person_id) where c.occurred_at < cutoff($1::date)),
+         ok as (select distinct person_id from ck where result = 'admitted' and verification = 'verified'),
+         den as (select distinct person_id from ck where result = 'denied'),
+         pend as (select distinct person_id from ck where result = 'pending' or verification = 'unverified')
+         select (select count(*) from den)::int as people_with_a_denied_scan,
+                (select count(*) from den where person_id in (select person_id from ok))::int as denied_but_later_admitted,
+                (select count(*) from den where person_id not in (select person_id from ok))::int as denied_never_admitted,
+                (select count(*) from pend where person_id not in (select person_id from ok) and person_id not in (select person_id from den))::int as pending_or_unverified_only_never_admitted,
+                (select count(*) from ck where result = 'denied')::int as denied_scan_records`, [d])]);
+      return { as_of: d, overall: compact(all), by_campaign: compact(byCampaign),
+        identified_not_registered: {
+          identified: f.identified_external, registered: f.registered_people,
+          gap: f.identified_external - f.registered_people,
+          of_which_walked_in_without_registering: f.visitors_walk_in,
+          note: "The leak rows exclude walk-ins: identified people who never registered but came anyway are visitors, not a leak. The leak rows plus walk-ins add up to the gap.",
+        },
+        gate_breakdown: { ...gate[0], note: "Denied is one check-in result; 'never admitted' also includes people left pending/unverified. Answer the question asked: denied people, or people never admitted." } };
     }
     case "get_decisions": {
       const d = await asOfFrom(args, ctx);

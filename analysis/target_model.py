@@ -36,7 +36,9 @@ ROOT = Path(__file__).resolve().parent.parent
 FINAL = "2025-04-20"
 # Paid reach channels. Evidence for treating them differently (DERIVED): in 2025,
 # Paid Social's cost per registration rose from INR 113 (Feb) to 199 (Mar), while
-# every peer and group channel got cheaper per registration as the campaign went on.
+# Ambassadors (106->66), College Partnerships (114->53) and Referrals (177->46) got
+# cheaper; Organic rose slightly (48->57). Monthly ratios are rough (spend and
+# registrations are not aligned in time).
 PAID = {"C02", "C03"}
 
 
@@ -77,7 +79,7 @@ def channel_baseline(d: ref.Data) -> pd.DataFrame:
 @dataclass(frozen=True)
 class Scenario:
     name: str
-    spend: dict            # channel id -> INR (ASSUMED allocation; see PLAN_2026)
+    spend: dict            # channel id -> INR (ASSUMED allocation; see the plan in main())
     beta_paid: float       # ASSUMED diminishing-returns exponent for paid reach (Paid Social, Creators)
     beta_peer: float       # ASSUMED exponent for peer and group channels (1 = linear)
     reminder_effect: float  # relative cut in true no-show from reminders + reconfirmation
@@ -86,6 +88,8 @@ class Scenario:
     form_recovery: float   # share of form abandoners recovered
     walk_ins: float
     programme_cost: float = 0.0  # show-up programme and other non-channel spend
+    showup_regress: float = 0.0  # stress test: in channels whose spend grows, true no-show moves this share of
+                                 # the way towards the 2025 all-channel rate (marginal people are less committed)
 
 
 def run(base: pd.DataFrame, s: Scenario) -> pd.DataFrame:
@@ -95,7 +99,12 @@ def run(base: pd.DataFrame, s: Scenario) -> pd.DataFrame:
     r["beta"] = beta
     r["reg"] = r.registered * (r.spend / r.spend_2025) ** beta * (1 + s.form_recovery * r.abandon_ratio)
     r["conf"] = r.reg * (r.confirm_rate + s.waitlist_release * r.waitlist_ratio)
-    r["no_show_new"] = r.true_no_show * (1 - s.reminder_effect) + r.gate_loss * (1 - s.gate_fix)
+    tns = r.true_no_show
+    if s.showup_regress:
+        blended = (r.confirmed * r.true_no_show).sum() / r.confirmed.sum()
+        grows = r.spend > r.spend_2025
+        tns = tns.where(~grows, tns + s.showup_regress * (blended - tns).clip(lower=0))
+    r["no_show_new"] = tns * (1 - s.reminder_effect) + r.gate_loss * (1 - s.gate_fix)
     r["visitors"] = r.conf * (1 - r.no_show_new)
     return r
 
@@ -129,7 +138,7 @@ def main():
     assert round(chk["visitors"]) == 2050, chk
     print(f"\nCheck: model reproduces 2025 with 2025 spend and no levers -> {chk['visitors']:.0f} visitors (actual 2,050)")
 
-    # ---- ASSUMED: 2026 allocation of the same INR 3.0 lakh budget.
+    # ---- ASSUMED: 2027 allocation of the same INR 3.0 lakh budget.
     # Money moves from the two channels whose confirmed registrants showed up least
     # (Paid Social 59%, Creators 60%) to the peer and group channels (81-92%).
     # Paid Social keeps a retargeting budget for form-abandoners and page visitors.
@@ -155,7 +164,7 @@ def main():
         detail[s.name] = r
         rows.append(summarise(r, s))
     res = pd.DataFrame(rows).set_index("scenario")
-    print("\n== Scenarios (same INR 3.0 lakh budget in 2026)")
+    print("\n== Scenarios (same INR 3.0 lakh budget in 2027)")
     print(res.round(3).to_string())
 
     for name, r in detail.items():
@@ -200,6 +209,19 @@ def main():
             row[f"reminder {rem:.0%}"] = summarise(run(base, s), s)["visitors"]
         grid.append(row)
     print(pd.DataFrame(grid).set_index("peer beta").round(0).to_string())
+
+    # ---- Stress tests on the Base case: what the commitment survives.
+    print("\n== Stress tests (Base settings unless stated)")
+    no_reserve = {**plan, "C04": plan["C04"] - 12_500, "C05": plan["C05"] - 12_500}
+    tests = [("Base as planned", base_s),
+             ("Peer beta 0.5 instead of 0.7", replace(base_s, beta_peer=0.5)),
+             ("Scaled channels' show-up regresses halfway to the 2025 average", replace(base_s, showup_regress=0.5)),
+             ("Reserve (INR 25k) never released", replace(base_s, spend=no_reserve)),
+             ("Peer beta 0.5 AND show-up regresses halfway", replace(base_s, beta_peer=0.5, showup_regress=0.5)),
+             ("All three together", replace(base_s, beta_peer=0.5, showup_regress=0.5, spend=no_reserve))]
+    for label, s in tests:
+        o = summarise(run(base, s), s)
+        print(f"  {label:66s} {o['visitors']:6.0f} visitors   show-up {o['show_up']:.1%}   INR {o['inr_per_visitor']:.0f}/visitor")
 
     # Marginal cost of one more visitor at the plan allocation: visitors_c scale
     # as spend_c ** beta_c, so d(visitors)/d(spend) = beta_c * visitors_c / spend_c.

@@ -10,7 +10,7 @@ C07      Community Groups     16000.0       200.0         0.925           0.015 
 
 Check: model reproduces 2025 with 2025 spend and no levers -> 2050 visitors (actual 2,050)
 
-== Scenarios (same INR 3.0 lakh budget in 2026)
+== Scenarios (same INR 3.0 lakh budget in 2027)
              registrations  confirmed  visitors     spend  inr_per_visitor  show_up
 scenario                                                                           
 2025 replay       2800.000   2500.000  2050.000  274000.0          133.659    0.770
@@ -65,6 +65,14 @@ peer beta
 0.8             2986.0        3037.0        3114.0
 0.9             3183.0        3237.0        3317.0
 1.0             3400.0        3457.0        3541.0
+
+== Stress tests (Base settings unless stated)
+  Base as planned                                                      2854 visitors   show-up 85.1%   INR 105/visitor
+  Peer beta 0.5 instead of 0.7                                         2536 visitors   show-up 84.5%   INR 118/visitor
+  Scaled channels' show-up regresses halfway to the 2025 average       2729 visitors   show-up 81.2%   INR 110/visitor
+  Reserve (INR 25k) never released                                     2670 visitors   show-up 84.8%   INR 103/visitor
+  Peer beta 0.5 AND show-up regresses halfway                          2426 visitors   show-up 80.7%   INR 124/visitor
+  All three together                                                   2322 visitors   show-up 80.5%   INR 118/visitor
 
 == Where the next rupee goes: marginal INR per extra visitor at the plan allocation
       Base               channel

@@ -9,6 +9,7 @@ const Body = z.object({
   history: z.array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().max(8000) })).max(40).default([]),
   asOf: z.string().optional(),
   page: z.string().max(200).default("/"),
+  model: z.string().max(200).optional(), // honoured only in development (model comparison runs)
 });
 
 // Simple per-instance rate limit so a public link cannot run up the model bill.
@@ -36,7 +37,8 @@ export async function POST(req: Request) {
     async start(controller) {
       const emit = (e: CopilotEvent) => controller.enqueue(enc.encode(JSON.stringify(e) + "\n"));
       try {
-        await runCopilot({ ...parsed.data, asOf }, emit);
+        const model = process.env.NODE_ENV === "production" ? undefined : parsed.data.model;
+        await runCopilot({ ...parsed.data, asOf, model }, emit);
       } catch (e) {
         emit({ type: "error", message: e instanceof Error ? e.message : String(e) });
       } finally {

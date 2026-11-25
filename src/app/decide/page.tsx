@@ -103,7 +103,7 @@ async function Decide({ searchParams }: { searchParams: PageProps<"/decide">["se
                   <Td>{b.rank ?? "—"}</Td>
                   <Td><div className="font-medium">{b.name}</div><div className="mt-0.5 max-w-sm text-xs text-ink-2">{b.hypothesis}</div></Td>
                   <Td className="text-xs">{b.owner_name ?? "—"}</Td><Td right>{fmtInr(b.budget_inr)}</Td>
-                  <Td right>{b.expected_visitors == null ? "—" : `+${fmtInt(b.expected_visitors)}`}</Td>
+                  <Td right>{b.expected_visitors == null ? "—" : `${b.expected_visitors > 0 ? "+" : b.expected_visitors < 0 ? "−" : ""}${fmtInt(Math.abs(b.expected_visitors))}`}</Td>
                   <Td className="text-xs">{b.primary_kpi}</Td>
                   <Td className="text-xs text-ink-2"><div>▲ {b.scale_rule}</div><div>◆ {b.change_rule}</div><div>■ {b.stop_rule}</div></Td>
                   <Td className="text-xs">{b.status}</Td>

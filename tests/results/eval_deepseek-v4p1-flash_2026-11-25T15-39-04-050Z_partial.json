@@ -1,0 +1,42 @@
+[
+  {
+    "id": "D01",
+    "category": "diagnosis",
+    "question": "where are we losing ppl in the funnel? biggest drop-off?",
+    "as_of": "2025-04-20",
+    "follow_up_turns": [],
+    "expected_behaviour": "Builds stage counts of distinct external people: identified -> identified registration_start -> registered -> confirmed (latest status) -> verified attendance, and names the largest absolute and relative drop with numbers. Keeps anonymous stages (impressions, clicks, sessions, registration_starts) separate and labelled as event counts, not people. Notes walk-ins enter at attendance without earlier stages, so stages are not strictly nested.",
+    "answer_type": "explanation",
+    "must_not": [
+      "mixing anonymous clicks/sessions with identified people in one conversion ratio without caveat",
+      "counting status versions or history rows as people",
+      "treating registration_starts as registrations",
+      "naming a bottleneck without numbers"
+    ],
+    "turns": [
+      {
+        "question": "where are we losing ppl in the funnel? biggest drop-off?",
+        "answer": "**Biggest single drop-off: 515 confirmed registrants who never showed up** — 20.6% of the 2,500 confirmed, as of 20 Apr 2025 (all campaigns combined).\n\n**Evidence (as of 20 Apr 2025, all campaigns)**\n| Stage | Lost | Rate |\n|---|---|---|\n| Identified → registered | 825 (425 never started the form, 275 abandoned it, 125 came as walk-ins) | 77.2% convert |\n| Registered → confirmed | 300 (183 cancelled, 88 waitlisted, 29 still interested) | 89.3% convert |\n| Confirmed → visited | 575 (515 no-show, 60 reached the gate but never admitted) | 77.0% show-up |\n\n- By count, the no-show (515) is the largest leak; by stage rate, identified→registered is the weakest link (22.8% lost).\n- Gate losses are small: 50 denied scans, 30 never admitted, 30 left pending/unverified.\n- Worst per-campaign leaks: C02 Paid Social (240 no-shows, 180 never started, 100 abandoned) and C03 Creator Partners (115 no-shows, 70 abandoned, 70 never started). C01 Campus Ambassadors accounts for all 60 gate losses.\n\n**Assumptions / limits:** counts are latest status as of the date; walk-ins are a positive, not a leak. Why people no-show isn't in the data — that needs a survey or reminder-contact log.\n\nWant me to check show-up by lead time (how early people registered) to see if late registrants drive the no-shows?",
+        "error": null,
+        "tools": [
+          "Finding where people drop out (as of 2025-04-20)",
+          "Reading the headline funnel (as of 2025-04-20)",
+          "Calculating: 2800/3625*100",
+          "Calculating: 2500/2800*100",
+          "Calculating: 1925/2500*100",
+          "Calculating: 515/2500*100",
+          "Calculating: 825/3625*100",
+          "Calculating: 275+425"
+        ],
+        "proposals": [],
+        "model": "accounts/fireworks/models/deepseek-v4p1-flash",
+        "usage": {
+          "prompt": 14132,
+          "completion": 1160,
+          "cached": 11058
+        },
+        "ms": 9835
+      }
+    ]
+  }
+]

@@ -249,9 +249,11 @@ def main():
                 run_sql_file(cur, ROOT / "db" / "app_tables.sql")
                 run_sql_file(cur, ROOT / "db" / "metrics.sql")
                 run_sql_file(cur, ROOT / "db" / "analytics.sql")
-                run_sql_file(cur, ROOT / "db" / "seed_bets.sql")
                 load(conn, "original", frames)
                 cur.execute("select reset_to_original('system')")
+                # Bets reference team members, so seed them only after reset_to_original
+                # has copied the team into public (on a new database it is empty before).
+                run_sql_file(cur, ROOT / "db" / "seed_bets.sql")
                 target = "original"
             else:
                 cur.execute("set search_path to public")

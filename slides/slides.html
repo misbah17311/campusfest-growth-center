@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CampusFest Growth Strategy</title>
+<style>
+  @page { size: 1600px 900px; margin: 0; }
+  :root {
+    --ink: #0b0b0b; --ink2: #52514e; --muted: #898781; --line: #e1e0d9; --surface: #fcfcfb; --page: #f6f5f2;
+    --s1: #2a78d6; --s1l: #cde2fb; --s2: #eb6834; --s3: #1baf7a; --good: #0ca30c; --warn: #b77b00; --crit: #d03b3b;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: "Carlito", Calibri, "Liberation Sans", Arial, sans-serif; color: var(--ink); background: #ddd; }
+  .slide { width: 1600px; height: 900px; background: var(--surface); padding: 34px 44px 26px; position: relative;
+           page-break-after: always; overflow: hidden; display: flex; flex-direction: column; }
+  .slide:last-child { page-break-after: auto; }
+  .kicker { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--s1); font-weight: 650; }
+  h1 { font-size: 31px; line-height: 1.12; margin: 6px 0 4px; font-weight: 700; }
+  .sub { font-size: 15.5px; color: var(--ink2); margin: 0 0 14px; }
+  .grid { display: grid; gap: 16px; flex: 1; min-height: 0; }
+  .card { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; background: #fff; min-height: 0; }
+  .card h2 { font-size: 14px; margin: 0 0 8px; font-weight: 700; }
+  .card h2 .tag { font-weight: 500; color: var(--muted); font-size: 12px; }
+  p, li, td, th { font-size: 13.5px; line-height: 1.32; }
+  p { margin: 0 0 6px; }
+  ul { margin: 0; padding-left: 16px; }
+  li { margin: 0 0 3px; }
+  table { border-collapse: collapse; width: 100%; }
+  th { text-align: left; font-weight: 700; color: var(--ink2); border-bottom: 1px solid var(--line); padding: 3px 5px; font-size: 12.5px; }
+  td { border-bottom: 1px solid var(--line); padding: 3px 5px; vertical-align: top; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .big { font-size: 34px; font-weight: 700; line-height: 1; }
+  .src { font-size: 10.5px; color: var(--muted); }
+  .S, .D, .A { display: inline-block; font-size: 10px; font-weight: 700; border-radius: 4px; padding: 0 4px; margin-right: 3px; vertical-align: 1px; }
+  .S { background: #e3f1e3; color: #1d6b1d; } .D { background: #e3edfb; color: #1c5cab; } .A { background: #fdf0d9; color: #8a5a00; }
+  .foot { font-size: 10.5px; color: var(--muted); margin-top: 8px; display: flex; justify-content: space-between; }
+  .pill { display: inline-block; border-radius: 999px; padding: 1px 8px; font-size: 11px; font-weight: 650; }
+  .scale { background: #e3f1e3; color: #1d6b1d; } .change { background: #fdf0d9; color: #8a5a00; } .stop { background: #fbe1e1; color: #a12a2a; } .keep { background: #eceae4; color: #52514e; }
+  .rank { display: inline-flex; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: #fff; font-weight: 700;
+          align-items: center; justify-content: center; font-size: 12px; }
+  .hl { background: #f1f6fd; }
+  svg text { font-family: "Carlito", Calibri, "Liberation Sans", Arial, sans-serif; }
+</style>
+</head>
+<body>
+
+<!-- ============================ SLIDE 1 ============================ -->
+<section class="slide">
+  <div class="kicker" style="display:flex;justify-content:space-between;align-items:baseline"><span>1 · How high can we aim? &nbsp;·&nbsp; Challenge A: attendee growth</span><span style="color:var(--ink);font-size:16px;letter-spacing:.03em">Md Misbah Ur Rahman · RISA Labs APM (Growth) take-home</span></div>
+  <h1>Aim: 3,440 verified visitors in Pune — 1.7× the 2025 edition — on the same ₹3.0 lakh. Commit: 2,850.</h1>
+  <p class="sub">CampusFest 2027, Sat–Sun 6–7 March. Metric: distinct external people with an admitted, verified check-in. <b>2025:</b> 3,625 identified → 2,800 registered → 2,500 confirmed → 1,925 came + 125 walk-ins = <b>2,050 visitors</b> (goal 2,200). Leaks: 825 never registered (275 abandoned the form), 88 stuck waitlisted, <b>575 confirmed never got in</b> — 60 of them lost at the gate, all Campus-Ambassador registrants.</p>
+
+  <div class="grid" style="grid-template-columns: 1.1fr 1.2fr 1.08fr;">
+    <!-- Column A -->
+    <div class="grid" style="grid-template-rows: auto auto 1fr; gap: 12px;">
+      <div class="card">
+        <h2>Why Pune</h2>
+        <ul>
+          <li><span class="S">S</span><b>517 colleges, 3rd-most of any district</b>, after Bengaluru Urban 1,148 and Jaipur 742 (AISHE 2023-24); <b>13.9 lakh aged 18–24</b>, 8.7 lakh urban (Census 2011).</li>
+          <li><span class="S">S</span>The 16 largest institutions teach ≈1.4 lakh students (NIRF returns).</li>
+          <li><span class="S">S</span>Metro: 3 lines, 30% student pass, interchange at Shivajinagar.</li>
+          <li><span class="S">S</span>Early March: before SPPU exams (23 Mar) and April heat (35.6 vs 38.1°C, IMD).</li>
+          <li><b>Local edge:</b> I live in Pune; club and venue work is done in person.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Who we target, in priority order</h2>
+        <table>
+          <tr><th>Audience</th><th>Size</th><th>Why this order</th></tr>
+          <tr><td>Clubs and friend groups, ~40 largest colleges</td><td>≈1.4 lakh (16 largest)</td><td><span class="D">D</span>Groups come: 91.7% show-up (Partnerships)</td></tr>
+          <tr><td>Friends of registrants</td><td>2,800 → 350 referred sign-ups</td><td><span class="D">D</span>Cheapest: ₹69/visitor</td></tr>
+          <tr><td>Searchers, form abandoners</td><td>275 abandoners</td><td><span class="D">D</span>Organic ₹72/visitor</td></tr>
+          <tr><td style="color:var(--muted)">Cold social, creator audiences</td><td style="color:var(--muted)">8.7 lakh urban 18–24</td><td style="color:var(--muted)"><span class="D">D</span>Deprioritised: ₹274–337/visitor</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h2>Sanity checks and the binding constraint</h2>
+        <ul>
+          <li><b>Stress tests</b> (base 2,854): peer β 0.5 → 2,536; scaled channels' show-up halfway to the 2025 average → 2,729; reserve unreleased → 2,670; all three → <b>2,322</b>, still above 2,050. β is tested first (week 3).</li>
+          <li><b>Market:</b> 3,441 = 0.4% of Pune's urban 18–24. <b>Comparables:</b> ≈4,700 entries over two days vs the 6k–40k "footfall" Pune fests claim.</li>
+          <li><b>Capacity — the gate binds, not the ground:</b> peak ~420 admissions/hour vs 251 (bet 3); ~2,400 on the busier day vs an 8–10k event police cleared at a Shivajinagar ground in 2026. Apply early for police permission.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Column B -->
+    <div class="grid" style="grid-template-rows: auto 1fr; gap: 12px;">
+      <div class="card">
+        <h2>The model: each channel's 2025 funnel, re-budgeted, then the leaks fixed <span class="tag">(target model, README §7)</span></h2>
+        <svg width="100%" viewBox="0 0 640 300" role="img" aria-label="Bridge from 2,050 visitors in 2025 to 2,854 base and 3,441 stretch">
+<line x1="205" y1="10" x2="205" y2="262" stroke="#c3c2b7"/>
+<g font-size="15" fill="#0b0b0b">
+<text x="0" y="34" font-weight="700">2025 actual</text><rect x="205" y="20" width="227.8" height="20" rx="3" fill="#86b6ef"/><text x="440.8" y="35" font-weight="700">2,050</text>
+<text x="0" y="67" fill="#52514e" font-size="13.5">+ Shift budget to peer/group</text><rect x="432.8" y="52" width="71.7" height="20" rx="2" fill="#2a78d6"/><text x="512.5" y="67">+645 <tspan fill="#898781">(stretch +982)</tspan></text>
+<text x="0" y="99" fill="#52514e" font-size="13.5">+ Recover form abandoners</text><rect x="504.4" y="84" width="4.1" height="20" rx="2" fill="#2a78d6"/><text x="516.5" y="99">+37 <tspan fill="#898781">(stretch +81)</tspan></text>
+<text x="0" y="131" fill="#52514e" font-size="13.5">+ Auto-release the waitlist</text><rect x="508.6" y="116" width="4.0" height="20" rx="2" fill="#2a78d6"/><text x="520.6" y="131">+36 <tspan fill="#898781">(stretch +73)</tspan></text>
+<text x="0" y="163" fill="#52514e" font-size="13.5">+ Reminders and reconfirmation</text><rect x="512.6" y="148" width="5.4" height="20" rx="2" fill="#2a78d6"/><text x="526.0" y="163">+49 <tspan fill="#898781">(stretch +133)</tspan></text>
+<text x="0" y="195" fill="#52514e" font-size="13.5">+ Gate fix</text><rect x="518.0" y="180" width="4.1" height="20" rx="2" fill="#2a78d6"/><text x="530.1" y="195">+37 <tspan fill="#898781">(stretch +72)</tspan></text>
+<text x="0" y="231" font-weight="700">Base 2027</text><rect x="205" y="216" width="317.1" height="20" rx="3" fill="#1c5cab"/><text x="530.1" y="231" font-weight="700">2,854</text>
+<text x="0" y="263" font-weight="700">Stretch 2027</text><rect x="205" y="248" width="382.3" height="20" rx="3" fill="#0d366b"/><text x="595.3" y="263" font-weight="700">3,441</text>
+</g>
+<text x="0" y="292" font-size="12.5" fill="#898781">Each step is measured on top of the ones before. Both include 2025's 125 walk-ins; stretch adds 50.</text>
+</svg>
+      </div>
+      <div class="card">
+        <h2>Why the money moves <span class="tag">(2025, derived)</span></h2>
+        <table>
+          <tr><th>Channel</th><th class="n">₹/visitor</th><th class="n">Show-up</th><th class="n">2025 spend</th><th class="n">2027 plan</th></tr>
+          <tr><td>Student Referrals</td><td class="n">69</td><td class="n">85.9%</td><td class="n">₹19k</td><td class="n"><b>₹57.5k</b></td></tr>
+          <tr><td>Organic + listings</td><td class="n">72</td><td class="n">86.7%</td><td class="n">₹14k</td><td class="n">₹20k</td></tr>
+          <tr><td>College Partnerships</td><td class="n">81</td><td class="n">91.7%</td><td class="n">₹31k</td><td class="n"><b>₹82.5k</b></td></tr>
+          <tr><td>Community Groups</td><td class="n">97</td><td class="n">89.2%</td><td class="n">₹16k</td><td class="n">₹20k</td></tr>
+          <tr><td>Campus Ambassadors</td><td class="n">108</td><td class="n">81.3%*</td><td class="n">₹42k</td><td class="n">₹55k</td></tr>
+          <tr><td>Paid Social</td><td class="n">274</td><td class="n">58.6%</td><td class="n">₹93k</td><td class="n">₹40k</td></tr>
+          <tr><td>Creator Partners</td><td class="n">337</td><td class="n">60.3%</td><td class="n">₹59k</td><td class="n">₹10k</td></tr>
+          <tr><td>Show-up &amp; gate</td><td class="n">—</td><td class="n">—</td><td class="n">—</td><td class="n">₹15k</td></tr>
+          <tr class="hl"><td><b>Total</b></td><td class="n">134</td><td class="n">77.0%</td><td class="n">₹2.74L</td><td class="n"><b>₹3.0L</b></td></tr>
+        </table>
+        <p class="src" style="margin-top:4px">* 93.8% of ambassador registrants reached the gate; 12.5% were then denied or left unverified. ₹/visitor counts all verified visitors incl. walk-ins (₹142 per campaign-sourced visitor — the "blended" cost on slide 3). Partnerships and referrals each hold back ₹12.5k (a ₹25k reserve) until week 4; the base assumes it is released.</p>
+      </div>
+    </div>
+
+    <!-- Column C -->
+    <div class="grid" style="grid-template-rows: auto auto 1fr; gap: 12px;">
+      <div class="card">
+        <h2>Target funnel</h2>
+        <table>
+          <tr><th></th><th class="n">2025</th><th class="n">Base</th><th class="n">Stretch</th></tr>
+          <tr><td>Registered people</td><td class="n">2,800</td><td class="n">3,479</td><td class="n">3,931</td></tr>
+          <tr><td>Confirmed</td><td class="n">2,500</td><td class="n">3,207</td><td class="n">3,673</td></tr>
+          <tr><td>Confirmed who came <span class="src">(show-up)</span></td><td class="n">1,925 <span class="src">77.0%</span></td><td class="n">2,729 <span class="src">85.1%</span></td><td class="n">3,266 <span class="src">88.9%</span></td></tr>
+          <tr><td>+ Walk-ins (no registration)</td><td class="n">125</td><td class="n">125</td><td class="n">175</td></tr>
+          <tr class="hl"><td><b>Verified visitors</b></td><td class="n">2,050</td><td class="n"><b>2,854</b></td><td class="n"><b>3,441</b></td></tr>
+          <tr><td>₹ per verified visitor</td><td class="n">134</td><td class="n">105</td><td class="n">87</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h2>Why believe it — every input is tagged</h2>
+        <table>
+          <tr><th>Input</th><th class="n">Base</th><th class="n">Stretch</th><th>Evidence</th></tr>
+          <tr><td><span class="A">A</span>Returns to spend (β): paid / peer</td><td class="n">0.5 / 0.7</td><td class="n">0.6 / 0.9</td><td><span class="D">D</span>Paid ₹113→199 per reg. (Feb→Mar); College ₹114→53, Referrals ₹177→46</td></tr>
+          <tr><td><span class="A">A</span>Cut in "did not come"</td><td class="n">10%</td><td class="n">25%</td><td><span class="S">S</span>Reminders +7 pts from 58% (RCT, 2022) ≈ 17% cut</td></tr>
+          <tr><td><span class="A">A</span>Gate losses recovered</td><td class="n">50%</td><td class="n">90%</td><td><span class="D">D</span>60 named people, one channel</td></tr>
+          <tr><td><span class="A">A</span>Waitlist released / forms recovered</td><td class="n">50% / 20%</td><td class="n">90% / 40%</td><td><span class="D">D</span>88 waitlisted, 275 abandoned forms</td></tr>
+        </table>
+        <p class="src" style="margin-top:4px"><span class="S">S</span> sourced &nbsp;<span class="D">D</span> derived from 2025 data &nbsp;<span class="A">A</span> assumed. With 2025 spend and no levers the model reproduces 2,050.</p>
+      </div>
+      <div class="card">
+        <h2>Reach → registration → attendance, 2025 <span class="tag">(derived)</span></h2>
+        <p>Impressions <b>10.29 lakh</b> → clicks <b>32,070</b> (3.1% CTR; both anonymous events) → identified <b>3,625</b> people → registered <b>2,800</b> (77.2%) → confirmed <b>2,500</b> (89.3%) → <b>1,925</b> came (77.0%) + 125 walk-ins = <b>2,050</b> verified visitors.</p>
+        <p class="src">Sized on registrations per rupee by channel, where cost was observed. Reach is never added up as people.</p>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Sources: AISHE 2023-24 §2.1.2.1; Census 2011 C-13; NIRF institutional returns; IMD CRS TR 2/2021 Table 3; SPPU circulars 2026-27; OPRE Report 2022-49; supplied CampusFest 2025 workbook. Full list and calculations in the README.</span><span>1 / 3</span></div>
+</section>
+
+<!-- ============================ SLIDE 2 ============================ -->
+<section class="slide">
+  <div class="kicker">2 · Where will you place your bets?</div>
+  <h1>Five bets, ranked: build on groups and friends, stop losing people after they say yes — funded by cutting the two channels whose people didn't come.</h1>
+  <p class="sub">Ranking = expected extra verified visitors × confidence in the evidence ÷ cost (₹ + team time); ties broken by how fast we learn. Contributions come from the target model, applied in rank order so they add up (base / stretch).</p>
+
+  <div class="grid" style="grid-template-columns: 2.25fr 1fr;">
+    <div class="card" style="padding-bottom:6px">
+      <table>
+        <tr><th style="width:24px">#</th><th style="width:250px">Bet — concept and why it can work</th><th class="n" style="width:92px">Extra visitors<br>base / stretch</th><th style="width:150px">Budget · owner · timeline</th><th>How we test it · KPIs</th><th style="width:118px">Confidence · speed</th></tr>
+        <tr>
+          <td><span class="rank">1</span></td>
+          <td><b>College &amp; club partnerships with group registration.</b> Clubs at the ~40 largest colleges register as groups (group pass, club leaderboard). Groups commit each other: this channel had 91.7% show-up at ₹81/visitor.</td>
+          <td class="n"><b>+379</b> / +544</td>
+          <td>₹82.5k (from ₹31k)<br>Meera (ambassadors &amp; partnerships)<br>Club sign-ups Dec–Jan, push Jan–Mar</td>
+          <td>Pilot 10 clubs in weeks 1–2 before scaling. KPIs: clubs signed, registrations per club, cost per registration, group show-up.</td>
+          <td><b>Medium-high</b> (own data; extrapolates 2.7× spend) · 2 weeks</td>
+        </tr>
+        <tr>
+          <td><span class="rank">2</span></td>
+          <td><b>Referral rewards paid only when the friend attends.</b> Every registrant gets a link; the reward triggers on the friend's verified check-in, not sign-up — paying for the outcome we want.</td>
+          <td class="n"><b>+322</b> / +470</td>
+          <td>₹57.5k (from ₹19k)<br>Dev<br>Jan–Mar</td>
+          <td>A/B two reward sizes. KPIs: invites per registrant, invite→registration, referred show-up.</td>
+          <td><b>Medium</b> (cheapest channel in 2025; loops are fragile) · 1 week</td>
+        </tr>
+        <tr>
+          <td><span class="rank">3</span></td>
+          <td><b>Show-up and gate programme.</b> WhatsApp date/time reminders (T-7, T-2, T-0 with QR), 72-hour reconfirmation, automatic waitlist release, pre-checked ambassador registrations, extra lanes and a manual fallback.</td>
+          <td class="n"><b>+132</b> / +301</td>
+          <td>₹15k (utility messages ≈ ₹0.12 each; scanners, volunteers)<br>Nisha<br>Feb–Mar + gate dry run</td>
+          <td>10% of registrants get no reminders (holdout). KPIs: reconfirmation vs holdout, dry-run admissions/hour, gate rejection rate.</td>
+          <td><b>High</b> for the gate (60 known people); medium for reminders (RCTs elsewhere) · before the event</td>
+        </tr>
+        <tr>
+          <td><span class="rank">4</span></td>
+          <td><b>Paid Social for retargeting only.</b> Stop cold prospecting; retarget page visitors and form abandoners. Its cost per registration rose from ₹113 to ₹199 in a month.</td>
+          <td class="n">−87 / −71<br><span class="src">frees ₹53k for 1–2</span></td>
+          <td>₹40k (from ₹93k)<br>Arjun (also organic + listings)<br>Jan–Mar</td>
+          <td>Weekly cost per registration on mature cohorts. KPIs: retargeting cost/registration, confirmation, opt-outs.</td>
+          <td><b>High</b> · 1 week</td>
+        </tr>
+        <tr>
+          <td><span class="rank">5</span></td>
+          <td><b>Campus ambassadors paid per verified attendee.</b> Their registrants reach the gate most often (94%); pay on verified attendance and check registrations before the event.</td>
+          <td class="n"><b>+90</b> / +130</td>
+          <td>₹55k (from ₹42k)<br>Meera<br>Dec–Mar</td>
+          <td>Pay only for registrations that pass bet 3's pre-event check. KPIs: cost per registration, verified attendees per ambassador, share passing the check.</td>
+          <td><b>Medium-high</b> · 2 weeks</td>
+        </tr>
+        <tr class="hl">
+          <td></td>
+          <td>Other moves: Creators to tracked performance codes only (₹59k→₹10k); Organic + event listings (capped by search demand, so extra rupees buy little) and Community grow modestly.</td>
+          <td class="n"><span class="src">Creators</span> −118 / −152<br><span class="src">Organic, Comm.</span> +86 / +120<br><span class="src">Walk-ins</span> 0 / +50</td>
+          <td colspan="3">Totals: <b>2,050 → 2,854 base / 3,441 stretch</b> on ₹3.0L (₹2.74L spent in 2025). Team: the same four owners; Nisha moves from creators to the show-up programme.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="grid" style="grid-template-rows: auto auto 1fr; gap: 12px;">
+      <div class="card">
+        <h2>Double down</h2>
+        <p>Bets <b>1 and 2</b> each hold back ₹12.5k (a ₹25k reserve) until week 4 and get it only if their scale line holds; an unearned share goes to the next bet past its line. They are the cheapest visitors we have and the most uncertain at scale, so we pay to find out early.</p>
+      </div>
+      <div class="card">
+        <h2>Deprioritise or reject</h2>
+        <ul>
+          <li><b>Creator Partners as run:</b> ₹337 per visitor, 60% show-up, most opt-outs after paid. Kept only as trackable codes.</li>
+          <li><b>Paid tickets or deposits:</b> within the same event, payers show up only 2–4 points more (PheedLoop, 195 events) — not worth the registrations lost.</li>
+          <li><b>A big-name headliner:</b> a large share of ₹3L for an unmeasured effect, plus permission and crowd risk.</li>
+          <li><b>More cold paid reach:</b> it was saturating within the 2025 campaign.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Dependencies, overlap, risks</h2>
+        <ul>
+          <li><b>Overlap:</b> ambassadors and partnerships share campuses → split the college list; one recorded source per person, rewards on verified attendance only. Bet 3 runs the registration check; bet 5 pays only for registrations that pass it.</li>
+          <li><b>Dependency:</b> referrals need a registrant base — bets 1 and 5 feed bet 2.</li>
+          <li><b>Capacity:</b> success raises gate load to ~420/hour → bet 3 is a precondition, not an extra.</li>
+          <li><b>Permission:</b> NH7 Weekender 2024 was cancelled when police refused permission → apply first.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Contributions: target model, bridge by bet (README §7). Reminder cost: Meta India utility message rate. Paid-ticket effect: PheedLoop Event Data Lab #05–06 (2026).</span><span>2 / 3</span></div>
+</section>
+
+<!-- ============================ SLIDE 3 ============================ -->
+<section class="slide">
+  <div class="kicker">3 · How will we know what's working?</div>
+  <h1>Attendance shows only on the day — so each bet is judged weekly on leading indicators, against lines set in advance.</h1>
+  <p class="sub">Two rules: judge rates only on cohorts at least 7 days old (in 2025, 95% of confirmations came within 4.1 days — younger cohorts always look worse), and keep a small holdout wherever we can, so next year's data can answer what 2025's could not.</p>
+
+  <div class="grid" style="grid-template-columns: 2.2fr 1fr;">
+    <div class="grid" style="grid-template-rows: auto 1fr; gap: 12px;">
+    <div class="card" style="padding-bottom:6px">
+      <table>
+        <tr><th style="width:24px">#</th><th style="width:205px">Critical variable · biggest risk</th><th style="width:170px">Early signal (weeks 1–3)</th><th><span class="pill scale">Scale</span></th><th><span class="pill change">Change</span></th><th><span class="pill stop">Stop</span></th></tr>
+        <tr><td><span class="rank">1</span></td><td>Registrations per club at a low cost · clubs sign up but members don't register</td><td>Clubs signed; registrations per club; cost per registration</td><td>≥ 25 clubs by week 3 and cost ≤ 0.8× → release its reserve share</td><td>10–25 clubs or 0.8–1.3× → change the group incentive</td><td>&lt; 10 clubs or &gt; 1.3× → move budget to referrals</td></tr>
+        <tr><td><span class="rank">2</span></td><td>Invites per registrant · the loop never starts</td><td>Invites per registrant; invite→registration</td><td>≥ 0.5 invites and ≥ 20% register by week 2 → raise reward cap</td><td>0.2–0.5 invites, or &lt; 20% register → change reward or message</td><td>&lt; 0.2 invites by week 3 → stop, fund partnerships</td></tr>
+        <tr><td><span class="rank">3</span></td><td>Reconfirmation and gate throughput · reminders annoy, gate jams</td><td>72-h reconfirmation vs holdout; dry-run admissions/hour</td><td>≥ 85% and ≥ 3 pts above holdout → remind everyone</td><td>&lt; 85% or &lt; 3 pts above holdout → add a call/SMS; dry run &lt; 450/hour → add lanes</td><td>A reminder channel (WhatsApp, SMS) with opt-outs &gt; 5% → stop it</td></tr>
+        <tr><td><span class="rank">4</span></td><td>Retargeting cost per registration · audience too small</td><td>Weekly cost/registration; confirmation (mature)</td><td>≤ 0.8× → eligible for any unearned reserve</td><td>0.8–1.3× → narrow audiences, new creative</td><td>&gt; 1.3× for 2 weeks or confirmation &lt; 85% → move to referrals</td></tr>
+        <tr><td><span class="rank">5</span></td><td>Valid registrations per ambassador · bad data at the gate again</td><td>Share passing the pre-event check; cost/registration</td><td>≤ 0.8× and ≥ 99% pass → recruit at more colleges</td><td>0.8–1.3× or &lt; 99% pass → fix the form, retrain before more spend</td><td>&gt; 1.3× → stop recruiting</td></tr>
+        <tr class="hl"><td></td><td><b>Every campaign</b> (the Decide page, editable)</td><td>Cost vs all campaigns; confirmation, form completion, opt-outs</td><td>Cost ≤ 0.8× blended</td><td>Confirmation &lt; 88%, form completion &lt; 88%, opt-outs &gt; 15%, gate loss &gt; 5%</td><td>Cost ≥ 1.6× blended</td></tr>
+      </table>
+      <p class="src" style="margin-top:6px"><b>Cost</b> = cost per registration ÷ the all-campaign blended cost in the same period, so expensive early weeks don't trip the lines; bets stop at 1.3×, tighter than the 1.6× campaign default, because they carry extra money. <b>Attendance forecast for 2027:</b> Σ confirmed registrants per channel × that channel's 2025 show-up (channel mix alone moved 2025 show-up between 59% and 92%). The 2025 replay has no earlier year, so the product projects registration pace × the plan's visitors-per-registration; backtested on 1 Mar, 15 Mar and 1 Apr it was off by −1%, −15% and +3%, so triggers need two readings in a row.</p>
+    </div>
+    <div class="card">
+      <h2>When performance changes — the playbook, decided in advance</h2>
+      <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 18px;">
+        <ul>
+          <li><b>A bet passes its scale line:</b> at week 4 bets 1 and 2 get their held-back ₹12.5k; a share not earned goes to the next bet past its line (1 → 2 → 4). Nothing is released earlier.</li>
+          <li><b>A bet hits its stop line:</b> its remaining budget moves in a fixed order — referrals, then partnerships, then organic listings. Never back to cold paid reach.</li>
+          <li><b>A rate turns bad on a mature cohort:</b> "change" first (incentive, message, audience), re-read one week later, stop only if it stays below the line.</li>
+        </ul>
+        <ul>
+          <li><b>Projected visitors below 2,850 two weeks running, from three weeks out:</b> turn on the stretch levers early — calls to non-responders, waitlist release, more group passes.</li>
+          <li><b>Gate dry run below 450 admissions/hour a week out:</b> add lanes and scanners, and stagger entry using reconfirmation data.</li>
+          <li><b>Seen in the 2025 replay:</b> every projection from 15 March on was below the 3,200 goal (2,368 on 15 Mar, needing 60.7/day vs 29.9; 2,882 on 1 Apr; actual 2,800) — the shortfall was visible four weeks out, though single readings swung by up to 15%.</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+
+    <div class="grid" style="grid-template-rows: auto auto 1fr; gap: 12px;">
+      <div class="card">
+        <h2>What the rules said on 15 March 2025 <span class="tag">(replay, four weeks out)</span></h2>
+        <p><span class="pill stop">Stop</span> Creator Partners: ₹237/registration = 1.95× blended<br>
+           <span class="pill change">Change</span> Paid Social: confirmation 84.7%, opt-outs 22.8%; Referrals: form completion 86.9%<br>
+           <span class="pill keep">Keep</span> College Partnerships (1.01×)<br>
+           <span class="pill scale">Scale</span> Ambassadors, Organic, Community</p>
+        <p class="src"><b>Right:</b> the two channels flagged first ended at ₹274–337 per visitor. <b>Missed:</b> before the event the rules can't see show-up, so they only kept Partnerships (91.7% show-up) and scaled Ambassadors (all 60 gate losses). Hence the 2027 change: divide pre-event cost by each channel's 2025 show-up (cost per expected visitor).</p>
+      </div>
+      <div class="card">
+        <h2>Weekly rhythm</h2>
+        <ul>
+          <li>Monday: the Growth Center flags every campaign against its lines; bet owners report their KPIs against the lines above.</li>
+          <li>Owners act within 48 hours; each action is a task with an owner and due date.</li>
+          <li>Week 4: reserve released only to bets past their scale line.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>How the dashboard and AI help</h2>
+        <ul>
+          <li><b>Dashboard:</b> any date can be replayed; funnel vs the plan in force; where people drop out; decisions with their evidence; a budget what-if using this same model.</li>
+          <li><b>AI copilot:</b> answers only from live data through the same metric functions, shows its steps, says when the data can't answer (e.g. location, causal email effect), and turns a recommendation into a task <b>only after you confirm</b>.</li>
+          <li><b>Tested:</b> every metric is computed twice, in SQL and separately in pandas (2,050 values, 0 mismatches). The copilot passed all 38 automatic checks on 64 questions written by a separate AI agent that never saw its code, and declined all 8 it should — about ₹0.3 per answer.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span>Campaign thresholds are editable on the Decide page; changing them recomputes every campaign decision. Bet lines are stored with each bet on the bets board.</span><span>3 / 3</span></div>
+</section>
+
+</body>
+</html>

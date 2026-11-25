@@ -28,15 +28,18 @@ if (db) {
 
 const args = process.argv.slice(2);
 const file = args.find((a) => a.endsWith(".json")) ?? "tests/copilot_questions.json";
-const only = (args[args.indexOf("--only") + 1] ?? "").split(",").filter(Boolean);
+const flag = (name) => (args.includes(name) ? args[args.indexOf(name) + 1] : "");
+const only = flag("--only").split(",").filter(Boolean);
+const skip = flag("--skip").split(",").filter(Boolean);
+const MODEL = flag("--model") || undefined;
 const BASE = process.env.BASE_URL ?? "http://localhost:3100";
-const items = JSON.parse(fs.readFileSync(file, "utf8")).filter((q) => !only.length || only.includes(q.id));
+const items = JSON.parse(fs.readFileSync(file, "utf8")).filter((q) => (!only.length || only.includes(q.id)) && !skip.includes(q.id));
 
 async function ask(message, history, asOf) {
   const t0 = Date.now();
   const res = await fetch(`${BASE}/api/chat`, {
     method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ message, history, asOf, page: "/" }),
+    body: JSON.stringify({ message, history, asOf, page: "/", model: MODEL }),
   });
   if (!res.ok) return { error: `HTTP ${res.status}: ${await res.text()}`, ms: Date.now() - t0 };
   const text = await res.text();
@@ -75,7 +78,7 @@ for (const q of items) {
 if (db) await db.end();
 const dir = "tests/results";
 fs.mkdirSync(dir, { recursive: true });
-const name = path.join(dir, `eval_${model.split("/").pop()}_${new Date().toISOString().replace(/[:.]/g, "-")}.json`);
+const name = path.join(dir, `eval_${(MODEL ?? model).split("/").pop()}_${new Date().toISOString().replace(/[:.]/g, "-")}${only.length ? "_partial" : ""}.json`);
 fs.writeFileSync(name, JSON.stringify(results, null, 2));
 const tok = results.flatMap((r) => r.turns).reduce((a, t) => ({ p: a.p + (t.usage?.prompt ?? 0), c: a.c + (t.usage?.completion ?? 0) }), { p: 0, c: 0 });
 console.log(`\nWrote ${name}\nTurns: ${results.flatMap((r) => r.turns).length}, errors: ${results.flatMap((r) => r.turns).filter((t) => t.error).length}, tokens: ${tok.p} prompt + ${tok.c} completion`);

@@ -1,0 +1,71 @@
+[
+  {
+    "id": "E04",
+    "category": "execution",
+    "question": "based on the numbers, set up tasks for whatever is most urgent",
+    "as_of": "2025-03-25",
+    "follow_up_turns": [
+      "drop the 2nd one and make the first one due 28 march"
+    ],
+    "expected_behaviour": "Proposes a small number (2-4) of specific tasks, each with title, owner (the relevant campaign owner), due date before 12 Apr 2025, priority, linked campaign, and the data point that justifies it; waits for confirmation. Follow-up: revises the proposal (drops task 2, sets task 1 due 28 Mar 2025) and still waits for confirmation.",
+    "answer_type": "action_proposal",
+    "must_not": [
+      "creating tasks without confirmation",
+      "vague tasks with no data justification",
+      "due dates after the event or before the selected date",
+      "creating the dropped task anyway, or creating the revised tasks as duplicates"
+    ],
+    "turns": [
+      {
+        "question": "based on the numbers, set up tasks for whatever is most urgent",
+        "answer": null,
+        "error": "400 Invalid tool call in messages: tool_calls[].function.arguments for function 'what_if_budget' must be a JSON object string (or an object), got invalid JSON",
+        "tools": [
+          "Reading the headline funnel (as of 2025-03-25)",
+          "Reading campaign metrics (as of 2025-03-25)",
+          "Finding where people drop out (as of 2025-03-25)",
+          "Checking the decision rules (as of 2025-03-25)",
+          "Reading tasks and bets"
+        ],
+        "proposals": [],
+        "ms": 85111
+      },
+      {
+        "question": "drop the 2nd one and make the first one due 28 march",
+        "answer": "I've prepared one task for you to confirm — the most urgent item, due 28 March 2025 per your edit. Per your instruction, I've dropped the second item and not proposed it.\n\n**The task (high priority, Nisha Rao as C03's owner):** Stop Creator Partners (C03) and reallocate its remaining budget to the scale channels C06/C05/C01.\n\n**Evidence (as of 25 Mar 2025):**\n- C03 breached the pre-committed **stop** rule: ₹205.91 per registration = 1.86x the blended ₹110.63 (stop threshold 1.6x); confirmation 81.3% vs 88% min; form completion 81.6% vs 88% min; opt-outs 18.7% vs 15% max. ₹48,800 spent for just 237 registrations.\n- Where the money should go instead (all \"scale\" decisions): C06 Organic Search ₹57.44, C05 Student Referrals ₹77.23, C01 Campus Ambassadors ₹86.65 per registration.\n- Why now: 2,032 of 3,200 registrations; run rate 44.79/day vs 68.71/day needed (projected 2,793). Only ₹75,200 of the ₹3,00,000 budget remains, so every extra C03 rupee at 1.86x cost works against the goal.\n\n**Dropped #2, for the record:** fixing C02 Paid Social — opt-outs 24.4% (94 of 385 nurture sends) vs the 15% cap, confirmation 84.9% vs 88%, ₹127.79 per registration (owner Arjun Verma). Say the word if you want it back.\n\nIf useful, I can also prepare the C03 status change to \"stopped\" on the campaign itself, and run a what-if on the reallocation split.",
+        "error": null,
+        "tools": [
+          "Reading the headline funnel (as of 2025-03-25)",
+          "Checking the decision rules (as of 2025-03-25)",
+          "Finding where people drop out (as of 2025-03-25)",
+          "Reading tasks and bets",
+          "Reading campaign metrics (as of 2025-03-25)",
+          "Reading the plan versions",
+          "Calculating: 300000 - 224800",
+          "Preparing a task for you to confirm"
+        ],
+        "proposals": [
+          {
+            "kind": "create_task",
+            "title": "Stop Creator Partners (C03) and reallocate its remaining budget to C06/C05/C01",
+            "description": "Execute the pre-committed stop decision for C03: wind down creator contracts and redirect its remaining budget to the three scale channels — C06 Organic Search (₹57.44/registration), C05 Student Referrals (₹77.23) and C01 Campus Ambassadors (₹86.65) — to help close the registration gap (run rate 44.79/day vs 68.71/day needed; projected 2,793 vs 3,200 goal).",
+            "owner_id": "T05",
+            "owner_name": "Nisha Rao",
+            "due_date": "2025-03-28",
+            "priority": "high",
+            "campaign_id": "C03",
+            "initiative_id": null,
+            "evidence": "As of 2025-03-25: C03 cost per registration ₹205.91 = 1.86x the blended ₹110.63 (stop threshold 1.6x); confirmation 81.3% vs 88% min; form completion 81.6% vs 88% min; nurture opt-outs 18.7% vs 15% max; ₹48,800 spend for 237 registrations (183 confirmed). Scale candidates per registration: C06 ₹57.44, C05 ₹77.23, C01 ₹86.65. Overall funnel: 2,032 of 3,200 registrations, run rate 44.79/day vs 68.71/day required.",
+            "as_of": "2025-03-25"
+          }
+        ],
+        "model": "accounts/fireworks/models/glm-5p3",
+        "usage": {
+          "prompt": 31085,
+          "completion": 9803
+        },
+        "ms": 96450
+      }
+    ]
+  }
+]

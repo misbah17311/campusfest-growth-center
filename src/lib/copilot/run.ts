@@ -8,13 +8,14 @@ import { TOOL_DEFS, runTool, type Proposal, type ToolContext } from "./tools";
 // tool. Proposals are collected and returned for the user to confirm.
 
 export const FIREWORKS_BASE_URL = "https://api.fireworks.ai/inference/v1";
-export const DEFAULT_MODEL = "accounts/fireworks/models/glm-5p3";
+// Chosen by evaluation (tests/results): same pass rate as GLM 5.3 on the 64-question set, about 8x cheaper.
+export const DEFAULT_MODEL = "accounts/fireworks/models/deepseek-v4p1-flash";
 const MAX_STEPS = 8;
 
 export type ChatTurn = { role: "user" | "assistant"; content: string };
 export type CopilotEvent =
   | { type: "tool"; name: string; summary: string }
-  | { type: "answer"; text: string; proposals: Proposal[]; model: string; steps: number; usage: { prompt: number; completion: number } }
+  | { type: "answer"; text: string; proposals: Proposal[]; model: string; steps: number; usage: { prompt: number; completion: number; cached: number } }
   | { type: "error"; message: string };
 
 const TOOL_LABEL: Record<string, string> = {
@@ -64,12 +65,12 @@ function summarise(name: string, args: Record<string, unknown>) {
 }
 
 export async function runCopilot(
-  input: { message: string; history: ChatTurn[]; asOf: string; page: string },
+  input: { message: string; history: ChatTurn[]; asOf: string; page: string; model?: string },
   emit: (e: CopilotEvent) => void,
 ) {
   const apiKey = process.env.FIREWORKS_API_KEY;
   if (!apiKey) throw new Error("The copilot is not configured: FIREWORKS_API_KEY is missing on the server.");
-  const model = process.env.FIREWORKS_MODEL || DEFAULT_MODEL;
+  const model = input.model || process.env.FIREWORKS_MODEL || DEFAULT_MODEL;
   const client = new OpenAI({ apiKey, baseURL: FIREWORKS_BASE_URL, timeout: 90_000, maxRetries: 1 });
   const ctx: ToolContext = { asOf: input.asOf, proposals: [] };
   const started = Date.now();
@@ -79,7 +80,8 @@ export async function runCopilot(
     ...input.history.slice(-12).map((t) => ({ role: t.role, content: t.content.slice(0, 6000) })),
     { role: "user", content: `[Dashboard context: selected as-of date ${input.asOf} (end of day, India time); page ${input.page}]\n${input.message}` },
   ];
-  const usage = { prompt: 0, completion: 0 };
+  const usage = { prompt: 0, completion: 0, cached: 0 };
+  let nudged = false;
   const toolLog: { name: string; args: unknown; ok: boolean }[] = [];
 
   for (let step = 1; step <= MAX_STEPS + 1; step++) {
@@ -89,24 +91,30 @@ export async function runCopilot(
     });
     usage.prompt += res.usage?.prompt_tokens ?? 0;
     usage.completion += res.usage?.completion_tokens ?? 0;
+    usage.cached += res.usage?.prompt_tokens_details?.cached_tokens ?? 0;
     const choice = res.choices[0];
     const msg = choice?.message;
     if (!msg) throw new Error("The model returned no message");
+    const calls = msg.tool_calls?.filter((c) => c.type === "function") ?? [];
+    // A model occasionally emits tool arguments that are not valid JSON. Record the
+    // problem, and replace them with "{}" in the stored message: the provider
+    // rejects any later request whose history contains invalid tool arguments.
+    const badArgs = new Set<string>();
+    for (const c of calls) {
+      try { JSON.parse(c.function.arguments || "{}"); } catch { badArgs.add(c.id); c.function.arguments = "{}"; }
+    }
     // Keep the full message (including any reasoning_content) so reasoning models
     // see their own earlier reasoning within this turn.
     messages.push(msg as OpenAI.Chat.Completions.ChatCompletionMessageParam);
-    const calls = msg.tool_calls?.filter((c) => c.type === "function") ?? [];
     if (calls.length === 0 || lastStep) {
       let text = (msg.content ?? "").trim();
-      if (!text) {
-        // Reasoning models sometimes spend the turn thinking and return no visible
-        // text. Ask once for the answer from what has been gathered so far.
-        toolLog.push({ name: `(empty reply, finish_reason=${choice.finish_reason}; retried)`, args: {}, ok: false });
-        messages.push({ role: "user", content: "Please give your answer to my question now, using only the tool results above. If something is missing, say what." });
-        const retry = await client.chat.completions.create({ model, messages, tools, tool_choice: "none", temperature: 0.2, max_tokens: 8192 });
-        usage.prompt += retry.usage?.prompt_tokens ?? 0;
-        usage.completion += retry.usage?.completion_tokens ?? 0;
-        text = (retry.choices[0]?.message?.content ?? "").trim();
+      if (!text && !nudged && !lastStep) {
+        // Reasoning models sometimes end a turn with no visible text. Nudge once and
+        // keep the loop going WITH tools, so a pending action can still be proposed.
+        nudged = true;
+        toolLog.push({ name: `(empty reply, finish_reason=${choice.finish_reason}; nudged)`, args: {}, ok: false });
+        messages.push({ role: "user", content: "Please continue: call any tools you still need (including propose_* for actions I asked for), then give me your answer." });
+        continue;
       }
       text ||= "I could not produce an answer this time. Please ask again, or narrow the question.";
       emit({ type: "answer", text, proposals: ctx.proposals, model, steps: step, usage });
@@ -118,6 +126,7 @@ export async function runCopilot(
       let args: Record<string, unknown> = {};
       let result: unknown;
       try {
+        if (badArgs.has(call.id)) throw new Error("The arguments for this call were not valid JSON. Call the tool again with a valid JSON object.");
         args = JSON.parse(call.function.arguments || "{}");
         emit({ type: "tool", name, summary: summarise(name, args) });
         result = await runTool(name, args, ctx);
@@ -132,7 +141,7 @@ export async function runCopilot(
 }
 
 function logRun(input: { message: string; asOf: string }, answer: string, tools: unknown, model: string,
-  usage: { prompt: number; completion: number }, ms: number) {
+  usage: { prompt: number; completion: number; cached: number }, ms: number) {
   query(
     `insert into copilot_log (as_of, question, answer, tools, model, prompt_tokens, completion_tokens, ms)
      values ($1, $2, $3, $4, $5, $6, $7, $8)`,
